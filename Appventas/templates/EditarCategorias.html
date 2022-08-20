@@ -1,0 +1,30 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+    <h2 >Formulario - Editar categorias</h2>
+
+    
+        
+       
+        <form action="{% url 'Editarcat' id %}" method = "POST">{% csrf_token %}
+
+
+             {{Catformulario.as_table}}
+
+             <input class="btn btn-outline-dark mt-auto" type="submit" value="Enviar"  href="">
+
+        </form>
+    
+        
+
+    <div class="text-center"><a  class="btn btn-outline-dark mt-auto" href="{% url 'Formularios' %}">Volver</a></div>
+      
+    
+    
+
+
+
+{% endblock bloquecambia %}
