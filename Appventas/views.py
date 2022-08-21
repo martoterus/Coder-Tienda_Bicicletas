@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from Appventas.carrito import carrito
 from Appventas.models import EnviarMensajes, categorias,producto
-from Appventas.forms import productosFormularios, categoriasFormulario, enviarMensaje
+from Appventas.forms import productosFormularios, categoriasFormulario, enviarMensaje,EditarUsuario
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , UserChangeForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las vistas basadas en clases
@@ -642,8 +642,8 @@ def EditarPerfil(request):
                 return render(request, "Save.html", {"mensaje":"Datos actualizados con exito.."})
     else:
           
-        formularioPerfil=EditarUsuario (initial={'Nombre':usuario.first_name,'Apellido':usuario.last_name,'Email':usuario.email})
-        #formularioPerfil=UserChangeForm (instance=request.user)
+        #formularioPerfil=EditarUsuario (initial={'Nombre':usuario.first_name,'Apellido':usuario.last_name,'Email':usuario.email})
+        formularioPerfil=EditarUsuario (instance=request.user)
         
     return render (request, "LoginPerfil.html", {"PerfilFormulario":formularioPerfil}) 
         

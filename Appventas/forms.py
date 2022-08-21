@@ -1,5 +1,7 @@
+from urllib import request
 from winreg import QueryValue
 from django import forms
+from django.forms import HiddenInput
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
 
@@ -52,9 +54,13 @@ class EditarUsuario(UserChangeForm):
     first_name=forms.CharField(max_length=30,label="Modificar nombre")
     last_name=forms.CharField(max_length=30,label="Modificar apellido")
     email=forms.EmailField(label="Modificar E-mail")
+   
    # password1= forms.CharField(label="Contraseña", widget=forms.PasswordInput)
    # password2= forms.CharField(label="Repetir la Contraseña", widget=forms.PasswordInput)
-
+    password= forms.CharField(#Para sacar los texto de ayuda.y ocultarlos
+    help_text="",
+    widget= forms.HiddenInput(), required=False
+   )
     class Meta:
         model= User
         fields=['first_name','last_name','email']
