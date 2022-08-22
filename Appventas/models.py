@@ -72,7 +72,13 @@ class EnviarMensajes(models.Model):
 class Avatar(models.Model):
 
     #vinculo con el usuario
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    user=models.ForeignKey(User,on_delete=models.CASCADE)#si elimino el usuariuo , elmina el avatar asociado a ese usuario
     #Subcarpeta avatares de media
-    imagen=models.ImageField(upload_to='avatares', null=True,blank=True)
+    imagen=models.ImageField(upload_to='avatares', null=True,blank=True)#blanck y null me permite que no haga falta llenar ese dato
+   
+   
+class NosotrosAvt(models.Model):
+
+    #Subcarpeta avatares de media
+    imagen=models.ImageField(upload_to='avatares', null=True,blank=True)#blanck y null me permite que no haga falta llenar ese dato
     

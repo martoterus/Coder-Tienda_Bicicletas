@@ -125,5 +125,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'Appventas/Login.html'
 #Para imagenes
-MEDIA_URL='/media/'
-MEDIA_ROOT= os.path.join(BASE_DIR,'media')
+MEDIA_URL='/media/'#constante para imagenes
+MEDIA_ROOT= os.path.join(BASE_DIR,'media')#paquete os dentro del directorio base la carpeta media
+
+EMIAL_USE_TLS=True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'biciclteria.app@gmail.com'
+EMAIL_HOST_PASSWORD = 'bicicleteriaapp'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

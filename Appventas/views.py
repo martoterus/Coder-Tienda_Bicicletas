@@ -1,27 +1,42 @@
-from django.shortcuts import redirect
-from multiprocessing import context
+from django.shortcuts import redirect,render
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
 from Appventas.carrito import carrito
-from Appventas.models import EnviarMensajes, categorias,producto
-from Appventas.forms import productosFormularios, categoriasFormulario, enviarMensaje,EditarUsuario
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , UserChangeForm
-from django.contrib.auth import login, logout, authenticate
+from Appventas.models import EnviarMensajes,  NosotrosAvt, categorias,producto, Avatar
+from Appventas.forms import NosotrsAvtFormulario, UserRegisterForm,  productosFormularios, categoriasFormulario, enviarMensaje,EditarUsuario,AvatarFormulario
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , PasswordChangeForm
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las vistas basadas en clases
 from django.contrib.auth.decorators import login_required#decorador para vistas basadas en funciones.Aumenta la funcionalidad de una funcion.
 # Views de simple acceso
 def Nosotros(request):#Template de Nostros
-
-    return render(request, "QuienesSomos.html")
+    try:
+        avatares1=Avatar.objects.filter(user=request.user.id)
+        avatares=NosotrosAvt.objects.filter(user=request.user.id)
+        return render(request, "QuienesSomos.html",{ "PIC":avatares[0].imagen.url, "url":avatares1[0].imagen.url})
+    except:
+        return render(request, "QuienesSomos.html")
+     
 
 def Formularios(request):#Template de Formularios
+    try:
+        avatares1=Avatar.objects.filter(user=request.user.id)
+        
+        return render(request, "Formularios.html",{ "url":avatares1[0].imagen.url})
+    except:
+        return render(request, "Formularios.html")
+  
 
-    return render(request, "Formularios.html")
-
-def inicio(request):#Template de Inivcio
-
-    return render(request, "inicio.html")
+def inicio(request):#Template de Inicio
+    try:
+        avatares1=Avatar.objects.filter(user=request.user.id)
+        
+        return render(request, "inicio.html",{ "url":avatares1[0].imagen.url})
+    except:
+        return render(request, "inicio.html")
+      
     
 #Carrito de compras
 def agregar_producto(request, producto_id):
@@ -83,7 +98,7 @@ def Formulariocategoria(request):#Template cargar una bici en la tabla
      
 
         if Categoriaformulario.is_valid():
-            print("Entro al 2° if")
+            
             data=Categoriaformulario.cleaned_data
             #En la tabla que creo con la clase le cargo los datos del formulario de Django
             categoria=categorias(nombre=data['Nombre'])
@@ -100,11 +115,10 @@ def Formulariobicis(request):#Template cargar una bici en la tabla
 
     if request.method == 'POST':
         BiciFormulario=productosFormularios(request.POST)
-        print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
-        print("Formulario:",BiciFormulario ) 
+        
 
         if BiciFormulario.is_valid():
-            print("Entro al 2° if")
+            
             data=BiciFormulario.cleaned_data
             #En la tabla que creo con la clase le cargo los datos del formulario de Django
             bici=producto(marca=data['Marca'],modelo=data['Modelo'],tipo=data["Tipo"],rodado=data['Rodado'],color=data['Color'],precio=data['Precio'],categoria=data['Categoria'],nombre=data['Nombre'],descripcion=data['Descripcion'],disponibilidad=data['Disponibilidad'])
@@ -122,11 +136,9 @@ def Formularioindumentarias(request):#Template cargar una indumentaria en la tab
 
     if request.method == 'POST':
         InduFormulario=productosFormularios(request.POST)
-        print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
-        print("Formulario:",InduFormulario ) 
-
+        
         if InduFormulario.is_valid():
-            print("Entro al 2° if")
+            
             data=InduFormulario.cleaned_data
             #En la tabla que creo con la clase le cargo los datos del formulario de Django
             Indu=producto(tipo=data['Tipo'],marca=data['Marca'],modelo=data['Modelo'],talle=data['Talle'],precio=data['Precio'],nombre=data['Nombre'],descripcion=data['Descripcion'],categoria=data['Categoria'],disponibilidad=data['Disponibilidad'])
@@ -599,21 +611,22 @@ def IrRegistrarse(request):
 def registrarse(request):
 
     if request.method =="POST":
-        print("1)method:", request.method)
-        form=UserCreationForm(request.POST)
-        #form=UserRegisterForm(request.POST)
+        
+        #form=UserCreationForm(request.POST)
+        form=UserRegisterForm(request.POST)
         if form.is_valid():
-            print("2)method:", request.method)
+            
             username = form.cleaned_data['username']
             form.save()
             return render(request,'Save.html',{"mensaje":f"Usuario {username} creado."})
         else:
-            form=UserCreationForm()
+            form=UserRegisterForm()
             return render (request, 'LoginRegistro.html',{"mensaje":f"Usuario no valido. Vuelva a Intentarlo.","form": form})
         
     else:
-        form=UserCreationForm()
-        return render (request,'LoginRegistro.html', {"form": form})
+        form=UserRegisterForm()
+    
+    return render (request,'LoginRegistro.html', {"form": form})
 
 # #Perfil Usuario
 
@@ -624,7 +637,7 @@ def EditarPerfil(request):
     
     if request.method == "POST":
          
-        formularioPerfil=EditarUsuario (request.POST)
+        formularioPerfil=EditarUsuario (request.POST,request.user)
 
 
         if formularioPerfil.is_valid():
@@ -634,6 +647,9 @@ def EditarPerfil(request):
                 usuario.first_name=data["first_name"]
                 usuario.last_name=data["last_name"]
                 usuario.email=data["email"]
+               
+                
+                update_session_auth_hash(request, data)
                 #usuario.password1=data["password1"]
                 #usuario.password2=data["password2"]
 
@@ -646,7 +662,71 @@ def EditarPerfil(request):
         formularioPerfil=EditarUsuario (instance=request.user)
         
     return render (request, "LoginPerfil.html", {"PerfilFormulario":formularioPerfil}) 
+#Cambiar contraseña
+def CambiarContraseña(request): 
+
+    if request.method == 'POST': 
+
+        passw = PasswordChangeForm(request.user, request.POST)
+
+        if passw.is_valid(): 
+            user = passw.save()
+            update_session_auth_hash(request, user) # Importantee! 
+
+            messages.success(request, 'Tu contraseña se cambio satisfactoriamente!') 
+
+            return render(request, 'SavePerfil.html',{"mensaje":"Contraseña cambiada correctamente."}) 
+
+        else: messages.error(request, 'Por favor corrige el error.') 
+    else: 
+        passw = PasswordChangeForm(request.user) 
+    return render(request, 'LoginCambiarPassword.html', { 'form': passw })
+
+
         
-   
+#Avatar Usuario
+def AgregarAvatar(request):
+
+    if request.method == 'POST':
+        AvtFormulario=AvatarFormulario(request.POST,request.FILES)
+        
+
+        if AvtFormulario.is_valid():
+            
+            data=AvtFormulario.cleaned_data
+            #En la tabla que creo con la clase le cargo los datos del formulario de Django
+            avatar=Avatar(user=request.user,imagen=data['imagen'])
+            avatar.save()
+            
+            return render(request, "SavePerfil.html",{'mensaje':"Avatar cargado."})
+       # else:
+        #    return render (request,"inicio2.html")
+    else:
+        AvtFormulario=AvatarFormulario()
+    return render(request,"LoginAgregarAvatar.html", {"AvatarFormulario": AvtFormulario})
+
+        
+#Avatar Foto a Nosotros
+def AvatarNosotros(request):
+
+    if request.method == 'POST':
+        datos=NosotrsAvtFormulario(request.POST,request.FILES)
+        
+
+        if datos.is_valid():
+            
+            data=datos.cleaned_data
+            #En la tabla que creo con la clase le cargo los datos del formulario de Django
+            foto=NosotrosAvt(imagen=data['imagen'])
+            foto.save()
+            nose=NosotrosAvt.objects.filter(user=request.user.id)
+        
+            
+            return render(request, "QuienesSomosSave.html",{ "PIC":nose[0].imagen.url})
+       # else:
+        #    return render (request,"inicio2.html")
+    else:
+        datos=NosotrsAvtFormulario()
+    return render(request,"QuienesSomosAvatar.html", {"Foto": datos})   
 
 

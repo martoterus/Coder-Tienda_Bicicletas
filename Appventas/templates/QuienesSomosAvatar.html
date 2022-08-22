@@ -1,0 +1,29 @@
+{% extends 'Padre.html' %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+<br>
+<h3 style= "margin-left: 50px">Agregar Foto</h3>
+
+<div style= "margin-left: 50px" >
+    <br>
+    <p>Seleccione una imagen de su pc para cargarla en la aplicacion.</p>
+    
+    <form enctype="multipart/form-data"
+          method="POST"  >{% csrf_token %}
+
+         {{Foto.as_p}}
+
+        <input type="submit" value="Enviar">
+        
+
+
+    </form>
+    <br>
+    <br>
+<div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="{% url 'Nosotros' %}">Volver</a></div>
+
+<br><br>
+{% endblock bloquecambia %}

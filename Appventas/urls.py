@@ -1,13 +1,14 @@
 from django.contrib import admin
 from django.urls import path
 from Appventas.views import (
-    BusquedaAcc, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, ResultAcc, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
+    AvatarNosotros, BusquedaAcc, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, ResultAcc, CambiarContraseña, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
     editarrepuestos, eliminarIndumentaria, eliminaraccesorios, eliminarbici, eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
     Busquedabicis, registrarse, LeerIndum, LeerBicis, LeerRepu, ResultBici, BusquedaIndu, BusquedaRepues, ResultIndu, ResultRepues,
-    Nosotros, Formularios, IrEnviarMensaje, IrRegistrarse
+    Nosotros, Formularios, IrEnviarMensaje, IrRegistrarse, AgregarAvatar
 )
 from django.contrib.auth.views import LogoutView
 #from Appventas.views import BusquedaIndu, BusquedaRepuesto, RespuestaBuscarIndu, RespuestaBuscarRepuesto
+#from django.contrib.auth.views import password_reset, password_reset_done, password_reset_confirm, password_reset_complete
                                   
 
 
@@ -17,6 +18,7 @@ urlpatterns = [
     path('', inicio, name="INICIO"),
     path('Formularios', Formularios ,name="Formularios"),
     path('Nosotros/', Nosotros,name="Nosotros"),
+    path('Nos-Avatar',AvatarNosotros,name="AvatarNosotros"),
     path('EnviarMensaje/',IrEnviarMensaje,name="EnviarMensaje"),
     #CARGAR DATOS
     path('FormularioBici/', Formulariobicis, name="bici_formulario"),
@@ -60,8 +62,13 @@ urlpatterns = [
     path('registrarse', registrarse, name='Registrarse'),
     path('logout', LogoutView.as_view(template_name='logout.html'),name='Logout'),
     path('loginPerfil', EditarPerfil, name="Perfil"),
+    path('CambiarContraseña',CambiarContraseña, name="CambiarContraseña"),
+    #Olvide contraseña
+    #path('reset/password_reset',password_reset,{'template_name':'templates/LoginPswResetForm.html',
+    #'email_template':'templates/'})   
     
     #Imagenes/Avatars
-    
+    path('agregar-avatar', AgregarAvatar, name="AgregarAvatar"),
+    #path('save-avatar', SavePerfil, name="SaveAvatar"),
 ]
 

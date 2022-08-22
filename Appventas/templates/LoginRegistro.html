@@ -9,12 +9,21 @@
     <br>
     <h3>Registrarse</h3>
     <h6 style="color:#FF0000">{{mensaje}}</h6>
-    <form action="" method="POST">
+    <form  action="" method="POST">
      {% csrf_token %}
 
 
      {{form.as_p}}
-
+        <div>
+            <ul >
+                <li >Su contraseña no puede ser muy similar a su informacion personal.</li>
+                <li >Su contraseña debe contener al menos 8 caracteres.</li>
+                <li >Su contraseña no puede ser una contraseña de uso común.</li>
+                <li >Su contraseña no puede ser completamente numérica.</li>
+                
+                
+            </ul>
+        </div>
      <button type="submit">Crear usuario </button>
     </form>
     <br>

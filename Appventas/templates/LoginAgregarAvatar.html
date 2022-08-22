@@ -1,0 +1,31 @@
+{% extends 'Padre.html' %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+<br>
+<h3 style= "margin-left: 50px">Agregar Avatar</h3>
+
+<div style= "margin-left: 50px" >
+    <br>
+    
+    
+
+    
+    <form enctype="multipart/form-data"
+          method="POST"  >{% csrf_token %}
+
+         {{AvatarFormulario.as_p}}
+
+        <input type="submit" value="Enviar">
+        
+
+
+    </form>
+    <br>
+    <br>
+<div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="{% url 'Perfil' %}">Volver</a></div>
+
+<br><br>
+{% endblock bloquecambia %}
