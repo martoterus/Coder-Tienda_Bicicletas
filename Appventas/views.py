@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from Appventas.carrito import carrito
 from Appventas.models import EnviarMensajes,  NosotrosAvt, categorias,producto, Avatar
-from Appventas.forms import NosotrsAvtFormulario, UserRegisterForm,  productosFormularios, categoriasFormulario, enviarMensaje,EditarUsuario,AvatarFormulario
+from Appventas.forms import NosotrsAvtFormulario, UserRegisterForm, CambiarContraseña,  productosFormularios, categoriasFormulario, enviarMensaje,EditarUsuario,AvatarFormulario
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , PasswordChangeForm
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las vistas basadas en clases
@@ -14,8 +14,8 @@ from django.contrib.auth.decorators import login_required#decorador para vistas 
 def Nosotros(request):#Template de Nostros
     try:
         avatares1=Avatar.objects.filter(user=request.user.id)
-        avatares=NosotrosAvt.objects.filter(user=request.user.id)
-        return render(request, "QuienesSomos.html",{ "PIC":avatares[0].imagen.url, "url":avatares1[0].imagen.url})
+        #avatares=NosotrosAvt.objects.filter(user=request.user.id)
+        return render(request, "QuienesSomos.html",{ "url":avatares1[0].imagen.url})
     except:
         return render(request, "QuienesSomos.html")
      
@@ -574,6 +574,7 @@ def editaraccesorios(request, id):
         return render(request,"EditarAccesorios.html", {"AccFormulario": accFormulario , "id": acc.id})
 
 #LOGIN
+
 def iniciar_sesion(request):
 
     if request.method == "POST":
@@ -587,20 +588,20 @@ def iniciar_sesion(request):
             user=authenticate(username=usuario,password=clave)
 
             if user is not None:
-                print("Entro al is not none")
+                
                 login(request,user)
 
                 return render(request, "inicio.html", {"mensaje":f"Bienvenido {usuario}"})
             else:
-                print("Entro al is not none ELSE")
+              
                 form = AuthenticationForm()
                 return render (request, "Login.html", {"mensaje":"Error!",'form':form}) 
         else:
-                print("Entro al is valid ELSE")
+                
                 form = AuthenticationForm()
                 return render (request, "Login.html", {"mensaje":"Error, datos incorrectos. \n Vuelva a intentarlo.",'form':form}) 
     else:
-        print("Entro al metodo GET: ",request.method)
+        
         form = AuthenticationForm()
         return render (request, "Login.html", {'form':form})
 
@@ -630,80 +631,70 @@ def registrarse(request):
 
 # #Perfil Usuario
 
-
+@login_required
 def EditarPerfil(request):
 
     usuario=request.user
     
     if request.method == "POST":
-         
-        formularioPerfil=EditarUsuario (request.POST,request.user)
-
-
-        if formularioPerfil.is_valid():
-                
+         formularioPerfil=EditarUsuario (request.POST,request.user)
+         if formularioPerfil.is_valid():
                 data=formularioPerfil.cleaned_data
-
                 usuario.first_name=data["first_name"]
                 usuario.last_name=data["last_name"]
                 usuario.email=data["email"]
-               
-                
-                update_session_auth_hash(request, data)
                 #usuario.password1=data["password1"]
                 #usuario.password2=data["password2"]
-
                 usuario.save()
 
                 return render(request, "Save.html", {"mensaje":"Datos actualizados con exito.."})
     else:
-          
-        #formularioPerfil=EditarUsuario (initial={'Nombre':usuario.first_name,'Apellido':usuario.last_name,'Email':usuario.email})
         formularioPerfil=EditarUsuario (instance=request.user)
-        
     return render (request, "LoginPerfil.html", {"PerfilFormulario":formularioPerfil}) 
 #Cambiar contraseña
-def CambiarContraseña(request): 
-
+@login_required
+def CambiarPassword(request): 
+    usuario=request.user
     if request.method == 'POST': 
+        formularioPasw= CambiarContraseña(request.POST,request.user)
 
-        passw = PasswordChangeForm(request.user, request.POST)
-
-        if passw.is_valid(): 
-            user = passw.save()
-            update_session_auth_hash(request, user) # Importantee! 
-
-            messages.success(request, 'Tu contraseña se cambio satisfactoriamente!') 
-
+        if formularioPasw.is_valid(): 
+            psw=formularioPasw.cleaned_data
+            formularioPasw.save()
+            psw_plana=psw["password1"]        
+             # Importantee!
+            usuario.password= update_session_auth_hash(request, psw_plana)
+            usuario.save()
+            
+            
             return render(request, 'SavePerfil.html',{"mensaje":"Contraseña cambiada correctamente."}) 
 
         else: messages.error(request, 'Por favor corrige el error.') 
     else: 
-        passw = PasswordChangeForm(request.user) 
+        passw = CambiarContraseña() 
     return render(request, 'LoginCambiarPassword.html', { 'form': passw })
 
 
         
 #Avatar Usuario
+@login_required
 def AgregarAvatar(request):
 
     if request.method == 'POST':
         AvtFormulario=AvatarFormulario(request.POST,request.FILES)
-        
-
         if AvtFormulario.is_valid():
             
             data=AvtFormulario.cleaned_data
             #En la tabla que creo con la clase le cargo los datos del formulario de Django
             avatar=Avatar(user=request.user,imagen=data['imagen'])
             avatar.save()
-            
             return render(request, "SavePerfil.html",{'mensaje':"Avatar cargado."})
        # else:
         #    return render (request,"inicio2.html")
     else:
         AvtFormulario=AvatarFormulario()
-    return render(request,"LoginAgregarAvatar.html", {"AvatarFormulario": AvtFormulario})
+        imagen=Avatar['imagen']
+    return render(request,"LoginAgregarAvatar.html", {"AvatarFormulario": AvtFormulario, "imagen":imagen})
 
         
 #Avatar Foto a Nosotros
@@ -711,18 +702,13 @@ def AvatarNosotros(request):
 
     if request.method == 'POST':
         datos=NosotrsAvtFormulario(request.POST,request.FILES)
-        
-
         if datos.is_valid():
             
             data=datos.cleaned_data
             #En la tabla que creo con la clase le cargo los datos del formulario de Django
             foto=NosotrosAvt(imagen=data['imagen'])
             foto.save()
-            nose=NosotrosAvt.objects.filter(user=request.user.id)
-        
-            
-            return render(request, "QuienesSomosSave.html",{ "PIC":nose[0].imagen.url})
+            return render(request, "QuienesSomosSave.html")
        # else:
         #    return render (request,"inicio2.html")
     else:

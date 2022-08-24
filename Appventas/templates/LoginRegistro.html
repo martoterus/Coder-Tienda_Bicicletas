@@ -12,9 +12,10 @@
     <form  action="" method="POST">
      {% csrf_token %}
 
-
-     {{form.as_p}}
-        <div>
+        <table>
+            {{form.as_table}}
+        </table>   
+     <div>
             <ul >
                 <li >Su contraseña no puede ser muy similar a su informacion personal.</li>
                 <li >Su contraseña debe contener al menos 8 caracteres.</li>

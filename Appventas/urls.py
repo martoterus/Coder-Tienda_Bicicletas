@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from Appventas.views import (
-    AvatarNosotros, BusquedaAcc, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, ResultAcc, CambiarContraseña, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
+    AvatarNosotros, BusquedaAcc, CambiarPassword, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, ResultAcc, CambiarContraseña, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
     editarrepuestos, eliminarIndumentaria, eliminaraccesorios, eliminarbici, eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
     Busquedabicis, registrarse, LeerIndum, LeerBicis, LeerRepu, ResultBici, BusquedaIndu, BusquedaRepues, ResultIndu, ResultRepues,
     Nosotros, Formularios, IrEnviarMensaje, IrRegistrarse, AgregarAvatar
@@ -62,7 +62,7 @@ urlpatterns = [
     path('registrarse', registrarse, name='Registrarse'),
     path('logout', LogoutView.as_view(template_name='logout.html'),name='Logout'),
     path('loginPerfil', EditarPerfil, name="Perfil"),
-    path('CambiarContraseña',CambiarContraseña, name="CambiarContraseña"),
+    path('CambiarContraseña',CambiarPassword, name="CambiarContraseña"),
     #Olvide contraseña
     #path('reset/password_reset',password_reset,{'template_name':'templates/LoginPswResetForm.html',
     #'email_template':'templates/'})   

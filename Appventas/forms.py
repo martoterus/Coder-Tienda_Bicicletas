@@ -88,8 +88,13 @@ class CambiarContraseña(UserChangeForm):
     password= forms.CharField(#Para sacar los texto de ayuda.y ocultarlos
     help_text="",
     widget= forms.HiddenInput(), required=False)
+    #password0= forms.CharField(label="Contraseña actual", widget=forms.PasswordInput)
     password1= forms.CharField(label="Contraseña", widget=forms.PasswordInput)
     password2= forms.CharField(label="Repetir la Contraseña", widget=forms.PasswordInput)#El forms.passwordInput es para que se vea con asteriscos
+
+    class Meta:
+        model= User
+        fields=['password']
 
     def clean_password2(self):
         password2=self.cleaned_data["password2"]
@@ -98,9 +103,17 @@ class CambiarContraseña(UserChangeForm):
 
         return password2 # aca podriamos modificar el dato si es necesario
 
+    # def clean_password0(self):
+    #     password=self.cleaned_data["password"]
+    #     if password != self.clean_password0["password0"]:
+    #         raise forms.ValidationError("Error en contraseña actual")
+
+
+
+
 
 class AvatarFormulario(forms.ModelForm):
-
+    imagen=forms.ImageField(label="Seleccione la imagen:")
     class Meta:#Para usasr un formulario basado en Modelos
         model=Avatar
         fields=('imagen',)
