@@ -4,28 +4,33 @@
 
 {% block bloquecambia %}
 
-<br>
-<h3 style= "margin-left: 50px">Agregar Avatar</h3>
-<p>Avatar actual: {{imagen}}</p>
-<div style= "margin-left: 50px" >
+   
+<div class="text-left" class="btn btn-outline-dark mt-auto">
     <br>
-    
-    
+    <div class="text-center">
+        <h3>Cambiar avatar.</h3>
+        <h4>{{mensaje}}</h4>
+    </div><br>
+    <br>
+    <form  action="" method="POST">
+        {% csrf_token %}
 
-    
-    <form enctype="multipart/form-data"
-          method="POST"  >{% csrf_token %}
-
-         {{AvatarFormulario.as_p}}
-
-        <input type="submit" value="Enviar">
-        
-
-
+        <table  style="margin: 0 auto;">
+            {{miFormulario.as_table }}
+        </table>
+        <br>
+        <br>
+        <div class="text-center">
+            <button type="submit"  class="btn btn-outline-dark mt-auto " style="margin-right: 24px">Guardar</button>
+        </div>
     </form>
+     
+    
+    
     <br>
     <br>
-<div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="{% url 'Perfil' %}">Volver</a></div>
+<div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="/Appventas/">Volver</a></div>
+
 
 <br><br>
 {% endblock bloquecambia %}

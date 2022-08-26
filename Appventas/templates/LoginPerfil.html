@@ -7,26 +7,30 @@
 <br>
 <h3 style= "margin-left: 50px">Perfil</h3>
 <h4 style= "margin-left: 50px">Bien venido {{user.username}}</h4>
+    
+  
 <div style= "margin-left: 50px" >
     <br>
     
     
 
-    <a type="submit"href="{% url 'AgregarAvatar' %}">Cargar Avatar</a>
+    
     <form  method="POST">{% csrf_token %}
      
-        
-            {{PerfilFormulario.as_p}}
+        <table>    
+            {{PerfilFormulario.as_table}}
 
-        
-            <a class="btn btn-outline-dark mt-auto" href="{% url 'CambiarContraseña' %}">Presione para cambiar su contraseña</a>
-            
-            <br>
+        </table>
+        <br>
+        <a class="btn btn-outline-dark mt-auto" href="{% url 'CambiarContraseña' %}">Cambiar contraseña.</a>
         <br>
         <br>
-        <button type="submit" >Guardar datos </button>
+        <a class="btn btn-outline-dark mt-auto" href="{% url 'CambiarAvatar' %}">Agregar avatar.</a>
+        <br>
+        <hr>
+        <button class="btn btn-outline-dark mt-auto" type="submit" >Guardar </button>
+     
     </form>
-    
     
     <br>
     <br>

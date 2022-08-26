@@ -1,5 +1,6 @@
 
 # Create your models here.
+from cProfile import label
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -34,26 +35,70 @@ class producto(models.Model):
     def __str__(self):
         return self.nombre
 
-class perfiles(models.Model):
-    nombre=models.CharField(max_length=30)
-    apellido=models.CharField(max_length=30)
-    telefono= models.IntegerField() 
-    emial=models.EmailField(max_length=100)
+class tipoPersonas(models.Model):
+    nombre = models.CharField(max_length=100)
+
+
+    # class Meta:
+    #     verbose_name = "categoria"
+    #     verbose_name_plural = "categorias"
     
+    def __str__(self):
+        return self.nombre
+
+
+class empleado(models.Model):
+    
+    nombre=models.CharField(max_length=30,)
+    Apellido=models.CharField(max_length=30,)
+    Telefono=models.IntegerField()
+    nombre=models.EmailField(max_length=30)
+   # categoria = models.ForeignKey(tipoPersonas, on_delete=models.CASCADE)
+    user_id=models.ForeignKey(User,on_delete=models.CASCADE)
+
     class Meta:
-        abstract=True
-
-class empleado(perfiles):
-   cargo=models.CharField(max_length=30)
-
-   def __str__(self):
-    return f"{self.nombre,self.apellido, self.telefono,self.emial,self.cargo}"
-
-class cliente(perfiles):
-    edad=models.IntegerField()
+        verbose_name = "empleado"
+        verbose_name_plural = "empleados"
 
     def __str__(self):
-     return f"{self.nombre,self.apellido, self.telefono,self.emial,self.edad}"
+        return self.nombre
+
+class cliente(models.Model):
+    
+    nombre=models.CharField(max_length=30,)
+    Apellido=models.CharField(max_length=30,)
+    Telefono=models.IntegerField()
+    nombre=models.EmailField(max_length=30)
+    user_id=models.ForeignKey(User,on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "cliente"
+        verbose_name_plural = "clientes"
+
+    def __str__(self):
+        return self.nombre
+
+
+# class perfiles(models.Model):
+#     nombre=models.CharField(max_length=30, )
+#     apellido=models.CharField(max_length=30)
+#     telefono= models.IntegerField() 
+#     emial=models.EmailField(max_length=100)
+    
+#     class Meta:
+#         abstract=True
+
+# class empleado(perfiles):
+#    cargo=models.CharField(max_length=30)
+
+#    def __str__(self):
+#     return f"{self.nombre,self.apellido, self.telefono,self.emial,self.cargo}"
+
+# class cliente(perfiles):
+#     edad=models.IntegerField()
+
+#     def __str__(self):
+#      return f"{self.nombre,self.apellido, self.telefono,self.emial,self.edad}"
 
 
 class EnviarMensajes(models.Model):
@@ -72,13 +117,8 @@ class EnviarMensajes(models.Model):
 class Avatar(models.Model):
 
     #vinculo con el usuario
-    user=models.ForeignKey(User,on_delete=models.CASCADE)#si elimino el usuariuo , elmina el avatar asociado a ese usuario
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
     #Subcarpeta avatares de media
-    imagen=models.ImageField(upload_to='avatares', null=True,blank=True)#blanck y null me permite que no haga falta llenar ese dato
-   
-   
-class NosotrosAvt(models.Model):
-
-    #Subcarpeta avatares de media
-    imagen=models.ImageField(upload_to='avatares', null=True,blank=True)#blanck y null me permite que no haga falta llenar ese dato
+    imagen=models.ImageField(upload_to='avatares', null=True,blank=True)
     
+

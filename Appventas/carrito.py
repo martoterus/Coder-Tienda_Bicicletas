@@ -2,17 +2,16 @@ class carrito:
     def __init__(self, request):
         self.request = request
         self.session = request.session
-        carrito = self.session["carrito"]
+        carrito = self.session.get("carrito")
         if not carrito:                                     #Si no hay carrito asociado a la session 
-            self.session["carrito"] = {}                    #Se crea un diccionario vacio
-            self.carrito = self.session[carrito]
+            carrito = self.session["carrito"] = {}                    #Se crea un diccionario vacio 
         else:
             self.carrito = carrito                          #Si no, muestra carrito 
 
     def agregar(self, producto):
         id = str(producto.id)
         if id not in self.carrito.keys():                   #Si no se encuentra el ID de producto dentro del carrito 
-            self.carrito[id] = {                            #Crear diccionario con las keys que queremos y que esten en nuestro modelo
+            self.carrito[producto.id] = {                            #Crear diccionario con las keys que queremos y que esten en nuestro modelo
             "producto_id": producto.id,
             "nombre": producto.nombre,
             "acumulado": producto.precio,

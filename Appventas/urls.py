@@ -1,14 +1,16 @@
 from django.contrib import admin
 from django.urls import path
+from Appventas.models import Avatar
 from Appventas.views import (
-    AvatarNosotros, BusquedaAcc, CambiarPassword, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, ResultAcc, CambiarContraseña, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
-    editarrepuestos, eliminarIndumentaria, eliminaraccesorios, eliminarbici, eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
-    Busquedabicis, registrarse, LeerIndum, LeerBicis, LeerRepu, ResultBici, BusquedaIndu, BusquedaRepues, ResultIndu, ResultRepues,
-    Nosotros, Formularios, IrEnviarMensaje, IrRegistrarse, AgregarAvatar
+    BusquedaAcc, CambiarPassword, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, ResultAcc, agregar_avatar, agregar_producto, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
+    editarrepuestos, eliminar_producto, eliminarIndumentaria, eliminaraccesorios, eliminarbici, eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
+    Busquedabicis, limpiar_carrito, registrarse, LeerIndum, LeerBicis, LeerRepu, ResultBici, BusquedaIndu, BusquedaRepues, ResultIndu, ResultRepues,
+    Nosotros, Formularios, IrEnviarMensaje, IrRegistrarse, restar_producto, tienda
 )
 from django.contrib.auth.views import LogoutView
+from .import views
+
 #from Appventas.views import BusquedaIndu, BusquedaRepuesto, RespuestaBuscarIndu, RespuestaBuscarRepuesto
-#from django.contrib.auth.views import password_reset, password_reset_done, password_reset_confirm, password_reset_complete
                                   
 
 
@@ -18,7 +20,6 @@ urlpatterns = [
     path('', inicio, name="INICIO"),
     path('Formularios', Formularios ,name="Formularios"),
     path('Nosotros/', Nosotros,name="Nosotros"),
-    path('Nos-Avatar',AvatarNosotros,name="AvatarNosotros"),
     path('EnviarMensaje/',IrEnviarMensaje,name="EnviarMensaje"),
     #CARGAR DATOS
     path('FormularioBici/', Formulariobicis, name="bici_formulario"),
@@ -62,13 +63,17 @@ urlpatterns = [
     path('registrarse', registrarse, name='Registrarse'),
     path('logout', LogoutView.as_view(template_name='logout.html'),name='Logout'),
     path('loginPerfil', EditarPerfil, name="Perfil"),
+   
+
+    #carrito
+    path('tienda', tienda, name="Tienda"),
+    path('agregar/<int:producto_id>', agregar_producto, name="Agregar"),
+    path('eliminar/<int:producto_id>', eliminar_producto, name="Eliminar"),
+    path('restar/<int:producto_id>', restar_producto, name="Restar"),
+    path('limpiar/<int:producto_id>', limpiar_carrito, name="Limpiar"),
     path('CambiarContraseña',CambiarPassword, name="CambiarContraseña"),
-    #Olvide contraseña
-    #path('reset/password_reset',password_reset,{'template_name':'templates/LoginPswResetForm.html',
-    #'email_template':'templates/'})   
     
     #Imagenes/Avatars
-    path('agregar-avatar', AgregarAvatar, name="AgregarAvatar"),
-    #path('save-avatar', SavePerfil, name="SaveAvatar"),
+    path('CambiarAvatar',agregar_avatar, name="CambiarAvatar"),
 ]
 
