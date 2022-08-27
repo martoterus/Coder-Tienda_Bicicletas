@@ -31,9 +31,9 @@
                     
                     {% if user.is_authenticated %}
                         
-                            {% if url %}
-                                <img src="{{url}}" height="35px" alt="avatar">
-                            {% endif %}
+                        {% if url %}
+                         <img src="{{url}}" height="35px" alt="avatar">
+                        {% endif %}
                             
                         <div class="btn-group">
                         <button class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false" >@{{user.username}}</button>

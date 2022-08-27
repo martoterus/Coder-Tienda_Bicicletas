@@ -15,9 +15,10 @@
     <form  action="" method="POST">
         {% csrf_token %}
 
-        <table  style="margin: 0 auto;">
-            {{miFormulario.as_table }}
-        </table>
+       
+           {{miFormulario.as_p }}
+        
+                   
         <br>
         <br>
         <div class="text-center">
@@ -34,3 +35,4 @@
 
 <br><br>
 {% endblock bloquecambia %}
+

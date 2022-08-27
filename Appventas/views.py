@@ -7,22 +7,28 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
 from Appventas.carrito import carrito
-from Appventas.models import Avatar, EnviarMensajes, categorias,producto
-from Appventas.forms import  AvatarFormulario, CrearUsuario, EditarUsuario,productosFormularios, categoriasFormulario, enviarMensaje
+from Appventas.models import  Avatar, EnviarMensajes, categorias,producto
+from Appventas.forms import   AvatarFormulario, CrearUsuario, EditarUsuario,productosFormularios, categoriasFormulario, enviarMensaje
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , UserChangeForm,PasswordChangeForm
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las vistas basadas en clases
 from django.contrib.auth.decorators import login_required#decorador para vistas basadas en funciones.Aumenta la funcionalidad de una funcion.
 # Views de simple acceso
+def ViewPadre(request):
+    return render (request,"Padre.html")
+
 def Nosotros(request):#Template de Nostros
 
     return render(request, "QuienesSomos.html")
 
 def Formularios(request):#Template de Formularios
-    try:
-        avatar = Avatar.objects.get(user=request.user.id)
-        return render(request, "Formularios.html", {"url": avatar.imagen.url})
-    except:
+    # try:
+        
+    #     avatar = Avatar.objects.get(user=request.user.id)
+    #     print("1")
+        # return render(request, "Formularios.html")
+    # except:
+    #     print("2")
         return render(request, "Formularios.html")
 
     
@@ -35,7 +41,7 @@ def inicio(request):#Template de Inivcio
     except:
         return render(request, "inicio.html")
     
-
+@login_required
 def tienda(request):
     productos = producto.objects.all()
     return render(request, "tienda.html", {"producto": productos})
@@ -326,7 +332,7 @@ def ResultAcc(request):
         return render(respuesta,"BusquedaAccesorios.html")
 
 #ELIMINAR DATOS
-
+@login_required
 def eliminarcategoria(request, id):
 
     if request.method == "POST":
@@ -341,7 +347,7 @@ def eliminarcategoria(request, id):
        contexto = {"categorias" : categoria}
  
        return render (request, "VerFormulario_Bicicletas.html", contexto)
-
+@login_required
 def eliminarbici(request, id):
 
     if request.method == "POST":
@@ -356,7 +362,7 @@ def eliminarbici(request, id):
        contexto = {"bicicletas" : bicicleta}
  
        return render (request, "VerFormulario_Bicicletas.html", contexto)
-
+@login_required
 def eliminarIndumentaria(request, id):
 
     if request.method == "POST":
@@ -371,7 +377,7 @@ def eliminarIndumentaria(request, id):
        contexto = {"indumentaria" : Indumentaria}
  
        return render (request, "VerFormulario_Indumentaria.html", contexto)
-
+@login_required
 def eliminarrepuestos(request, id):
 
     if request.method == "POST":
@@ -386,7 +392,7 @@ def eliminarrepuestos(request, id):
        contexto = {"indumentaria" : repuesto}
  
        return render (request, "VerFormulario_Repuestos.html", contexto)
-
+@login_required
 def eliminaraccesorios(request, id):
 
     if request.method == "POST":
@@ -403,7 +409,7 @@ def eliminaraccesorios(request, id):
        return render (request, "VerFormulario_Accesorios.html", contexto)
 
 #EDITAR
-
+@login_required
 def editarcategoria(request, id):
 
     categoria = categorias.objects.get(id = id)
@@ -426,7 +432,7 @@ def editarcategoria(request, id):
             "nombre": categoria.nombre,
         })
         return render(request,"EditarCategorias.html", {"Catformulario": CatFormulario , "id": id})
-
+@login_required
 def editarbicis(request, id):
 
     bicicleta = producto.objects.get(id = id)
@@ -467,7 +473,7 @@ def editarbicis(request, id):
 
         })
         return render(request,"EditarBicicletas.html", {"BiciFormulario": BiciFormulario , "id": id})
-
+@login_required
 def editarrepuestos(request, id):
 
     repuesto = producto.objects.get(id = id)
@@ -502,7 +508,7 @@ def editarrepuestos(request, id):
             "precio": repuesto.precio,
         })
         return render(request,"EditarRepuestos.html", {"RepuFormulario": repuFormulario , "id": repuesto.id})
-
+@login_required
 def editarindumentaria(request, id):
 
     indument = producto.objects.get(id = id)
@@ -540,7 +546,7 @@ def editarindumentaria(request, id):
         })
         return render(request,"EditarIndumentaria.html", {"InduFormulario": induFormulario , "id": indument.id})
 
-
+@login_required
 def editaraccesorios(request, id):
 
     acc = producto.objects.get(id = id)
@@ -681,21 +687,30 @@ def CambiarPassword(request):
 def agregar_avatar(request):
 
     if request.method == 'POST':
-
+        print("metodo:",request.method)
         miFormulario = AvatarFormulario(request.POST, request.FILES)
 
         if miFormulario.is_valid():
+            print("1")
 
             data = miFormulario.cleaned_data
 
-            avatar = Avatar(user=request.user, imagen=data['imagen'])
-
+            avatar =Avatar(user=request.user, imagen=data['imagen'])
+            print("2")
             avatar.save()
 
-            return render(request, 'inicio.html', {"mensaje": "Avatar cargado..."})
+            return render(request, "SavePerfil.html", {"mensaje": "Avatar cargado."})
+        else:
+            print("no valida")
+            miFormulario = AvatarFormulario()
+            return render(request, "LoginAgregarAvatar.html", {"miFormulario": miFormulario,"mensaje":"Error"})
+
 
     else:
 
-        miFormulario = AvatarFormulario()
+        avatarform = AvatarFormulario()
+        
 
-    return render(request, "LoginAgregarAvatar.html", {"miFormulario": miFormulario})
+    return render(request, "LoginAgregarAvatar.html", {"miFormulario": avatarform})
+
+

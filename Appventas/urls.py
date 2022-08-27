@@ -1,10 +1,14 @@
 from django.contrib import admin
 from django.urls import path
-from Appventas.models import Avatar
+# from Appventas.models import Avatar
 from Appventas.views import (
-    BusquedaAcc, CambiarPassword, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, ResultAcc, agregar_avatar, agregar_producto, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
-    editarrepuestos, eliminar_producto, eliminarIndumentaria, eliminaraccesorios, eliminarbici, eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
-    Busquedabicis, limpiar_carrito, registrarse, LeerIndum, LeerBicis, LeerRepu, ResultBici, BusquedaIndu, BusquedaRepues, ResultIndu, ResultRepues,
+    BusquedaAcc, CambiarPassword, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, 
+    Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, ResultAcc,
+     agregar_producto, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
+    editarrepuestos, eliminar_producto, eliminarIndumentaria, eliminaraccesorios, eliminarbici, 
+    eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
+    Busquedabicis, limpiar_carrito, registrarse, LeerIndum, LeerBicis, LeerRepu, ResultBici, BusquedaIndu, 
+    BusquedaRepues, ResultIndu, ResultRepues,
     Nosotros, Formularios, IrEnviarMensaje, IrRegistrarse, restar_producto, tienda
 )
 from django.contrib.auth.views import LogoutView
@@ -74,6 +78,6 @@ urlpatterns = [
     path('CambiarContraseña',CambiarPassword, name="CambiarContraseña"),
     
     #Imagenes/Avatars
-    path('CambiarAvatar',agregar_avatar, name="CambiarAvatar"),
+    #path('CambiarAvatar',agregar_avatar, name="CambiarAvatar"),
 ]
 

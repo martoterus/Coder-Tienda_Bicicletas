@@ -3,9 +3,9 @@ from winreg import QueryValue
 from django import forms
 from django.contrib.auth.forms import UserChangeForm,UserCreationForm,PasswordChangeForm
 from django.contrib.auth.models import User
-from Appventas.models import Avatar
+#from Appventas.models import Avatar
 
-from .models import categorias, tipoPersonas
+from .models import Avatar, categorias, tipoPersonas
 
 class categoriasFormulario(forms.Form):
     Nombre = forms.CharField(max_length=100)
