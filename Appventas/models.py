@@ -6,6 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 #from django.db.models.query import QuerySet
 from django.db.models import Count
+from django.apps import apps
 class categorias(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -164,6 +165,20 @@ class CanalManager(models.Manager):
 
     def filtrar_ms_por_privado(self,username_a,username_b):
         return self.get_queryset().solo_dos().filtrar_por_username(username_a).filtrar_por_username(username_b)
+
+    def obtener_o_crar_canal_ms(self,username_a,username_b):
+        qs = self.filtrar_ms_por_privado(username_a,username_b)
+        if qs.exists():
+
+            return qs.order_by("tiempo").first(), False #devolvemos el objeto y si fue creado o no. Lo organiza por el tiempo
+ #Crear el objeto de este canal
+        obj_canal = Canal.objects.create()
+#En este caso hay q revisarlo porque nosotros usamos los usuarios predeterminados
+        #User = apps.get_model("auth", model_name="User")
+        canal_usuario_a=CanalUsuario(usuario=User.objects.get(username=username_a),canal=obj_canal)
+        canal_usuario_b=CanalUsuario(usuario=User.objects.get(username=username_b),canal=obj_canal)
+        CanalUsuario.objects.bulk_create([canal_usuario_a,canal_usuario_b])
+        return obj_canal,True
 class Canal(ChatModeloBase):
     #como funciona slak
     #1user a uno

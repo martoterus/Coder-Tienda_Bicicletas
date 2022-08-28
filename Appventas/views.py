@@ -1,3 +1,4 @@
+from django.views.generic import DetailView
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from email import message
@@ -717,21 +718,34 @@ def agregar_avatar(request):
 
 
 #Chat entre usuarios
+class DetalleMsj(DetailView, LoginRequiredMixin):#Como es una funcion basada en clases el requisito de loguado se coloca entre parentesis
+
+    def get_object(self, *args,**kwargs):
+        canal, _ = Canal.objects.obtener_o_crar_canal_ms(mi_username,username)
+
+
 def MensajesPrivados(request, username,*args, **kwargs):
 
     if not request.user.is_authenticated:
         return HttpResponse(f"Prohibido")
 
     mi_username= request.user.username
-    canal = Canal.objects.filtrar_ms_por_privado(mi_username,username)
+    canal,created = Canal.objects.obtener_o_crar_canal_ms(mi_username,username)
+    if created:
+
+        print("Fue creado")
+
     
-    if canal.exists():
-        canal_obj=canal.first()
-        Usuarios_canal=canal_obj.canalusuario_set.all().values("usuario__username")
-        print(Usuarios_canal)
-        mensaje_canal = canal_obj.chatmensaje_set.all()
-        print(mensaje_canal.values("texto"))
-    return HttpResponse(f"Nuestro Canal - {canal.count()}")
+       
+    Usuarios_canal=canal.canalusuario_set.all().values("usuario__username")
+    print(Usuarios_canal)
+    mensaje_canal = canal.chatmensaje_set.all()
+    print(mensaje_canal.values("texto"))
+
+    return HttpResponse(f"Nuestro id del Canal - {canal.id}")
+
+
+        
 
 
        
