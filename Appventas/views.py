@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 from email import message
 from pyexpat.errors import messages
 from django.contrib import messages
@@ -7,7 +9,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
 from Appventas.carrito import carrito
-from Appventas.models import  Avatar, EnviarMensajes, categorias,producto
+from Appventas.models import  Avatar, EnviarMensajes, categorias,producto, ChatMensaje,CanalUsuario,Canal
 from Appventas.forms import   AvatarFormulario, CrearUsuario, EditarUsuario,productosFormularios, categoriasFormulario, enviarMensaje
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , UserChangeForm,PasswordChangeForm
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
@@ -714,3 +716,22 @@ def agregar_avatar(request):
     return render(request, "LoginAgregarAvatar.html", {"miFormulario": avatarform})
 
 
+#Chat entre usuarios
+def MensajesPrivados(request, username,*args, **kwargs):
+
+    if not request.user.is_authenticated:
+        return HttpResponse(f"Prohibido")
+
+    mi_username= request.user.username
+    canal = Canal.objects.filtrar_ms_por_privado(mi_username,username)
+    
+    if canal.exists():
+        canal_obj=canal.first()
+        Usuarios_canal=canal_obj.canalusuario_set.all().values("usuario__username")
+        print(Usuarios_canal)
+        mensaje_canal = canal_obj.chatmensaje_set.all()
+        print(mensaje_canal.values("texto"))
+    return HttpResponse(f"Nuestro Canal - {canal.count()}")
+
+
+       
