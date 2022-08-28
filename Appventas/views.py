@@ -38,10 +38,10 @@ def Formularios(request):#Template de Formularios
 
 def inicio(request):#Template de Inivcio
 
-    try:
-        avatar = Avatar.objects.get(user=request.user.id)
-        return render(request, "inicio.html", {"url": avatar.imagen.url})
-    except:
+    # try:
+    #     avatar = Avatar.objects.get(user=request.user.id)
+    #     return render(request, "inicio.html", {"url": avatar.imagen.url})
+    # except:
         return render(request, "inicio.html")
     
 @login_required
@@ -719,11 +719,15 @@ def agregar_avatar(request):
 
 #Chat entre usuarios
 class DetalleMsj(DetailView, LoginRequiredMixin):#Como es una funcion basada en clases el requisito de loguado se coloca entre parentesis
+    template_name="Chat/DetalleCanal.html"
 
+   
     def get_object(self, *args,**kwargs):
+        username=self.kwargs.get("username")
+        mi_username=self.request.user.username
         canal, _ = Canal.objects.obtener_o_crar_canal_ms(mi_username,username)
-
-
+        return canal
+@login_required
 def MensajesPrivados(request, username,*args, **kwargs):
 
     if not request.user.is_authenticated:
@@ -732,11 +736,8 @@ def MensajesPrivados(request, username,*args, **kwargs):
     mi_username= request.user.username
     canal,created = Canal.objects.obtener_o_crar_canal_ms(mi_username,username)
     if created:
-
         print("Fue creado")
 
-    
-       
     Usuarios_canal=canal.canalusuario_set.all().values("usuario__username")
     print(Usuarios_canal)
     mensaje_canal = canal.chatmensaje_set.all()

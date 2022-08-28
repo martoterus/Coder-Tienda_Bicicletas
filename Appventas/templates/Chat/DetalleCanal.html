@@ -1,0 +1,18 @@
+{% extends 'Padre.html' %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+<br>
+<h3>Identificador del canal: {{object.id}}</h3>
+{{object.chatmensaje_set.all}}
+<br>
+<br>
+<br>
+<div class="text-center" >
+    
+</div>
+<br>
+<br>
+{% endblock bloquecambia %}
