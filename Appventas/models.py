@@ -137,7 +137,7 @@ class ChatModeloBase(models.Model):
 
 #asi van a tomar los ID de nuestras tarjetas con uuid.uuid4: UUID('155bcf1f-fd2e-4b0e-bde4-70e44d0adba5')
  
-class ChatMensaje(ChatModeloBase):#se usan comillas porque esta clase esta arriba de la otra clase q hace referncia, sino iria sin comillas
+class CanalMensaje(ChatModeloBase):#se usan comillas porque esta clase esta arriba de la otra clase q hace referncia, sino iria sin comillas
     canal= models.ForeignKey("Canal",on_delete=models.CASCADE)
     usuario=models.ForeignKey(User, on_delete=models.CASCADE)#cuando se elimina el usuario elimina todo a lo q se le hace referencia
     texto= models.TextField()
@@ -163,6 +163,13 @@ class CanalManager(models.Manager):#Es la interfaz por la cual se proporciona la
                                     #contexto del diccionario
     def get_queryset(self, *args,**kwargs):
         return CanalQuerySet(self.model,using=self._db)
+
+
+    def obtener_o_crear_canal_usuario_actual(self, user):
+        
+        qs = self.get_queryset().solo_uno().filtrar_por_username(user.username)
+        if qs.exists():
+            return qs.order_by("tiempo").first, False
 
     def filtrar_ms_por_privado(self,username_a,username_b):
         return self.get_queryset().solo_dos().filtrar_por_username(username_a).filtrar_por_username(username_b)

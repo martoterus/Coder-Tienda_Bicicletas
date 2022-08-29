@@ -1,4 +1,14 @@
+#imports para el chat:
+#-----------------------------------------------
+from urllib import request
 from django.views.generic import DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las vistas basadas en clases
+from Appventas.models import  CanalMensaje,CanalUsuario,Canal
+from django.http import HttpResponse, Http404
+from django.core.exceptions import PermissionDenied
+from Appventas.forms import FormMensajes
+from django.views.generic.edit import FormMixin
+#-----------------------------------------------
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from email import message
@@ -7,14 +17,14 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from multiprocessing import context
 from django.contrib.auth.models import User
-from django.http import HttpResponse, Http404
+
 from django.shortcuts import render
 from Appventas.carrito import carrito
-from Appventas.models import  Avatar, EnviarMensajes, categorias,producto, ChatMensaje,CanalUsuario,Canal
+from Appventas.models import  Avatar, EnviarMensajes, categorias,producto
 from Appventas.forms import   AvatarFormulario, CrearUsuario, EditarUsuario,productosFormularios, categoriasFormulario, enviarMensaje
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , UserChangeForm,PasswordChangeForm
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
-from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las vistas basadas en clases
+
 from django.contrib.auth.decorators import login_required#decorador para vistas basadas en funciones.Aumenta la funcionalidad de una funcion.
 # Views de simple acceso
 def ViewPadre(request):
@@ -719,27 +729,68 @@ def agregar_avatar(request):
 
 #Chat entre usuarios
 
-class CanalDetalleVista(LoginRequiredMixin,DetailView):
-    template_name="Chat/DetalleCanal.html"
-    queryset=Canal.objects.all()
+class CanalFormMixin(FormMixin):
+	form_class =FormMensajes
+	#success_url = "./"
 
-class DetalleMsj(DetailView, LoginRequiredMixin):#Como es una funcion basada en clases el requisito de loguado se coloca entre parentesis
-    template_name="Chat/DetalleCanal.html"
+	def get_success_url(self):
+		return self.request.path
 
-   
-    def get_object(self, *args,**kwargs):
-        username=self.kwargs.get("username")
-        mi_username=self.request.user.username
-        canal, _ = Canal.objects.obtener_o_crear_canal_ms(mi_username,username)
-        
-        if username == mi_username:
-            mi_canal, _ =Canal.objects.obterner_o_crear_canal_usuario_logueado(self.request.user)
-            return mi_canal
+	def post(self, request, *args, **kwargs):
 
-        if canal == None:
-            raise Http404
-        
-        return canal
+		if not request.user.is_authenticated:
+			raise PermissionDenied #Manipulador de evento. Si no esta logueado y autenticado no tiene permiso
+
+		form = self.get_form()
+		if form.is_valid():
+			canal = self.get_object()
+			usuario = self.request.user 
+			mensaje = form.cleaned_data.get("mensaje")
+			canal_obj = CanalMensaje.objects.create(canal=canal, usuario=usuario, texto=mensaje)
+            
+        return super().form_valid(form)
+          
+			
+
+class CanalDetailView(LoginRequiredMixin, CanalFormMixin, DetailView):
+    template_name= 'Chat/DetalleCanal.html'
+    queryset = Canal.objects.all()
+    
+    def ContextoData(self,*args,**kwargs):
+        context = super().get_context_data(*args,**kwargs)
+
+        obj= context['object']
+        print(obj)
+
+        context['si_canal_miembro'] = self.request.user in obj.usuarios.all()
+
+
+    # def get_queryset(self):
+    #     usuario= self.request.user
+    #     username=usuario.username
+
+    #     qs=Canal.objects.all().filtrar_por_username(username)
+    #     return qs
+class DetailMs(LoginRequiredMixin, CanalFormMixin, DetailView):
+
+	template_name= 'Dm/canal_detail.html'
+
+	def get_object(self, *args, **kwargs):
+
+		username = self.kwargs.get("username")
+		mi_username = self.request.user.username
+		canal, _ = Canal.objects.obtener_o_crear_canal_ms(mi_username, username)
+
+		if username == mi_username:
+			mi_canal, _ = Canal.objects.obtener_o_crear_canal_usuario_actual(self.request.user)
+
+			return mi_canal
+
+		if canal == None:
+			raise Http404
+
+		return canal
+
 @login_required
 def MensajesPrivados(request, username,*args, **kwargs):
 
@@ -753,7 +804,7 @@ def MensajesPrivados(request, username,*args, **kwargs):
 
     Usuarios_canal=canal.canalusuario_set.all().values("usuario__username")
     print(Usuarios_canal)
-    mensaje_canal = canal.chatmensaje_set.all()
+    mensaje_canal = canal.canalmensaje_set.all()
     print(mensaje_canal.values("texto"))
 
     return HttpResponse(f"Nuestro id del Canal - {canal.id}")

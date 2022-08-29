@@ -1,8 +1,9 @@
+from uuid import UUID
 from django.contrib import admin
 from django.urls import path, re_path
 # from Appventas.models import Avatar
 from Appventas.views import (#Tupla
-    BusquedaAcc, CambiarPassword, CanalDetalleVista, DetalleMsj, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, 
+    BusquedaAcc, CambiarPassword, CanalDetailView, DetailMs, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, 
     Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, MensajesPrivados, ResultAcc, agregar_avatar,
      agregar_producto, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
     editarrepuestos, eliminar_producto, eliminarIndumentaria, eliminaraccesorios, eliminarbici, 
@@ -17,8 +18,8 @@ from django.contrib.auth.views import LogoutView
 from .import views
 
 #from Appventas.views import BusquedaIndu, BusquedaRepuesto, RespuestaBuscarIndu, RespuestaBuscarRepuesto
-                                  
-
+  #  Babosa                              
+UUID_Variable = r'canal/(?P<pk>[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12})'
 
 urlpatterns = [
     
@@ -83,8 +84,8 @@ urlpatterns = [
     path('CambiarAvatar',agregar_avatar, name="CambiarAvatar"),
     #chat entre usuarios
     path('ChatUsuarios/<str:username>',MensajesPrivados, name="ChatUsuarios"),
-    path('Mensajes/<str:username>', DetalleMsj.as_view(),name="Detallemsj"),
+    path('Mensajes/<str:username>', DetailMs.as_view(),name="Detallemsj"),
     #expresiones reguales.    \w = [0,9a-z]
-    re_path(r'canal/(?P<pk>[\w]+)',CanalDetalleVista.as_view()),
+    re_path(UUID_Variable,CanalDetailView.as_view(),name="CanalOnline"),
 ]
 

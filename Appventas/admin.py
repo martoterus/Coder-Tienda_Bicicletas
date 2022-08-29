@@ -11,7 +11,7 @@ admin.site.register(cliente)
 
 #para el chat
 class CanalMensajeInline(admin.TabularInline):
-    model= ChatMensaje
+    model= CanalMensaje
     extra= 1
 
 class CanalUsuarioInline(admin.TabularInline):
@@ -27,5 +27,5 @@ class CanalAdmin(admin.ModelAdmin):
 
 admin.site.register(Canal, CanalAdmin)
 admin.site.register(CanalUsuario)
-admin.site.register(ChatMensaje)
+admin.site.register(CanalMensaje)
 

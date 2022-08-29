@@ -5,41 +5,36 @@
 {% block bloquecambia %}
 
 <br>
+
+
 <h3>Identificador del canal: {{object.id}}</h3>
 
 <h4>Mensajes del canal</h4>
 
-{% for mensaje in object.chatmensaje_set.all  %}
+    <div id="contenedor_ms">
+        {% for mensaje in object.canalmensaje_set.all %}	
+        <div class="div_ms {% if request.user == mensaje.usuario %}mis_mensajes
+        {% else %} tus_mensajes{% endif %}">
+            <small>{{mensaje.usuario}}</small>
+                <p>{{mensaje.texto}}</p>
+            <small>{{mensaje.tiempo}}</small>
+    </div>
 
-    
-    {% if request.user == mensaje.usuario %}
-        <p>
-            <strong>
-                {{mensaje.texto}}
-            </strong>
-            
-            <span>
-                La persona logueada envio el mensaje
-            </span>
+{% endfor %}
+</div>
+<div class="div_form_ms">
+    <form id="form_submit" action="{{ request.path }}" method="POST">
+        {% csrf_token %}
 
-        </p>
-    {% endif %}
-        <p>
-            {{mensaje.texto}}
-            <span>
-                {{mensaje.usuario}}
-            </span>
-        </p>
-        
-    
-    
-{% endfor %}
-    
-<h4>Usuarios del canal:</h4>
-{% for usuarios in object.canalusuario_set.all  %}
-   <p> {{usuarios.usuario}}   </p>
-{% endfor %}
-    
+        {{form.as_p}}
+
+        <button type="submit" class="btn_enviar">
+            Enviar
+        </button>
+
+    </form>
+
+</div>
 
 
 <br>
