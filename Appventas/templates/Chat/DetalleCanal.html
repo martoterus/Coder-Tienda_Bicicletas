@@ -6,7 +6,42 @@
 
 <br>
 <h3>Identificador del canal: {{object.id}}</h3>
-{{object.chatmensaje_set.all}}
+
+<h4>Mensajes del canal</h4>
+
+{% for mensaje in object.chatmensaje_set.all  %}
+
+    
+    {% if request.user == mensaje.usuario %}
+        <p>
+            <strong>
+                {{mensaje.texto}}
+            </strong>
+            
+            <span>
+                La persona logueada envio el mensaje
+            </span>
+
+        </p>
+    {% endif %}
+        <p>
+            {{mensaje.texto}}
+            <span>
+                {{mensaje.usuario}}
+            </span>
+        </p>
+        
+    
+    
+{% endfor %}
+    
+<h4>Usuarios del canal:</h4>
+{% for usuarios in object.canalusuario_set.all  %}
+   <p> {{usuarios.usuario}}   </p>
+{% endfor %}
+    
+
+
 <br>
 <br>
 <br>

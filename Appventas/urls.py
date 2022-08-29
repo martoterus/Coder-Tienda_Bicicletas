@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 # from Appventas.models import Avatar
 from Appventas.views import (#Tupla
-    BusquedaAcc, CambiarPassword, DetalleMsj, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, 
+    BusquedaAcc, CambiarPassword, CanalDetalleVista, DetalleMsj, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, 
     Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, MensajesPrivados, ResultAcc, agregar_avatar,
      agregar_producto, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
     editarrepuestos, eliminar_producto, eliminarIndumentaria, eliminaraccesorios, eliminarbici, 
@@ -84,5 +84,7 @@ urlpatterns = [
     #chat entre usuarios
     path('ChatUsuarios/<str:username>',MensajesPrivados, name="ChatUsuarios"),
     path('Mensajes/<str:username>', DetalleMsj.as_view(),name="Detallemsj"),
+    #expresiones reguales.    \w = [0,9a-z]
+    re_path(r'canal/(?P<pk>[\w]+)',CanalDetalleVista.as_view()),
 ]
 

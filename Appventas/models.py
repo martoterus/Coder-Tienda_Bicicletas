@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 #from django.db.models.query import QuerySet
 from django.db.models import Count
 from django.apps import apps
+
 class categorias(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -158,7 +159,7 @@ class CanalQuerySet(models.QuerySet):
 		return self.filter(canalusuario__usuario__username=username)
                     #agarramos nutra clase CanalUsuario y le sacamos las mayuculas
 
-class CanalManager(models.Manager):
+class CanalManager(models.Manager):#Es la interfaz por la cual se proporciona las operaciones de consulta de la base de datos a los modelos de django de forma predeterminada
                                     #contexto del diccionario
     def get_queryset(self, *args,**kwargs):
         return CanalQuerySet(self.model,using=self._db)
@@ -166,17 +167,39 @@ class CanalManager(models.Manager):
     def filtrar_ms_por_privado(self,username_a,username_b):
         return self.get_queryset().solo_dos().filtrar_por_username(username_a).filtrar_por_username(username_b)
 
-    def obtener_o_crar_canal_ms(self,username_a,username_b):
+    def obterner_o_crear_canal_usuario_logueado(self,user):
+        qs=self.get_queryset().solo_dos().filtrar_por_username(user.username)#retuorna nuestro canal queriset
+        if qs.exists():
+            return qs.order_by("tiempo").first, False#False: no lo crea en la base de datos
+        canal_obj=Canal.objects.create()
+        CanalUsuario.objects.create(usuario=user,canal=canal_obj)
+        return canal_obj, True
+
+
+    def obtener_o_crear_canal_ms(self,username_a,username_b):
         qs = self.filtrar_ms_por_privado(username_a,username_b)
         if qs.exists():
 
             return qs.order_by("tiempo").first(), False #devolvemos el objeto y si fue creado o no. Lo organiza por el tiempo
- #Crear el objeto de este canal
+        
+        usuario_a,username_b=None,None
+        try:
+           usuario_a= User.objects.get(username=username_a)
+        except User.DoesNoExits:
+                return None, False
+        try:
+           usuario_b= User.objects.get(username=username_b)
+        except User.DoesNotExist:
+                return None, False
+        
+        if usuario_a == None and usuario_b == None:
+            return None,False
+        #Crear el objeto de este canal
         obj_canal = Canal.objects.create()
-#En este caso hay q revisarlo porque nosotros usamos los usuarios predeterminados
-        #User = apps.get_model("auth", model_name="User")
-        canal_usuario_a=CanalUsuario(usuario=User.objects.get(username=username_a),canal=obj_canal)
-        canal_usuario_b=CanalUsuario(usuario=User.objects.get(username=username_b),canal=obj_canal)
+                                 #En este caso hay q revisarlo porque nosotros usamos los usuarios predeterminados
+                                 #User = apps.get_model("auth", model_name="User")
+        canal_usuario_a=CanalUsuario(usuario=usuario_a,canal=obj_canal)
+        canal_usuario_b=CanalUsuario(usuario=usuario_b,canal=obj_canal)
         CanalUsuario.objects.bulk_create([canal_usuario_a,canal_usuario_b])
         return obj_canal,True
 class Canal(ChatModeloBase):

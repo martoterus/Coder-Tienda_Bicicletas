@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from multiprocessing import context
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from Appventas.carrito import carrito
 from Appventas.models import  Avatar, EnviarMensajes, categorias,producto, ChatMensaje,CanalUsuario,Canal
@@ -718,6 +718,11 @@ def agregar_avatar(request):
 
 
 #Chat entre usuarios
+
+class CanalDetalleVista(LoginRequiredMixin,DetailView):
+    template_name="Chat/DetalleCanal.html"
+    queryset=Canal.objects.all()
+
 class DetalleMsj(DetailView, LoginRequiredMixin):#Como es una funcion basada en clases el requisito de loguado se coloca entre parentesis
     template_name="Chat/DetalleCanal.html"
 
@@ -725,7 +730,15 @@ class DetalleMsj(DetailView, LoginRequiredMixin):#Como es una funcion basada en 
     def get_object(self, *args,**kwargs):
         username=self.kwargs.get("username")
         mi_username=self.request.user.username
-        canal, _ = Canal.objects.obtener_o_crar_canal_ms(mi_username,username)
+        canal, _ = Canal.objects.obtener_o_crear_canal_ms(mi_username,username)
+        
+        if username == mi_username:
+            mi_canal, _ =Canal.objects.obterner_o_crear_canal_usuario_logueado(self.request.user)
+            return mi_canal
+
+        if canal == None:
+            raise Http404
+        
         return canal
 @login_required
 def MensajesPrivados(request, username,*args, **kwargs):
@@ -734,7 +747,7 @@ def MensajesPrivados(request, username,*args, **kwargs):
         return HttpResponse(f"Prohibido")
 
     mi_username= request.user.username
-    canal,created = Canal.objects.obtener_o_crar_canal_ms(mi_username,username)
+    canal,created = Canal.objects.obtener_o_crear_canal_ms(mi_username,username)
     if created:
         print("Fue creado")
 
