@@ -1,5 +1,4 @@
-from unittest.util import _MAX_LENGTH
-from winreg import QueryValue
+
 from django import forms
 from django.contrib.auth.forms import UserChangeForm,UserCreationForm,PasswordChangeForm
 from django.contrib.auth.models import User
@@ -112,12 +111,3 @@ class enviarMensaje(forms.Form):
 
 
 #CHAT
-class FormMensajes(forms.Form):
-	mensaje = forms.CharField(widget=forms.Textarea(attrs = {
-
-			"class": "formulario_ms",
-			"placeholder":"Escribe tu mensaje"
-
-		}))
-
-

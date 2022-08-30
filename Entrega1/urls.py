@@ -11,6 +11,7 @@ urlpatterns = [
     path('Appventas/', include("Appventas.urls")),
     path('',include("Appventas.urls")),
     path('accounts/', include("django.contrib.auth.urls")),
+    path('ChatApp', include('ChatApp.urls')),
       
 
     
