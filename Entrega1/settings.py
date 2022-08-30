@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'Appventas',
+    'ChatApp'
    
 ]
 
@@ -73,14 +75,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Entrega1.wsgi.application'
-# ASGI_APPLICATION = 'djangochat.asgi.application'#para el chat de django
+ASGI_APPLICATION = 'Entrega1.asgi.application'#para el chat de django
 
 
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels.layers.InMemoryChannelLayer'
-#     }
-# }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 
 

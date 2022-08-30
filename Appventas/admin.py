@@ -9,5 +9,6 @@ admin.site.register(categorias)
 admin.site.register(empleado)
 admin.site.register(cliente)
 
+
 #para el chat
 
