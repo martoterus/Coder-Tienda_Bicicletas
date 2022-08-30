@@ -10,7 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('Appventas/', include("Appventas.urls")),
     path('',include("Appventas.urls")),
-    path('',include("ChatApp.urls")),
+    path('Chat',include("room.urls")),
     path('accounts/', include("django.contrib.auth.urls")),
     
       
