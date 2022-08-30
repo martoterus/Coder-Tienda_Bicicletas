@@ -1,13 +1,14 @@
 #imports para el chat:
 #-----------------------------------------------
 from urllib import request
-from django.views.generic import DetailView
+from django.views.generic import DetailView,View
 from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las vistas basadas en clases
 from Appventas.models import  CanalMensaje,CanalUsuario,Canal
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.core.exceptions import PermissionDenied
 from Appventas.forms import FormMensajes
 from django.views.generic.edit import FormMixin
+
 #-----------------------------------------------
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
@@ -729,17 +730,29 @@ def agregar_avatar(request):
 
 #Chat entre usuarios
 
+class Inbox(View):
+	def get(self, request):
+
+		inbox = Canal.objects.filter(canalusuario__usuario__in=[request.user.id])
+
+
+		context = {"inbox":inbox}
+
+		return render(request, 'ChatInbox.html', context)
+
+
 class CanalFormMixin(FormMixin):
 	form_class =FormMensajes
 	#success_url = "./"
 
 	def get_success_url(self):
 		return self.request.path
+	
 
 	def post(self, request, *args, **kwargs):
 
 		if not request.user.is_authenticated:
-			raise PermissionDenied #Manipulador de evento. Si no esta logueado y autenticado no tiene permiso
+			raise PermissionDenied
 
 		form = self.get_form()
 		if form.is_valid():
@@ -747,13 +760,25 @@ class CanalFormMixin(FormMixin):
 			usuario = self.request.user 
 			mensaje = form.cleaned_data.get("mensaje")
 			canal_obj = CanalMensaje.objects.create(canal=canal, usuario=usuario, texto=mensaje)
-            
-        return super().form_valid(form)
-          
 			
+			if request.headers.get('x-requested-with') == 'XMLHttpRequest':#is_ajax quedo absoleto con las nuevas versiones de django
+				return JsonResponse({                   #lo cambiamos por : request.headers.get('x-requested-with') == 'XMLHttpRequest':
 
+					'mensaje':canal_obj.texto,
+					'username':canal_obj.usuario.username
+					}, status=201)
+
+			return super().form_valid(form)
+
+		else:
+
+			if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+				return JsonResponse({"Error":form.errors}, status=400)
+
+			return super().form_invalid(form)
+    
 class CanalDetailView(LoginRequiredMixin, CanalFormMixin, DetailView):
-    template_name= 'Chat/DetalleCanal.html'
+    template_name= 'ChatDetalleCanal.html'
     queryset = Canal.objects.all()
     
     def ContextoData(self,*args,**kwargs):
@@ -773,7 +798,7 @@ class CanalDetailView(LoginRequiredMixin, CanalFormMixin, DetailView):
     #     return qs
 class DetailMs(LoginRequiredMixin, CanalFormMixin, DetailView):
 
-	template_name= 'Dm/canal_detail.html'
+	template_name= 'ChatDetalleCanal.html'
 
 	def get_object(self, *args, **kwargs):
 

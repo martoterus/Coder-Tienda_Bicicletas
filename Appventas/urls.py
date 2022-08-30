@@ -4,7 +4,7 @@ from django.urls import path, re_path
 # from Appventas.models import Avatar
 from Appventas.views import (#Tupla
     BusquedaAcc, CambiarPassword, CanalDetailView, DetailMs, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, 
-    Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, MensajesPrivados, ResultAcc, agregar_avatar,
+    Formularioindumentarias, Formulariorepuestos, Inbox, LeerAcc, LeerCategoria, MensajesPrivados, ResultAcc, agregar_avatar,
      agregar_producto, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
     editarrepuestos, eliminar_producto, eliminarIndumentaria, eliminaraccesorios, eliminarbici, 
     eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
@@ -87,5 +87,6 @@ urlpatterns = [
     path('Mensajes/<str:username>', DetailMs.as_view(),name="Detallemsj"),
     #expresiones reguales.    \w = [0,9a-z]
     re_path(UUID_Variable,CanalDetailView.as_view(),name="CanalOnline"),
+    path('Chat', Inbox.as_view(),name="Inbox"),
 ]
 
