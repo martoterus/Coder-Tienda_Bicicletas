@@ -645,12 +645,15 @@ def registrarse(request):
           return render(request,'Save.html',{"mensaje":f"Usuario {username} creado."})
         else:
             form=CrearUsuario()
-            return render (request,'LoginRegistro.html', {"form": form,"mensaje":f"Error. Usuario Invalido."})
+            mensaje=f"Error. Usuario Invalido."
+            return render (request,'LoginRegistro.html', {"CrearUsuario": form,"mensaje":mensaje})
+            
 
     else:
-        
         userForm=CrearUsuario()
-    return render (request,'LoginRegistro.html', {"CrearUsuario": userForm})
+        mensaje=f"Siga las instrucciones y cree su usuario."
+
+    return render (request,'LoginRegistro.html', {"CrearUsuario": userForm,"mensaje":mensaje})
 
 @login_required
 def EditarPerfil(request):

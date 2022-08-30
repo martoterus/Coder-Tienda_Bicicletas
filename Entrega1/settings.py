@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Appventas',
-    'ChatApp,'
+   
 ]
 
 MIDDLEWARE = [
@@ -73,6 +73,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Entrega1.wsgi.application'
+# ASGI_APPLICATION = 'djangochat.asgi.application'#para el chat de django
+
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.InMemoryChannelLayer'
+#     }
+# }
+
 
 
 # Database
