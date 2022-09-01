@@ -1,10 +1,11 @@
 
 from django.contrib import admin
 from django.urls import path
+
 # from Appventas.models import Avatar
 from Appventas.views import (#Tupla
     BusquedaAcc, CambiarPassword, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, 
-    Formularioindumentarias, Formulariorepuestos,LeerAcc, LeerCategoria, ResultAcc, agregar_avatar,
+    Formularioindumentarias, Formulariorepuestos,LeerAcc, LeerCategoria, Mensajeria, ResultAcc, agregar_avatar,
      agregar_producto, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
     editarrepuestos, eliminar_producto, eliminarIndumentaria, eliminaraccesorios, eliminarbici, 
     eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
@@ -78,5 +79,9 @@ urlpatterns = [
     #Imagenes/Avatars
     path('CambiarAvatar',agregar_avatar, name="CambiarAvatar"),
     #chat entre usuarios
+    
+    #Emviar Correo
+    path('IrEnviarMensaje',IrEnviarMensaje,name="Contacto"),
+    path('EnviarMensaje',Mensajeria,name="MensajeCorreo"),
   
 ]

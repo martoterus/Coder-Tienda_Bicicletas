@@ -1,20 +1,22 @@
 #imports para el chat:
 
 #-----------------------------------------------
+from queue import Empty
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
-from email import message
-from pyexpat.errors import messages
+from django.core.mail import EmailMessage# Toma un temaplate html  
+from django.template.loader import render_to_string # transformado en un string
 from django.contrib import messages
+
+
 from django.shortcuts import redirect
-from multiprocessing import context
+
 from django.contrib.auth.models import User
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from Appventas.carrito import carrito
-from Appventas.models import  Avatar, EnviarMensajes, categorias,producto
-from Appventas.forms import   AvatarFormulario, CrearUsuario, EditarUsuario,productosFormularios, categoriasFormulario, enviarMensaje
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , UserChangeForm,PasswordChangeForm
+from Appventas.models import  Avatar, categorias,producto
+from Appventas.forms import   AvatarFormulario, CrearUsuario, EditarUsuario,productosFormularios, categoriasFormulario
+from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 
 from django.contrib.auth.decorators import login_required#decorador para vistas basadas en funciones.Aumenta la funcionalidad de una funcion.
@@ -74,24 +76,6 @@ def limpiar_carrito(request):
     carr= carrito(request)
     carr.limpiar_carrito()
     return redirect("Appventas:inicio")
-
-#Enviar Mensaje
-def IrEnviarMensaje(request):
-    print("method:", request.method)
-    if request.method == 'POST':
-            print("1° IF")
-            MensajeEnviado=enviarMensaje(request.POST)
-
-            if MensajeEnviado.is_valid():
-                print("2do IF")
-                data=MensajeEnviado.cleaned_data# si le pongo parentesis o corchetes y entre comillas una variable en particular pide solo esa
-                mensaje=EnviarMensajes(nombre=data["Nombre"],correo=["Correo"],telefono=["Telefono"],mensaje=["Mensaje"])
-                mensaje.save()
-                return render(request,"Save.html")
-    else:
-        print("method:", request.method)
-        MensajeEnviado=enviarMensaje()
-        return render (request,"EnviarMensaje.html",{"MensajeEnviar":MensajeEnviado})
 
 
 
@@ -722,4 +706,50 @@ def agregar_avatar(request):
     return render(request, "LoginAgregarAvatar.html", {"miFormulario": avatarform})
 
 
-#Chat entre usuarios
+#Enviar Mensaje
+
+
+#Enviar Mensaje
+def IrEnviarMensaje(request):
+    return render (request,"EnviarMensaje.html")
+
+def Mensajeria(request):
+
+    print("method:", request.method)
+
+    if request.method == 'POST':
+        
+        name=request.POST['name']
+        email=request.POST['email']
+        subject=request.POST['asunto']
+        message=request.POST['mensaje']
+        if name is Empty or email is Empty or subject is Empty or message is Empty:
+            
+            messages.error(request,'Correo Invalido')
+            return redirect('Contacto')
+        else:
+                #se envia el html que se va a enviar como mensaje, y un diccionario con los parametros que envio
+            template=render_to_string('EnviarEmailTemaplte.html',{
+                'name':name,
+                'email':email,
+                'message':message
+                #el asunto se envia por defecto
+            })
+            #creamos Email: Toma parametros
+            email=EmailMessage(
+                subject,
+                template,
+                settings.EMAIL_HOST_USER,
+                ['biciclteria.app@gmail.com']
+            )
+
+            #email.fail.silently = False . Esta por defecto en EmailMessage 
+
+            email.send()
+            #cuando se recargue la pagina aparece el mensaje en el template
+
+            messages.success(request,'Correo Enviado')
+            return redirect('Contacto')
+     
+        
+ 

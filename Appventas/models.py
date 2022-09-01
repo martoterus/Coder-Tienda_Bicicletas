@@ -1,6 +1,7 @@
 
 # Create your models here.
 
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -104,15 +105,6 @@ class cliente(models.Model):
 #      return f"{self.nombre,self.apellido, self.telefono,self.emial,self.edad}"
 
 
-class EnviarMensajes(models.Model):
-
-    nombre=models.CharField(max_length=30)
-    correo=models.EmailField(max_length=30)
-    telefono=models.CharField(max_length=30)
-    mensaje=models.CharField(max_length=100)
-       
-    def __str__(self):
-        return f"{self.nombre,self.correo,self.telefono, self.mensaje}"
 
 #Comentar todo: selecciono . 1°ctrl+k . 2°ctrl+c (comentar) 2°ctrl+u (descomentar)
 
@@ -125,3 +117,14 @@ class Avatar(models.Model):
     imagen=models.ImageField(upload_to='avatares', null=True,blank=True)
     
 #Chat entre usuarios
+# class destino(models.Model):
+#     destino=models.ForeignKey(User, related_name='mensaje', on_delete=models.CASCADE)
+    
+
+# # class EnviarMensajes(models.Model):
+# #     destino = models.ForeignKey(destino, related_name='mensaje', on_delete=models.CASCADE)
+# #     user = models.ForeignKey(User, related_name='mensaje', on_delete=models.CASCADE)
+# #     content = models.TextField()
+# #     date_added = models.DateTimeField(auto_now_add=True)
+# #     class Meta:
+# #         ordering = ('date_added',)

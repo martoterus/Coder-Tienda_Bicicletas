@@ -1,10 +1,10 @@
 
 from django import forms
-from django.contrib.auth.forms import UserChangeForm,UserCreationForm,PasswordChangeForm
+from django.contrib.auth.forms import UserChangeForm,UserCreationForm
 from django.contrib.auth.models import User
 #from Appventas.models import Avatar
 
-from .models import Avatar, categorias, tipoPersonas
+from .models import Avatar, categorias
 
 class categoriasFormulario(forms.Form):
     Nombre = forms.CharField(max_length=100)
@@ -102,12 +102,10 @@ class AvatarFormulario(forms.ModelForm):
 
     
 
-class enviarMensaje(forms.Form):
+# class enviarMensaje(forms.Form):
+#     Usuario=forms.CharField(max_length=30)
+#     Nombre=forms.CharField(max_length=30)
+#     Apellido=forms.CharField(max_length=30)
+#     Correo=forms.EmailField(max_length=30)
+#     Mensaje=forms.CharField()
 
-    Nombre=forms.CharField()
-    Correo=forms.EmailField()
-    Telefono=forms.CharField()
-    Mensaje=forms.CharField()
-
-
-#CHAT
