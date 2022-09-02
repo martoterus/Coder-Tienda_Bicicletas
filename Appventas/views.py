@@ -723,33 +723,27 @@ def Mensajeria(request):
         email=request.POST['email']
         subject=request.POST['asunto']
         message=request.POST['mensaje']
-        if name is Empty or email is Empty or subject is Empty or message is Empty:
-            
-            messages.error(request,'Correo Invalido')
-            return redirect('Contacto')
-        else:
+        
                 #se envia el html que se va a enviar como mensaje, y un diccionario con los parametros que envio
-            template=render_to_string('EnviarEmailTemaplte.html',{
-                'name':name,
-                'email':email,
-                'message':message
-                #el asunto se envia por defecto
-            })
-            #creamos Email: Toma parametros
-            email=EmailMessage(
-                subject,
-                template,
-                settings.EMAIL_HOST_USER,
-                ['biciclteria.app@gmail.com']
-            )
-
-            #email.fail.silently = False . Esta por defecto en EmailMessage 
-
-            email.send()
-            #cuando se recargue la pagina aparece el mensaje en el template
-
-            messages.success(request,'Correo Enviado')
-            return redirect('Contacto')
+        template=render_to_string('EnviarEmailTemaplte.html',{
+            'name':name,
+            'email':email,
+            'message':message
+            #el asunto se envia por defecto
+        })
+        #creamos Email: Toma parametros
+        email=EmailMessage(
+            subject,
+            template,
+            settings.EMAIL_HOST_USER,
+            ['biciclteria.app@gmail.com']
+        )
+        #email.fail.silently = False . Esta por defecto en EmailMessage 
+        
+        email.send()
+        #cuando se recargue la pagina aparece el mensaje en el template
+        messages.success(request,'Correo Enviado')
+        return redirect('Contacto')
      
         
  
