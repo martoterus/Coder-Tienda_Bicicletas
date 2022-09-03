@@ -1,0 +1,23 @@
+{% extends 'Padre.html' %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+    <h2>Se busco las Bicicletas con nombre: {{nombre}}</h2>
+
+    
+    {% if nombres %}
+        
+        {% for item in nombres  %}
+        <li>Nombre: {{item.nombre}}. Tipo: {{item.tipo}}. Marca: {{item.marca}}. Modelo: {{item.modelo}}. Color: {{item.color}}. Categoria: {{item.categoria}} Descripcion: {{item.descripcion}}. Precio: ${{item.precio}}.</li>
+        {% endfor %}
+
+    {% else %}
+        <p>No hay resultados.</p>        
+        
+    {% endif %}
+    <br>
+    <div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="{% url 'Buscar1' %}">VOLVER</a></div>
+
+{% endblock bloquecambia %}

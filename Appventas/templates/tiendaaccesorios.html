@@ -1,0 +1,81 @@
+
+{% load static %}
+
+{% block categorias %}
+</div>       
+    </div>
+</div>
+
+     {% for producto in accesorios %}
+     <div class="col-md-3">
+          <div class="card" style="width: 100%; margin: 7px 7px; ">
+             {% if producto.imagen %}
+             <img class="card-img-top" src="{{producto.imagen.url}}" alt="..." />
+             {% endif %}
+                 <div class="card-body" style="text-align: center;">
+                      <div class="text-center">
+
+                          
+                          <h5 class="card-title">{{producto.nombre}}</h5>
+                          <h6 class="card-title">${{producto.precio}}</h6>
+                                          
+                          
+                     
+                      </div>
+                      <div class="card-footer text-center">
+
+                         <a class="btn btn-success" href= '{% url "Agregaracc" producto.id %}'>Agregar</a>
+                         <a class="btn btn-success" href= '{% url "Restaracc" producto.id %}'>Quitar</a>
+
+                      </div>
+                 </div>
+         </div>
+     </div>
+     {% endfor %}  
+
+{% endblock categorias %}
+    </div>  
+  </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <a class="page-link">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+
+<br>
+<br>
+<br>
+<br>
+
+
+ <!-- Footer-->
+<footer class="py-5 bg-dark">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+            <li class="nav-item"><a class="nav-link active text-white aria-current=" href="{% url 'EnviarMensaje' %}">Contactarse</a></li>
+             <!--<li class="nav-item"><a class="nav-link" href="{% url 'Nosotros' %}">Nosotros</a></li>-->
+        </ul>
+        
+        <p class="text-white small mb-4 mb-lg-0 ms-lg-4">CoderHouse Curso Python 2022.</p><div class="container"><p class="m-0 text-center text-white">Martin Goñi & Martin Bisceglia &copy; Coder House 2022</p></div>
+</footer>
+    
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+</body>
+</html>
+
+

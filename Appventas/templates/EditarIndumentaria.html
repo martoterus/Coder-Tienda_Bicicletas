@@ -1,0 +1,28 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+    <h2 >Formulario - Editar indumentaria</h2>
+
+    
+        
+       
+        <form action="{% url 'Editarindu' id %}" method = "POST" enctype="multipart/form-data" >{% csrf_token %}
+
+            <table>
+             {{InduFormulario.as_table}}
+
+            </table>
+            <input class="btn btn-outline-dark mt-auto" type="submit" value="Enviar"  href="">
+
+        </form>
+        
+       
+       
+        
+
+    <div class="text-center"><a  class="btn btn-outline-dark mt-auto" href="{% url 'INICIO' %}">Volver</a></div>
+      
+{% endblock bloquecambia %} 

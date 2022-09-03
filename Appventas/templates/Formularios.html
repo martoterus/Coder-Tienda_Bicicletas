@@ -1,0 +1,156 @@
+{% extends 'Padre.html' %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+<header>
+  <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div style="display:flex ;" class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="Appventas/media/img/Bici carrusel.jpg" class="d-block w-100" width="auto" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="Appventas/media/img/Bici carrusel2.jpg" class="d-block w-100" width="auto" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="Appventas/media/img/repuestos.jpg" class="d-block w-100" width="auto" alt="...">
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+</header>
+
+<!-- Example single danger button -->
+
+<div class="text-center">
+<div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Categorias
+    </button>
+    <ul class="dropdown-menu">
+    {% for cat in categorias %}
+      <li><a class="dropdown-item" href="#">{{categorias.nombre}}</a></li>
+      
+    {% endfor %}
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="cat_formulario">Cargar</a></li>
+      <li><a class="dropdown-item" href="LeerCategorias">Ver</a></li>
+        
+    </ul>
+</div>
+<div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Bicicletas
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="FormularioBici">Cargar</a></li>
+      <li><a class="dropdown-item" href="LeerBicicletas">Ver</a></li>
+      <li><a class="dropdown-item" href="BusquedaBici">Buscar</a></li>
+    </ul>
+</div>
+<div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Repuestos
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Asientos</a></li>
+      <li><a class="dropdown-item" href="#">Cables & fundas</a></li>
+      <li><a class="dropdown-item" href="#">Cadenas</a></li>
+      <li><a class="dropdown-item" href="#">Cajas pedaleras</a></li>
+      <li><a class="dropdown-item" href="#">Camaras</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="repu_formulario">Cargar</a></li>
+      <li><a class="dropdown-item" href="LeerRepuestos">Ver</a></li>
+      <li><a class="dropdown-item" href="{% url 'Buscar2' %}">Buscar</a></li>
+    </ul>
+</div>
+<div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Accesorios
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Action</a></li>
+      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li><a class="dropdown-item" href="#">Something else here</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="acc_formulario">Cargar</a></li>
+      <li><a class="dropdown-item" href="LeerAccesorios">Ver</a></li>
+      <li><a class="dropdown-item" href="{% url 'BuscarAcc' %}">Buscar</a></li>
+    </ul>
+</div>
+<div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Indumentaria
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">1</a></li>
+      <li><a class="dropdown-item" href="#">2</a></li>
+      <li><a class="dropdown-item" href="#">3</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="indu_formulario">Cargar</a></li>
+      <li><a class="dropdown-item" href="{% url 'Leerindume' %}">Ver</a></li>
+      <li><a class="dropdown-item" href="{% url 'Buscar3' %}">Buscar</a></li>
+    </ul>
+</div>
+<div class="btn-group" style="margin-left: 80px">
+    <a class="btn btn"  href="{% url 'Tienda' %}">Tienda</a></li>
+</div>
+</div>
+<br>
+<br>
+<br>
+
+<main>
+
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col">
+      <div class="card">
+        <img src="Appventas/media/img/importancia-peso-bici2.jpg" class="d-block w-100" width="auto" alt="...card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">El peso de la bicicleta, el debate constante.</h5>
+          <p class="card-text">La importancia del peso de la bicicleta es, sin duda, uno de los temas centrales de conversación en cualquier salida de ciclistas. Son numerosos los experimentos, noticias y artículos relacionados con este tema del peso que tanto ocupa a los apasionados de la bicicleta hoy en día.  Es lógico que sea así gracias a la mayor difusión de los avances técnicos y científicos relacionados con los entrenamientos y rendimientos ciclistas. En este sentido, es indiscutible el papel de la prensa especializada y la información disponible en internet hoy en día donde con frecuencia se difunden noticias sobre la importancia del peso de la bicicleta.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="Appventas/media/img/taller.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Nuestro taller</h5>
+          <p class="card-text">Como ciclistas aficionados que somos, conocemos los problemas que pueden sufrir nuestras ruedas de bicicleta y con los que a todos nos toca lidiar alguna vez. Así, nos adaptamos a las necesidades de nuestros clientes, reparando tus ruedas, ya sean Mtb o de bicicleta de carretera.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="Appventas/media/img/que llevar.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Qué llevar cuando sales en bici: la gran pregunta</h5>
+          <p class="card-text">Qué llevar cuando sales en bici es una de las grandes preguntas que todo ciclista y seguro que tú también te has planteado a la hora de preparar el material que te va a acompañar en tus salidas. Esa cuestión de si estarás llevando lo que necesitas es habitual tanto si practicas Mtb o si lo tuyo es la bici de carretera.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img src="Appventas/media/img/Hidratación.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Como hidratarnos</h5>
+          <p class="card-text">La idea número uno es que somos agua, es decir, hay que tener presente que el agua es el principal componente del ser humano. Somos tres cuartas partes de agua, por lo cual sin agua sólo podríamos vivir cinco o seis días.
+
+            Esto nos da una clara imagen de lo imprescindible que es el agua en nuestra existencia. Es un dato muy gráfico que nos ayuda a tener siempre en mente nuestras necesidades respecto a la hidratación de nuestro organismo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<br><br>
+{% endblock bloquecambia %}

@@ -1,0 +1,31 @@
+{% extends 'Padre.html' %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+<div  class="container px-4 px-lg-1 mt-1">
+    <h3>Lista de Repuestos</h3>
+    <br>
+        {% for Item in Repuestos %}
+        <li>Nombre: {{Item.codigo}}. Tipo: {{Item.tipo}}. Marca: {{Item.marca}}. Descripcion: {{Item.descripcion}}. Precio: ${{Item.precio}}.</li>
+        <div>
+            <form action="{% url 'Eliminarrepu' Item.id %}" method = "POST">{% csrf_token %}
+                
+                 <button type="submit">Eliminar</button>
+
+            
+                <button><a href="{% url 'Editarrepu' Item.id %}">Editar</a></button>
+            </form>
+        </div>
+        {% endfor %}
+   
+    <br><br>
+    <br><br>
+    
+        
+   <div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="{% url 'repu_formulario' %}">VOLVER</a></div>
+    
+    <br><br>
+</div>
+{% endblock bloquecambia %}
