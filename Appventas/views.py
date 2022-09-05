@@ -1,5 +1,4 @@
 from msilib.schema import ListView
-import re
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
@@ -12,6 +11,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , Use
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las vistas basadas en clases
 from django.contrib.auth.decorators import login_required#decorador para vistas basadas en funciones.Aumenta la funcionalidad de una funcion.
+
 # Views de simple acceso
 def Nosotros(request):#Template de Nostros
 
@@ -32,8 +32,13 @@ def tienda(request):
     indumentaria=indumentarias.objects.all()
     accesorio=accesorios.objects.all()
     repuesto=repuestos.objects.all()
-    
-    return render(request, "tienda.html",{ "bicicletas": bicicleta, "indumentarias": indumentaria, "accesorios": accesorio, "repuestos": repuesto,})
+
+    pagina = request.GET.get("page", 1)
+    paginatorBici = Paginator(bicicleta, 2)
+    bicicleta = paginatorBici.page(pagina)
+    paginatorIndu = Paginator(indumentaria, 2)
+    indumentaria = paginatorIndu.page(pagina)
+    return render(request, "tienda.html",{"bicicletas": bicicleta, "indumentarias": indumentaria, "accesorios": accesorio, "repuestos": repuesto})
 
 def tiendabici(request):
     bicicleta=bicicletas.objects.all()
