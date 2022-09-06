@@ -39,36 +39,27 @@
                         <button style="margin: 20px; ;" type="button" class="btn btn-warning"><li class="nav-item"><a class="nav-link" href="{% url 'INICIO' %}">Home</a></li></button>
                         <button style="margin: 20px; ;" type="button" class="btn btn-warning"><li class="nav-item"><a class="nav-link" href="{% url 'Nosotros' %}">Nosotros</a></li></button>
                         <button style="margin: 20px; ;" type="button" class="btn btn-warning"><li class="nav-item"><a class="nav-link" href="{% url 'INICIO' %}">Formularios</a></li></button>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="/Appventas/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'Nosotros' %}">Nosotros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'Formularios' %}">Formularios</a></li>
+                        
                         
                         
                     </ul>
                     
                     {% if user.is_authenticated %}
-                        <p>Bienvenido {{user.username}}</p>
-                        <div class="btn btn">
-                        <button style="margin: 20px; ;" type="button" class="btn btn-warning">Usuario</button>
-                                                 
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="{% url 'Perfil' %}">Perfil</a></li>
-                             
-                        
+
                         {% if url %}
                          <img src="{{url}}" height="35px" alt="avatar">
                         {% endif %}
-                            
+
                         <div class="btn-group">
                         <button class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false" >@{{user.username}}</button>
-                                                 
+
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item" href="{% url 'Perfil' %}">Perfil</a></li>
                               <li><a class="dropdown-item" href="{% url 'MensajeCorreo' %}">Contacto</a></li>
-                              <li><a class="dropdown-item" href="{% url 'rooms' %}">Chat</a></li>                   
+                              <li><a class="dropdown-item" href="{% url 'rooms' %}">Chat</a></li>
                               <li><hr class="dropdown-divider"></li>
                               <li><a class="dropdown-item" href="{% url 'Logout' %}">Salir</a></li>
-                              
+
                             </ul>
                         </div>
 
@@ -218,7 +209,6 @@
             
             <p class="text-white small mb-4 mb-lg-0 ms-lg-4">CoderHouse Curso Python 2022.</p><div class="container"><p class="m-0 text-center text-white">Martin Goñi & Martin Bisceglia &copy; Coder House 2022</p></div>
     </footer>
-        {% endblock bloquecambia %}
 
         
         {% block scripts %}

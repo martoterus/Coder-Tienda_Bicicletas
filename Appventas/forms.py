@@ -4,12 +4,12 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
 
 
-from .models import categorias
+from .models import categorias, Avatar
 from django.contrib.auth.forms import UserChangeForm,UserCreationForm
 from django.contrib.auth.models import User
 #from Appventas.models import Avatar
 
-from .models import Avatar, categorias, tipoPersonas
+from .models import categorias
 
 class categoriasFormulario(forms.Form):
     Nombre = forms.CharField(max_length=100)
@@ -95,17 +95,34 @@ class EditarUsuario(UserChangeForm):
         fields=['first_name','last_name','email']
         #help_texts={k:"" for k in fields}   
 
+class FormularioMensaje(forms.Form):
+
+    Nombre=forms.CharField(max_length=30)
+    Apellido=forms.CharField(max_length=30)
+    Correo=forms.EmailField(max_length=30)
+    Asunto=forms.CharField(max_length=30)
+    Mensaje=forms.CharField(max_length=300)
+    # Usuario=forms.CharField(max_length=30)
+
+class CrearUsuario(UserCreationForm):
+     # Categoria = forms.ModelChoiceField(queryset=tipoPersonas.objects.all())
+    class Meta:
+        model=User
+        fields=['username','password1','password2']
 
 
-#Formulario para Registrarse
-# class registroFormulario(UserCreationForm):
+class EditarUsuario(UserChangeForm):
+   # lo que queresmos definir del usuario 
+    first_name=forms.CharField(max_length=30,label="Modificar nombre")
+    last_name=forms.CharField(max_length=30,label="Modificar apellido")
+    email=forms.EmailField(label="Modificar E-mail")
+    password= forms.CharField(#Para sacar los texto de ayuda.y ocultarlos
+    help_text="",
+    widget= forms.HiddenInput(), required=False)
+ 
+class AvatarFormulario(forms.ModelForm):
 
-#     # email= forms.EmailField()
-#     # password1= forms.CharField(label='Contraseña',widget=forms.PasswordInput)
-#     # password2= forms.CharField(label='Repetir la contraseña',widget=forms.PasswordInput)
-
-#     # class Meta:
-#     #     model= Use 
-    
-    
+    class Meta:
+        model=Avatar
+        fields=('imagen',)    
 

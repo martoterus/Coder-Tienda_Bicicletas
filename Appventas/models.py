@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 
 
 
+
 class categorias(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -116,17 +117,6 @@ class cliente(perfiles):
      return f"{self.nombre,self.apellido, self.telefono,self.emial,self.edad}"
 
 
-class EnviarMensajes(models.Model):
-
-    nombre=models.CharField(max_length=30)
-    correo=models.EmailField(max_length=30)
-    telefono=models.CharField(max_length=30)
-    mensaje=models.CharField(max_length=100)
-       
-    def __str__(self):
-        return f"{self.nombre,self.correo,self.telefono, self.mensaje}"
-
-#Comentar todo: selecciono . 1°ctrl+k . 2°ctrl+c (comentar) 2°ctrl+u (descomentar)
 
 #Avatar
 class Avatar(models.Model):
@@ -134,7 +124,7 @@ class Avatar(models.Model):
     #vinculo con el usuario
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     #Subcarpeta avatares de media
-    imagen=models.ImageField(upload_to='avatares', null=True,blank=True)
+    imagen=models.ImageField(upload_to='img', null=True,blank=True)
     
 #---------------------------------------------------------------------------
 
@@ -147,3 +137,5 @@ class EnviarMensaje(models.Model):
     subject=models.CharField(max_length=30)
     message=models.TextField()
     # usuario=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+
+

@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
 from .carrito import carrito
-from Appventas.models import EnviarMensajes, accesorios, bicicletas, categorias, indumentarias, repuestos
-from Appventas.forms import AccesoriosFormularios, BicicletasFormularios, IndumentariasFormularios, RepuestosFormularios, categoriasFormulario, enviarMensaje
+from Appventas.models import accesorios, bicicletas, categorias, indumentarias, repuestos, EnviarMensaje
+from Appventas.forms import AvatarFormulario, AccesoriosFormularios, BicicletasFormularios, FormularioMensaje, IndumentariasFormularios, RepuestosFormularios, categoriasFormulario, enviarMensaje, FormularioMensaje, CrearUsuario
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , UserChangeForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las vistas basadas en clases
@@ -30,8 +30,8 @@ from django.contrib.auth.models import User
 
 from django.shortcuts import render, redirect
 from Appventas.carrito import carrito
-from Appventas.models import  Avatar, EnviarMensaje, Persona, categorias,producto
-from Appventas.forms import   AvatarFormulario, CrearUsuario, EditarUsuario, FormularioMensaje,productosFormularios, categoriasFormulario
+from Appventas.models import  Avatar, EnviarMensaje, categorias
+from Appventas.forms import   EditarUsuario, categoriasFormulario
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 
@@ -146,22 +146,22 @@ def limpiar_carrito(request):
     return redirect("Tienda")
 
 #Enviar Mensaje
-def IrEnviarMensaje(request):
-    print("method:", request.method)
-    if request.method == 'POST':
-            print("1° IF")
-            MensajeEnviado=enviarMensaje(request.POST)
+# def IrEnviarMensaje(request):
+#     print("method:", request.method)
+#     if request.method == 'POST':
+#             print("1° IF")
+#             MensajeEnviado=enviarMensaje(request.POST)
 
-            if MensajeEnviado.is_valid():
-                print("2do IF")
-                data=MensajeEnviado.cleaned_data# si le pongo parentesis o corchetes y entre comillas una variable en particular pide solo esa
-                mensaje=EnviarMensajes(nombre=data["Nombre"],correo=["Correo"],telefono=["Telefono"],mensaje=["Mensaje"])
-                mensaje.save()
-                return render(request,"Save.html")
-    else:
-        print("method:", request.method)
-        MensajeEnviado=enviarMensaje()
-        return render (request,"EnviarMensaje.html",{"MensajeEnviar":MensajeEnviado})
+#             if MensajeEnviado.is_valid():
+#                 print("2do IF")
+#                 data=MensajeEnviado.cleaned_data# si le pongo parentesis o corchetes y entre comillas una variable en particular pide solo esa
+#                 mensaje=EnviarMensaje(nombre=data["Nombre"],correo=["Correo"],telefono=["Telefono"],mensaje=["Mensaje"])
+#                 mensaje.save()
+#                 return render(request,"Save.html")
+#     else:
+#         print("method:", request.method)
+#         MensajeEnviado=enviarMensaje()
+#         return render (request,"EnviarMensaje.html",{"MensajeEnviar":MensajeEnviado})
 
 
 
@@ -665,6 +665,7 @@ def iniciar_sesion(request):
         return render (request, "Login.html", {'form':form})
 
 #Registrarse
+
 def IrRegistrarse(request):
 
     
@@ -778,8 +779,8 @@ def Mensajeria(request):
 
         if form.is_valid():
             print("2")
-            
-            
+
+
             #De esta forma me pide validacion en el formulario
             name=form.cleaned_data["Nombre"]# ["LA VARIABLE DEL FORMULARIO"]
             lastname=form.cleaned_data["Apellido"]
