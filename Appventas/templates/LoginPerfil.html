@@ -7,10 +7,8 @@
 <br>
 <h3 style= "margin-left: 50px">Perfil</h3>
 <h4 style= "margin-left: 50px">Bien venido {{user.username}}</h4>
-    <p style= "margin-left: 50px">Datos</p>
-    <p style= "margin-left: 50px">Nombre: {{user.first_name}}</p>
-    <p style= "margin-left: 50px">Apellido: {{user.last_name}}</p>
-    <p style= "margin-left: 50px">Emeail: {{user.email}}</p>
+    
+  
 <div style= "margin-left: 50px" >
     <br>
     
@@ -19,12 +17,18 @@
     
     <form  method="POST">{% csrf_token %}
      
-        
-            {{PerfilFormulario.as_p}}
+        <table>    
+            {{PerfilFormulario.as_table}}
 
-        
+        </table>
         <br>
-        <button type="submit" >Guardar </button>
+        <a class="btn btn-outline-dark mt-auto" href="{% url 'CambiarContraseña' %}">Cambiar contraseña.</a>
+        <br>
+        <br>
+        <a class="btn btn-outline-dark mt-auto" href="{% url 'CambiarAvatar' %}">Agregar avatar.</a>
+        <br>
+        <hr>
+        <button class="btn btn-outline-dark mt-auto" type="submit" >Guardar </button>
      
     </form>
     

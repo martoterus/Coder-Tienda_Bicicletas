@@ -4,6 +4,14 @@ from asyncio.windows_events import NULL
 from django.db import models
 from django.contrib.auth.models import User
 
+
+from unittest.util import _MAX_LENGTH
+from django.db import models
+from django.contrib.auth.models import User
+
+
+
+
 class categorias(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -128,3 +136,14 @@ class Avatar(models.Model):
     #Subcarpeta avatares de media
     imagen=models.ImageField(upload_to='avatares', null=True,blank=True)
     
+#---------------------------------------------------------------------------
+
+
+class EnviarMensaje(models.Model):
+
+    name=models.CharField(max_length=30)
+    lastname=models.CharField(max_length=30)
+    email=models.EmailField(max_length=50)
+    subject=models.CharField(max_length=30)
+    message=models.TextField()
+    # usuario=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)

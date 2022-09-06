@@ -5,6 +5,11 @@ from django.contrib.auth.models import User
 
 
 from .models import categorias
+from django.contrib.auth.forms import UserChangeForm,UserCreationForm
+from django.contrib.auth.models import User
+#from Appventas.models import Avatar
+
+from .models import Avatar, categorias, tipoPersonas
 
 class categoriasFormulario(forms.Form):
     Nombre = forms.CharField(max_length=100)

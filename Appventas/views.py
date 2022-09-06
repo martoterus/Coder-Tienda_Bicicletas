@@ -13,6 +13,33 @@ from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las
 from django.contrib.auth.decorators import login_required#decorador para vistas basadas en funciones.Aumenta la funcionalidad de una funcion.
 
 # Views de simple acceso
+#imports para el chat:
+
+#-----------------------------------------------
+from queue import Empty
+from unicodedata import name
+from django.conf import settings
+from django.core.mail import EmailMessage# Toma un temaplate html  
+from django.template.loader import render_to_string # transformado en un string
+from django.contrib import messages
+
+
+from django.shortcuts import redirect
+
+from django.contrib.auth.models import User
+
+from django.shortcuts import render, redirect
+from Appventas.carrito import carrito
+from Appventas.models import  Avatar, EnviarMensaje, Persona, categorias,producto
+from Appventas.forms import   AvatarFormulario, CrearUsuario, EditarUsuario, FormularioMensaje,productosFormularios, categoriasFormulario
+from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+
+from django.contrib.auth.decorators import login_required#decorador para vistas basadas en funciones.Aumenta la funcionalidad de una funcion.
+# Views de simple acceso
+def ViewPadre(request):
+    return render (request,"Padre.html")
+
 def Nosotros(request):#Template de Nostros
 
     return render(request, "QuienesSomos.html")
@@ -609,6 +636,7 @@ def editaraccesorios(request, id):
 def iniciar_sesion(request):
 
     if request.method == "POST":
+        print("Entro al metodo: ",request.method)
         form=AuthenticationForm(request, data=request.POST)
 
         if form.is_valid():
@@ -622,7 +650,7 @@ def iniciar_sesion(request):
                 print("Entro al is not none")
                 login(request,user)
 
-                return render(request, "Formularios.html", {"mensaje":f"Bienvenido {usuario}"})
+                return render(request, "inicio.html", {"mensaje":f"Bienvenido {usuario}"})
             else:
                 print("Entro al is not none ELSE")
                 form = AuthenticationForm()
@@ -638,59 +666,162 @@ def iniciar_sesion(request):
 
 #Registrarse
 def IrRegistrarse(request):
+
+    
     return render (request, "LoginRegistro.html")
 
 def registrarse(request):
 
-    if request.method =="POST":
-        #print("1)method:", request.method)
-        form=UserCreationForm(request.POST)
-        #form=UserRegisterForm(request.POST)
-        if form.is_valid():
-            #print("2)method:", request.method)
-            username = form.cleaned_data['username']
-            form.save()
-            return render(request,'Save.html',{"mensaje":f"Usuario {username} creado."})
-        else:
-            form=UserCreationForm()
-            return render (request, 'LoginRegistro.html',{"mensaje":f"Usuario no valido. Vuelva a Intentarlo.","form": form})
+    if request.method == "POST":
+        form = CrearUsuario(request.POST)
         
+        if form.is_valid() :
+          username=form.cleaned_data["username"]
+         
+          form.save()
+          #se autologin al crear usuario:
+          user=authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
+          login(request,user)
+          
+          return render(request,'Save.html',{"mensaje":f"Usuario {username} creado."})
+        else:
+            form=CrearUsuario()
+            
+            mensaje=f"Error. Usuario Invalido."
+            return render (request,'LoginRegistro.html', {"CrearUsuario": form,"mensaje":mensaje})
+            
+
     else:
-        form=UserCreationForm()
-        return render (request,'LoginRegistro.html', {"form": form})
+        userForm=CrearUsuario()
+        mensaje=f"Siga las instrucciones y cree su usuario."
+       
 
-# #Perfil Usuario
+    return render (request,'LoginRegistro.html', {"CrearUsuario": userForm,"mensaje":mensaje})
 
-
+@login_required
 def EditarPerfil(request):
 
     usuario=request.user
     
     if request.method == "POST":
-         
-        formularioPerfil=EditarUsuario (request.POST)
-
-
-        if formularioPerfil.is_valid():
-                
+         formularioPerfil=EditarUsuario (request.POST,request.user)
+         if formularioPerfil.is_valid():
                 data=formularioPerfil.cleaned_data
 
+                
                 usuario.first_name=data["first_name"]
                 usuario.last_name=data["last_name"]
                 usuario.email=data["email"]
-                #usuario.password1=data["password1"]
-                #usuario.password2=data["password2"]
-
                 usuario.save()
 
                 return render(request, "Save.html", {"mensaje":"Datos actualizados con exito.."})
     else:
-          
-        formularioPerfil=EditarUsuario (initial={'Nombre':usuario.first_name,'Apellido':usuario.last_name,'Email':usuario.email})
-        #formularioPerfil=UserChangeForm (instance=request.user)
-        
-    return render (request, "LoginPerfil.html", {"PerfilFormulario":formularioPerfil}) 
-        
-   
+        formularioPerfil=EditarUsuario (instance=request.user)
+    return render (request, "LoginPerfil.html", {"PerfilFormulario":formularioPerfil})
 
+#Cambiar contraseña
+@login_required
+def CambiarPassword(request): 
+
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return render(request,"SavePerfil.html",{"mensaje":"Datos actualizados con exito.."})
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'LoginCambiarPassword.html', {'form':form})
+    
+
+@login_required
+def agregar_avatar(request):
+
+    if request.method == 'POST':
+        print("metodo:",request.method)
+        miFormulario = AvatarFormulario(request.POST, request.FILES)
+
+        if miFormulario.is_valid():
+            print("1")
+
+            data = miFormulario.cleaned_data
+
+            avatar =Avatar(user=request.user, imagen=data['imagen'])
+            print("2")
+            avatar.save()
+
+            return render(request, "SavePerfil.html", {"mensaje": "Avatar cargado."})
+        else:
+            print("no valida")
+            miFormulario = AvatarFormulario()
+            return render(request, "LoginAgregarAvatar.html", {"miFormulario": miFormulario,"mensaje":"Error"})
+
+
+    else:
+
+        avatarform = AvatarFormulario()
+        
+
+    return render(request, "LoginAgregarAvatar.html", {"miFormulario": avatarform})
+
+
+#Enviar Mensaje
+def IrEnviarMensaje(request):
+    return render (request,"EnviarMensaje.html")
+
+def Mensajeria(request):
+
+
+    if request.method == "POST":
+        print("1",request.method)
+        form=FormularioMensaje(request.POST)
+
+        if form.is_valid():
+            print("2")
+            
+            
+            #De esta forma me pide validacion en el formulario
+            name=form.cleaned_data["Nombre"]# ["LA VARIABLE DEL FORMULARIO"]
+            lastname=form.cleaned_data["Apellido"]
+            email=form.cleaned_data["Correo"]
+            subject=form.cleaned_data["Asunto"]
+            message=form.cleaned_data["Mensaje"]
+            usuario=request.user
+            # name=request.POST['name']     CUANDO USAMOS name=" " EN EL HTML
+            # email=request.POST['email']
+            # subject=request.POST['asunto']
+            # message=request.POST['mensaje']
+            # usuario=request.user
+
+
+            template=render_to_string('EnviarEmailTemaplte.html',{
+                'name':name,
+                'lastname': lastname,
+                'email':email,
+                'message':message,
+                'usuario':usuario
+                #el asunto se envia por defecto
+            })
+            #creamos Email: Toma parametros
+            email=EmailMessage(
+                subject,
+                template,
+                settings.EMAIL_HOST_USER,
+                ['biciclteria.app@gmail.com']
+            )
+
+            email.send()
+            #cuando se recargue la pagina aparece el mensaje en el template
+            messages.success(request,'Correo Enviado')
+
+            return render (request,"Save.html",{"mensaje":"Nos contactaremos a la brevedad.."})
+
+        else:
+            print("3")
+
+            form=FormularioMensaje()
+            messages.error(request,'Correo No valido')
+    else:
+        form=FormularioMensaje()
+    return render (request,"EnviarMensaje.html",{"formularioMensaje":form})
 
