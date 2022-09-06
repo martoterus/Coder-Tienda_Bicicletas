@@ -2,6 +2,7 @@
 
 #-----------------------------------------------
 from queue import Empty
+from unicodedata import name
 from django.conf import settings
 from django.core.mail import EmailMessage# Toma un temaplate html  
 from django.template.loader import render_to_string # transformado en un string
@@ -14,8 +15,8 @@ from django.contrib.auth.models import User
 
 from django.shortcuts import render, redirect
 from Appventas.carrito import carrito
-from Appventas.models import  Avatar, categorias,producto
-from Appventas.forms import   AvatarFormulario, CrearUsuario, EditarUsuario,productosFormularios, categoriasFormulario
+from Appventas.models import  Avatar, EnviarMensaje, Persona, categorias,producto
+from Appventas.forms import   AvatarFormulario, CrearUsuario, EditarUsuario, FormularioMensaje,productosFormularios, categoriasFormulario
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 
@@ -608,17 +609,15 @@ def iniciar_sesion(request):
 #Registrarse
 def IrRegistrarse(request):
 
-    if request.method == "POST":
-        pass
-    else:
-     pass
+    
     return render (request, "LoginRegistro.html")
 
 def registrarse(request):
 
     if request.method == "POST":
         form = CrearUsuario(request.POST)
-        if form.is_valid():
+        
+        if form.is_valid() :
           username=form.cleaned_data["username"]
          
           form.save()
@@ -629,6 +628,7 @@ def registrarse(request):
           return render(request,'Save.html',{"mensaje":f"Usuario {username} creado."})
         else:
             form=CrearUsuario()
+            
             mensaje=f"Error. Usuario Invalido."
             return render (request,'LoginRegistro.html', {"CrearUsuario": form,"mensaje":mensaje})
             
@@ -636,6 +636,7 @@ def registrarse(request):
     else:
         userForm=CrearUsuario()
         mensaje=f"Siga las instrucciones y cree su usuario."
+       
 
     return render (request,'LoginRegistro.html', {"CrearUsuario": userForm,"mensaje":mensaje})
 
@@ -707,43 +708,62 @@ def agregar_avatar(request):
 
 
 #Enviar Mensaje
-
-
-#Enviar Mensaje
 def IrEnviarMensaje(request):
     return render (request,"EnviarMensaje.html")
 
 def Mensajeria(request):
 
-    print("method:", request.method)
 
-    if request.method == 'POST':
-        
-        name=request.POST['name']
-        email=request.POST['email']
-        subject=request.POST['asunto']
-        message=request.POST['mensaje']
-        
-                #se envia el html que se va a enviar como mensaje, y un diccionario con los parametros que envio
-        template=render_to_string('EnviarEmailTemaplte.html',{
-            'name':name,
-            'email':email,
-            'message':message
-            #el asunto se envia por defecto
-        })
-        #creamos Email: Toma parametros
-        email=EmailMessage(
-            subject,
-            template,
-            settings.EMAIL_HOST_USER,
-            ['biciclteria.app@gmail.com']
-        )
-        #email.fail.silently = False . Esta por defecto en EmailMessage 
-        
-        email.send()
-        #cuando se recargue la pagina aparece el mensaje en el template
-        messages.success(request,'Correo Enviado')
-        return redirect('Contacto')
-     
-        
- 
+    if request.method == "POST":
+        print("1",request.method)
+        form=FormularioMensaje(request.POST)
+
+        if form.is_valid():
+            print("2")
+            
+            
+            #De esta forma me pide validacion en el formulario
+            name=form.cleaned_data["Nombre"]# ["LA VARIABLE DEL FORMULARIO"]
+            lastname=form.cleaned_data["Apellido"]
+            email=form.cleaned_data["Correo"]
+            subject=form.cleaned_data["Asunto"]
+            message=form.cleaned_data["Mensaje"]
+            usuario=request.user
+            # name=request.POST['name']     CUANDO USAMOS name=" " EN EL HTML
+            # email=request.POST['email']
+            # subject=request.POST['asunto']
+            # message=request.POST['mensaje']
+            # usuario=request.user
+
+
+            template=render_to_string('EnviarEmailTemaplte.html',{
+                'name':name,
+                'lastname': lastname,
+                'email':email,
+                'message':message,
+                'usuario':usuario
+                #el asunto se envia por defecto
+            })
+            #creamos Email: Toma parametros
+            email=EmailMessage(
+                subject,
+                template,
+                settings.EMAIL_HOST_USER,
+                ['biciclteria.app@gmail.com']
+            )
+
+            email.send()
+            #cuando se recargue la pagina aparece el mensaje en el template
+            messages.success(request,'Correo Enviado')
+
+            return render (request,"Save.html",{"mensaje":"Nos contactaremos a la brevedad.."})
+
+        else:
+            print("3")
+
+            form=FormularioMensaje()
+            messages.error(request,'Correo No valido')
+    else:
+        form=FormularioMensaje()
+    return render (request,"EnviarMensaje.html",{"formularioMensaje":form})
+

@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserChangeForm,UserCreationForm
 from django.contrib.auth.models import User
 #from Appventas.models import Avatar
 
-from .models import Avatar, categorias
+from .models import Avatar, categorias, tipoPersonas
 
 class categoriasFormulario(forms.Form):
     Nombre = forms.CharField(max_length=100)
@@ -26,12 +26,14 @@ class productosFormularios(forms.Form):
 class TipoPersona(forms.Form):
     Nombre=forms.CharField(max_length=100)
 
-# class personaFormularios(forms.Form):
-#     username=forms.CharField(max_length=30,label="Nombre")
-#     lastname=forms.CharField(max_length=30,label="Apellido")
-#     Telefono= forms.IntegerField(label="Telefono") 
-#     emial=forms.EmailField(max_length=100,label="Email")
-#     Categoria = forms.ModelChoiceField(queryset=tipoPersonas.objects.all())
+class personaFormularios(forms.Form):
+    username=forms.CharField(max_length=30,label="Nombre")
+    lastname=forms.CharField(max_length=30,label="Apellido")
+    Telefono= forms.IntegerField(label="Telefono") 
+    emial=forms.EmailField(max_length=100,label="Email")
+    Categoria = forms.ModelChoiceField(queryset=tipoPersonas.objects.all())#hace una lista con el modelo tipoPersonas
+
+    
 
 class clienteFormularios(forms.Form):
     
@@ -100,12 +102,14 @@ class AvatarFormulario(forms.ModelForm):
         model=Avatar
         fields=('imagen',)
 
+
+#----------------------------------
+
+class FormularioMensaje(forms.Form):
     
-
-# class enviarMensaje(forms.Form):
-#     Usuario=forms.CharField(max_length=30)
-#     Nombre=forms.CharField(max_length=30)
-#     Apellido=forms.CharField(max_length=30)
-#     Correo=forms.EmailField(max_length=30)
-#     Mensaje=forms.CharField()
-
+    Nombre=forms.CharField(max_length=30)
+    Apellido=forms.CharField(max_length=30)
+    Correo=forms.EmailField(max_length=30)
+    Asunto=forms.CharField(max_length=30)
+    Mensaje=forms.CharField(max_length=300)
+    # Usuario=forms.CharField(max_length=30)

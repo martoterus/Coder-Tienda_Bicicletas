@@ -38,7 +38,7 @@ class producto(models.Model):
 
     def __str__(self):
         return self.nombre
-
+#------------------------------------------------------------------
 class tipoPersonas(models.Model):
     nombre = models.CharField(max_length=100)
 
@@ -51,59 +51,16 @@ class tipoPersonas(models.Model):
         return self.nombre
 
 
-class empleado(models.Model):
+class Persona(models.Model):
     
-    nombre=models.CharField(max_length=30,)
-    Apellido=models.CharField(max_length=30,)
+    Nombre=models.CharField(max_length=30)
+    Apellido=models.CharField(max_length=30)
     Telefono=models.IntegerField()
-    nombre=models.EmailField(max_length=30)
-   # categoria = models.ForeignKey(tipoPersonas, on_delete=models.CASCADE)
-    user_id=models.ForeignKey(User,on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = "empleado"
-        verbose_name_plural = "empleados"
-
-    def __str__(self):
-        return self.nombre
-
-class cliente(models.Model):
+    Email=models.EmailField(max_length=30)
+    Categoria = models.ForeignKey(tipoPersonas, on_delete=models.CASCADE)
     
-    nombre=models.CharField(max_length=30,)
-    Apellido=models.CharField(max_length=30,)
-    Telefono=models.IntegerField()
-    nombre=models.EmailField(max_length=30)
-    user_id=models.ForeignKey(User,on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = "cliente"
-        verbose_name_plural = "clientes"
-
     def __str__(self):
-        return self.nombre
-
-
-# class perfiles(models.Model):
-#     nombre=models.CharField(max_length=30, )
-#     apellido=models.CharField(max_length=30)
-#     telefono= models.IntegerField() 
-#     emial=models.EmailField(max_length=100)
-    
-#     class Meta:
-#         abstract=True
-
-# class empleado(perfiles):
-#    cargo=models.CharField(max_length=30)
-
-#    def __str__(self):
-#     return f"{self.nombre,self.apellido, self.telefono,self.emial,self.cargo}"
-
-# class cliente(perfiles):
-#     edad=models.IntegerField()
-
-#     def __str__(self):
-#      return f"{self.nombre,self.apellido, self.telefono,self.emial,self.edad}"
-
+        return self.Nombre
 
 
 #Comentar todo: selecciono . 1°ctrl+k . 2°ctrl+c (comentar) 2°ctrl+u (descomentar)
@@ -116,15 +73,14 @@ class Avatar(models.Model):
     #Subcarpeta avatares de media
     imagen=models.ImageField(upload_to='avatares', null=True,blank=True)
     
-#Chat entre usuarios
-# class destino(models.Model):
-#     destino=models.ForeignKey(User, related_name='mensaje', on_delete=models.CASCADE)
-    
+#---------------------------------------------------------------------------
 
-# # class EnviarMensajes(models.Model):
-# #     destino = models.ForeignKey(destino, related_name='mensaje', on_delete=models.CASCADE)
-# #     user = models.ForeignKey(User, related_name='mensaje', on_delete=models.CASCADE)
-# #     content = models.TextField()
-# #     date_added = models.DateTimeField(auto_now_add=True)
-# #     class Meta:
-# #         ordering = ('date_added',)
+
+class EnviarMensaje(models.Model):
+
+    name=models.CharField(max_length=30)
+    lastname=models.CharField(max_length=30)
+    email=models.EmailField(max_length=50)
+    subject=models.CharField(max_length=30)
+    message=models.TextField()
+    # usuario=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)

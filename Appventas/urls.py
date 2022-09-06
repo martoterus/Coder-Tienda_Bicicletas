@@ -66,7 +66,7 @@ urlpatterns = [
     path('registrarse', registrarse, name='Registrarse'),
     path('logout', LogoutView.as_view(template_name='logout.html'),name='Logout'),
     path('loginPerfil', EditarPerfil, name="Perfil"),
-   
+    path('CambiarContraseña',CambiarPassword, name="CambiarContraseña"),
 
     #carrito
     path('tienda', tienda, name="Tienda"),
@@ -74,14 +74,14 @@ urlpatterns = [
     path('eliminar/<int:producto_id>', eliminar_producto, name="Eliminar"),
     path('restar/<int:producto_id>', restar_producto, name="Restar"),
     path('limpiar/<int:producto_id>', limpiar_carrito, name="Limpiar"),
-    path('CambiarContraseña',CambiarPassword, name="CambiarContraseña"),
+    
     
     #Imagenes/Avatars
     path('CambiarAvatar',agregar_avatar, name="CambiarAvatar"),
     #chat entre usuarios
     
     #Emviar Correo
-    path('IrEnviarMensaje',IrEnviarMensaje,name="Contacto"),
+    # path('IrEnviarMensaje',IrEnviarMensaje,name="Contacto"),
     path('EnviarMensaje',Mensajeria,name="MensajeCorreo"),
   
 ]

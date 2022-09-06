@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block bloquecambia %}
- <form  class="text-center" action="{% url 'MensajeCorreo' %}" method="POST">{% csrf_token %}
+<form  class="text-center" action="{% url 'MensajeCorreo' %}" method="POST">{% csrf_token %}
     <span class="contact1-form-title">
         <p class="fs-1">Contacto</p> 
     </span>
@@ -19,36 +19,60 @@
         {% endfor %}
                     
 
-
+        
     {% endif %}
     
-            
+    
+    <form  action="" method="POST">{% csrf_token %}
+
+        <table>
+
+          <p>Ingrese su nombre: {{formularioMensaje.Nombre}}</p> 
+           <p>Ingrese su apellido:  {{formularioMensaje.Apellido}}</p>
+           <p>Ingrese su email: {{formularioMensaje.Correo}}</p>
+           <p>Ingrese el asunto: {{formularioMensaje.Asunto}}</p>
+           <p col="100" row="4">Escriba el mensaje: {{formularioMensaje.Mensaje}}</p>
+           
+          
+
+        </table>
+
+        <br>
+        <br>
+        <br>
+        
+    
+        <input class="btn btn-outline-info mt-auto" type="submit" value="Enviar"  href="">
+        <br><br><br>
+    </form>
+
+
+
+
+
+
+
+
+
+
+<!--             
     <div class="form-floating mb-3 wrap-input1 validate-input" data-validate="Es requerido un nombre">
         <input type="text" class="form-control" name="name" placeholder="Nombre" >
         <label for="floatingInput">Ingrese su nombre:</label>
     </div>            
-    <!-- <div class= "wrap-input1 validate-input" data-validate="Es requerido un nombre">
-        <input class="input1" type="text" name="name" placeholder="Nombre">
-        <span class="shadow-input1"></span>
-    </div> -->
+  
     <br>
     <div class="form-floating mb-3 wrap-input1 validate-input" data-validate="Es requerido un email">
         <input type="text" class="form-control" name="email" placeholder="Correo" >
         <label for="floatingInput">Ingrese su correo:</label>
     </div>
-    <!-- <div class= "wrap-input1 validate-input" data-validate="Es requerido un email">
-        <input class="input1" type="text" name="email" placeholder="Correo">
-        <span class="shadow-input1"></span>
-    </div> -->
+    
     <br>
     <div class="form-floating mb-3 wrap-input1 validate-input" data-validate="Es requerido un email">
         <input type="text" class="form-control" name="asunto" placeholder="Asunto" >
         <label for="floatingInput">Ingrese el Asunto:</label>
     </div>
-    <!-- <div class= "wrap-input1 validate-input" data-validate="Es requerido un asunto">
-        <input class="input1" type="text" name="asunto" placeholder="Asunto">
-        <span class="shadow-input1"></span>
-    </div> -->
+    
     <br>
     <div class= "wrap-input1 validate-input" data-validate="Es requerido un mensaje">
         <textarea class="input1" cols="200"  rows="6" name="mensaje" placeholder="Mensaje"></textarea>
@@ -62,8 +86,24 @@
      <br><br><br>
      <div class="text-center"><a  class="btn btn-outline-dark mt-auto" href="/Appventas/">Volver</a></div>
      <br>
- </form>
+ </form> -->
  
 
 
 {% endblock bloquecambia %}
+
+
+<!-- Formato anterior  -->
+<!-- <div class= "wrap-input1 validate-input" data-validate="Es requerido un asunto">
+        <input class="input1" type="text" name="asunto" placeholder="Asunto">
+        <span class="shadow-input1"></span>
+    </div> -->
+
+
+
+
+
+
+    
+   
+     -->
