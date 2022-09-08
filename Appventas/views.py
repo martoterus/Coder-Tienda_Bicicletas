@@ -10,7 +10,8 @@ from .carrito import carrito
 from Appventas.models import accesorios, bicicletas, categorias, empleado, indumentarias, repuestos, EnviarMensaje
 from Appventas.forms import AvatarFormulario, AccesoriosFormularios, BicicletasFormularios, FormularioMensaje, IndumentariasFormularios, RepuestosFormularios, categoriasFormulario, empleadosFormulario, enviarMensaje, FormularioMensaje, CrearUsuario
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , UserChangeForm
-from django.contrib.auth import login, logout, authenticate
+
+from django.contrib.auth import login,authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las vistas basadas en clases
 from django.contrib.auth.decorators import login_required#decorador para vistas basadas en funciones.Aumenta la funcionalidad de una funcion.
 
@@ -22,6 +23,7 @@ from queue import Empty
 from unicodedata import name
 from django.conf import settings
 from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage# Toma un temaplate html  
 from django.template.loader import render_to_string # transformado en un string
 from django.contrib import messages
 
@@ -52,8 +54,12 @@ def Nosotros(request):#Template de Nostros
 def inicio(request):#Template de Inivcio
     carr = carrito(request)
     categoria = categorias.objects.all()
-    avatar=Avatar.objects.filter(user=request.user.id,imagen=request.user.imagen)
-    return render(request, "Formularios.html", {"categorias": categoria,"url":avatar.imagen.url})
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id,imagen=request.user.imagen)
+        filtro=len(avatar)-1
+        return render(request, "Formularios.html", {"categorias": categoria,"url":avatar[filtro].imagen.url})
+    except:
+        return render(request, "Formularios.html", {"categorias": categoria})
 
 def tienda(request):
     bicicleta=bicicletas.objects.all()
@@ -290,11 +296,17 @@ def LeerAcc (request):
 @login_required
 def LeerEmpleado (request):
     print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
+    try:
+        if request.user.empleado:
+          empleadoForm=empleado.objects.all()
+          contexto={"Empleados":empleadoForm}
+          return render (request, "VerFormulario_Empleados.html",contexto)
 
-    empleadoForm=empleado.objects.all()
-    contexto={"Empleados":empleadoForm}
-    return render (request, "VerFormulario_Empleados.html",contexto)
+        else:
+            return render (request, "Formularios.html")
 
+    except:
+        return render (request, "Formularios.html")
 
 #BUSQUEDA BICIS
 @login_required
@@ -484,12 +496,16 @@ def EditarEmpleado(request, id):
 
     if request.method == 'POST':
 
-        Empleadoform=empleadosFormulario(request.POST)
-
-        if Empleadoform.is_valid():
-            
-            data=Empleadoform.cleaned_data
         
+        EmpleadoForm=empleadosFormulario(request.POST)
+
+        
+
+        if EmpleadoForm.is_valid():
+            
+            data=EmpleadoForm.cleaned_data
+            
+
             empleados.nombre = data["Nombre"]
             empleados.apellido = data["Apellido"]
             empleados.telefono = data["Telefono"]
@@ -506,7 +522,8 @@ def EditarEmpleado(request, id):
             "Telefono": empleados.telefono,
             "Cargo": empleados.cargo,
             "Email": empleados.email,
-        })
+             })
+        
         return render(request,"EditarEmpleados.html", {"EmpleadosForm": empleadoForm , "id": id})
 
 
@@ -540,24 +557,25 @@ def editarbicis(request, id):
 
     if request.method == 'POST':
 
-        BiciFormulario=BicicletasFormularios(request.POST, files=request.FILES)
+        BiciFormulario=BicicletasFormularios(request.POST, request.FILES)
 
         if BiciFormulario.is_valid():
             
             data=BiciFormulario.cleaned_data
         
-            bicicleta.nombre = data["Nombre"]
-            bicicleta.categoria = data["Categoria"]
-            bicicleta.tipo = data["Tipo"]
-            bicicleta.marca = data ["Marca"]
-            bicicleta.modelo = data ["Modelo"]
-            bicicleta.rodado = data ["Rodado"]
-            bicicleta.color = data ["Color"]
-            bicicleta.descripcion = data ["Descripcion"]
-            bicicleta.precio = data ["Precio"]
-            bicicleta.imagen = data ["Imagen"]
-
+            bicicleta.nombre = data["Nombre"],
+            bicicleta.categoria = data["Categoria"],
+            bicicleta.tipo = data["Tipo"],
+            bicicleta.marca = data ["Marca"],
+            bicicleta.modelo = data ["Modelo"],
+            bicicleta.rodado = data ["Rodado"],
+            bicicleta.color = data ["Color"],
+            bicicleta.descripcion = data ["Descripcion"],
+            bicicleta.precio = data ["Precio"],
+            bicicleta.imagen = data ["Imagen"],
+            
             bicicleta.save()
+            
         return render (request, "Save.html")
     
     else:
@@ -571,7 +589,7 @@ def editarbicis(request, id):
             "Color": bicicleta.color,
             "Descripcion": bicicleta.descripcion,
             "Precio": bicicleta.precio,
-            "Imagen": bicicleta.imagen,
+            "Imagen": bicicleta.imagen
             
              }) 
         return render(request,"EditarBicicletas.html", {"BiciFormulario": BiciFormulario , "id": id })
@@ -598,15 +616,16 @@ def editarrepuestos(request, id):
             repuesto.imagen = data ["Imagen"]
 
             repuesto.save()
-            return render(request, "Save.html")
+        return render(request, "Save.html")
     
     else:
         repuFormulario=RepuestosFormularios(initial={
-            "nombre": repuesto.nombre,
-            "categoria": repuesto.categoria,
-            "marca": repuesto.marca,
-            "descripcion": repuesto.descripcion,
-            "precio": repuesto.precio,
+            "Nombre": repuesto.nombre,
+            "Categoria": repuesto.categoria,
+            "Marca": repuesto.marca,
+            "Descripcion": repuesto.descripcion,
+            "Precio": repuesto.precio,
+            "Imagen": repuesto.imagen,
         })
         return render(request,"EditarRepuestos.html", {"RepuFormulario": repuFormulario , "id": repuesto.id})
 @login_required
@@ -625,26 +644,26 @@ def editarindumentaria(request, id):
             indument.nombre = data ["Nombre"]
             indument.categoria = data["Categoria"]
             indument.marca = data ["Marca"]
-            indument.modelo = data ["Modelo"]
             indument.descripcion = data ["Descripcion"]
             indument.precio = data ["Precio"]
             indument.tipo = data ["Tipo"]
             indument.talle = data ["Talle"]
+            indument.imagen = data ["Imagen"]
 
             indument.save()
-            return render(request, "Save.html")
+        return render(request, "Save.html")
     
     else:
         induFormulario=IndumentariasFormularios(initial={
-            "nombre": indument.nombre,
-            "categoria": indument.categoria,
-            "marca": indument.marca,
-            "modelo": indument.modelo,
-            "tipo": indument.tipo,
-            "talle":indument.talle,
-            "descripcion": indument.descripcion,
-            "precio": indument.precio,
-        })
+            "Nombre": indument.nombre,
+            "Categoria": indument.categoria,
+            "Marca": indument.marca,
+            "Tipo": indument.tipo,
+            "Talle":indument.talle,
+            "Descripcion": indument.descripcion,
+            "Precio": indument.precio,
+            "Imagen": indument.imagen,
+             })
         return render(request,"EditarIndumentaria.html", {"InduFormulario": induFormulario , "id": indument.id})
 
 @login_required
@@ -668,7 +687,7 @@ def editaraccesorios(request, id):
          
 
             acc.save()
-            return render(request, "Save.html")
+        return render(request, "Save.html")
     
     else:
         accFormulario=AccesoriosFormularios(initial={
@@ -727,13 +746,12 @@ def CrearEmpleado(request):
             "Cargo": info["Cargo"]
             })  
 
-        print(EmpleadoForm)
         userform = UserCreationForm({                  #Se crea formulario
             "username": info["username"],
             "password1": info["password1"],
             "password2": info["password2"],
             })                      
-        print(userform)                     
+                         
             #Validar datos de ambos
         if EmpleadoForm.is_valid() and userform.is_valid():        #Se tiene que agregar mas keys al dicccionario para mostrar empleados y usuario
             
@@ -741,7 +759,6 @@ def CrearEmpleado(request):
             data.update(
                 userform.cleaned_data                              #se actualiza con update la variable data, que contiene datos de empleado mas datos de usuario 
             )
-            print(data)
             #Crear instancias de empleado y usuario
 
             user = User(                                            #modelo User que viene por defecto en Django y le pasamos el username 
@@ -806,24 +823,19 @@ def EditarPerfil(request):
     usuario=request.user
     
     if request.method == "POST":
-        
-        formularioPerfil=EditarUsuario(request.POST)
-        if formularioPerfil.is_valid():
-            data=formularioPerfil.cleaned_data
-            
-            usuario.first_name=data["first_name"]
-            usuario.last_name=data["last_name"]
-            usuario.email=data["email"]
-            usuario.save()
-            return render(request, "Save.html", {"mensaje":"Datos actualizados con exito.."})
-    else:
-        formularioPerfil=EditarUsuario(initial={
-           "first_name": usuario.first_name,
-            "last_name": usuario.last_name,
-            "email": usuario.email,
-            
+         formularioPerfil=EditarUsuario (request.POST,request.user)
+         if formularioPerfil.is_valid():
+                data=formularioPerfil.cleaned_data
 
-         })
+                
+                usuario.first_name=data["first_name"]
+                usuario.last_name=data["last_name"]
+                usuario.email=data["email"]
+                usuario.save()
+
+                return render(request, "Save.html", {"mensaje":"Datos actualizados con exito.."})
+    else:
+        formularioPerfil=EditarUsuario (instance=request.user)
     return render (request, "LoginPerfil.html", {"PerfilFormulario":formularioPerfil})
 
 #Cambiar contraseña

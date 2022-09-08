@@ -8,7 +8,11 @@
     <h3>Lista de Repuestos</h3>
     <br>
         {% for Item in Repuestos %}
+<<<<<<< HEAD
         <li>Nombre: {{Item.codigo}}. Tipo: {{Item.tipo}}. Marca: {{Item.marca}}. Descripcion: {{Item.descripcion}}. Precio: ${{Item.precio}}.</li>
+=======
+        <li>Nombre: {{Item.nombre}}. Tipo: {{Item.tipo}}. Marca: {{Item.marca}}. Descripcion: {{Item.descripcion}}. Precio: ${{Item.precio}}.</li>
+>>>>>>> c11c51b3846d93a06090756b11741b9caa64a0b5
         <div>
             <form action="{% url 'Eliminarrepu' Item.id %}" method = "POST">{% csrf_token %}
                 
@@ -24,7 +28,7 @@
     <br><br>
     
         
-   <div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="{% url 'repu_formulario' %}">VOLVER</a></div>
+   <div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="{% url 'INICIO' %}">VOLVER</a></div>
     
     <br><br>
 </div>
