@@ -21,7 +21,7 @@ from django.urls import path
 # from Appventas.models import Avatar
 from Appventas.views import (#Tupla
     BusquedaAcc, CambiarPassword, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, 
-    Formularioindumentarias, Formulariorepuestos,LeerAcc, LeerCategoria, Mensajeria, ResultAcc, agregar_avatar, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
+    Formularioindumentarias, Formulariorepuestos,LeerAcc, LeerCategoria, Mensajeria, ResultAcc, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
     editarrepuestos, eliminar_producto, eliminarIndumentaria, eliminaraccesorios, eliminarbici, 
     eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
     Busquedabicis, limpiar_carrito, registrarse, LeerIndum, LeerBicis, LeerRepu, ResultBici, BusquedaIndu, 
@@ -111,7 +111,7 @@ urlpatterns = [
     path('EnviarMensaje',Mensajeria,name="MensajeCorreo"),
 
     #Imagenes/Avatars
-    path('CambiarAvatar',agregar_avatar,name="CambiarAvatar"),
+    #path('CambiarAvatar',agregar_avatar,name="CambiarAvatar"),
     
 ]
 

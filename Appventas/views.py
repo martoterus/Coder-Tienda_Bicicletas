@@ -44,16 +44,22 @@ def ViewPadre(request):
 
 def Nosotros(request):#Template de Nostros
 
-   
-
-    return render(request, "QuienesSomos.html",{})
+   avatar=Avatar.objects.get(user=request.user.id)                    #en el registro avatar, en la propiedad imagen, en el campo tipo imagen adentro tiene un url
+   return render(request, "QuienesSomos.html",{"url":avatar.imagen.url})
 
 
 def inicio(request):#Template de Inivcio
     carr = carrito(request)
     categoria = categorias.objects.all()
-    avatar=Avatar.objects.filter(user=request.user.id,imagen=request.user.imagen)
+    avatar=Avatar.objects.get(user=request.user.id)                    #en el registro avatar, en la propiedad imagen, en el campo tipo imagen adentro tiene un url
     return render(request, "Formularios.html", {"categorias": categoria,"url":avatar.imagen.url})
+    
+    
+    # try:
+    #     avatar=Avatar.objects.get(user=request.user.id)                     #en el registro avatar, en la propiedad imagen, en el campo tipo imagen adentro tiene un url
+    #     return render(request, "Formularios.html", {"categorias": categoria,"url":avatar.imagen.url})
+    # except:
+    #     return render(request, "Formularios.html")
 
 def tienda(request):
     bicicleta=bicicletas.objects.all()
@@ -842,34 +848,29 @@ def CambiarPassword(request):
     
 
 @login_required
-def agregar_avatar(request):
+# def agregar_avatar(request):
 
-    if request.method == 'POST':
+#     if request.method == 'POST':
        
-        miFormulario = AvatarFormulario(request.POST, files=request.FILES)
+#         miFormulario = AvatarFormulario(request.POST, request.FILES)
 
-        if miFormulario.is_valid():
+#         if miFormulario.is_valid():
            
+#             data = miFormulario.cleaned_data
+#             avatar =Avatar(user=request.user, imagen=data['imagen'])
+#             avatar.save()
 
-            data = miFormulario.cleaned_data
-
-            avatar =Avatar(user=request.user, imagen=data['imagen'])
-            
-            avatar.save()
-
-            return render(request, "SavePerfil.html", {"mensaje": "Avatar cargado."})
-        else:
+#             return render(request, "SavePerfil.html", {"mensaje": "Avatar cargado."})
+#         else:
            
-            miFormulario = AvatarFormulario()
-            return render(request, "LoginAgregarAvatar.html", {"miFormulario": miFormulario,"mensaje":"Error"})
+#             miFormulario = AvatarFormulario()
+#             return render(request, "LoginAgregarAvatar.html", {"miFormulario": miFormulario,"mensaje":"Error"})
 
 
-    else:
-
-        avatarform = AvatarFormulario()
+#     else:
+#         avatarform = AvatarFormulario()
         
-
-    return render(request, "LoginAgregarAvatar.html", {"miFormulario": avatarform})
+#     return render(request, "LoginAgregarAvatar.html", {"miFormulario": avatarform})
 
 
 #Enviar Mensaje
@@ -924,8 +925,6 @@ def Mensajeria(request):
             return render (request,"Save.html",{"mensaje":"Nos contactaremos a la brevedad.."})
 
         else:
-            print("3")
-
             form=FormularioMensaje()
             messages.error(request,'Correo No valido')
     else:
