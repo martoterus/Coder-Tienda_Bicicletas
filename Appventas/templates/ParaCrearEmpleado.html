@@ -1,0 +1,36 @@
+{% extends 'Padre.html' %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+   
+<div class="text-left" class="btn btn-outline-dark mt-auto">
+    <br>
+    <div class="text-center">
+        <h3>Ingresar Clave</h3>
+        <h4>{{mensaje}}</h4>
+    </div><br>
+    <br>
+    <form  action="" method="POST">
+        {% csrf_token %}
+
+        <table  style="margin: 0 auto;">
+            {{form.as_table }}
+        </table>
+        <br>
+        <br>
+        <div class="text-center">
+            <button type="submit"  class="btn btn-outline-dark mt-auto " style="margin-right: 24px">Ingresar</button>
+        </div> 
+    </form>
+    
+    
+    
+    <br>
+    <br>
+<div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="/Appventas/">Volver</a></div>
+
+
+<br><br>
+{% endblock bloquecambia %}

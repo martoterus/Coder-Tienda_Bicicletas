@@ -9,13 +9,20 @@
     <br>
     <h3>Registrarse</h3>
     <h6 style="color:#FF0000">{{mensaje}}</h6>
+    <hr>
     <form action="" method="POST">
      {% csrf_token %}
 
-
-     {{form.as_p}}
-
-     <button type="submit">Crear usuario </button>
+      <table>
+         {{CrearUsuario.as_p}}
+         {{CrearPersona.as_p}}
+        
+      </table>
+      <br>
+      <br>
+      <hr>
+      <br>
+     <button class="btn btn-outline-dark mt-auto" type="submit">Crear usuario </button>
     </form>
     <br>
     <br>

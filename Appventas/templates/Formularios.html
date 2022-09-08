@@ -30,15 +30,23 @@
 <!-- Example single danger button -->
 
 <div class="text-center">
+  <div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Empleados
+    </button>
+    <ul class="dropdown-menu">
+   
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="{% url 'FormularioEmpleado' %}">Cargar</a></li>
+      <li><a class="dropdown-item" href="{% url 'LeerEmpleados' %}">Ver</a></li>
+    </ul>
+  </div>  
 <div class="btn-group">
     <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
       Categorias
     </button>
     <ul class="dropdown-menu">
-    {% for cat in categorias %}
-      <li><a class="dropdown-item" href="#">{{categorias.nombre}}</a></li>
-      
-    {% endfor %}
+   
       <li><hr class="dropdown-divider"></li>
       <li><a class="dropdown-item" href="cat_formulario">Cargar</a></li>
       <li><a class="dropdown-item" href="LeerCategorias">Ver</a></li>

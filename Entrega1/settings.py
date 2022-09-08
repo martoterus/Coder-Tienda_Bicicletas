@@ -9,9 +9,9 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
-import os
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Appventas'
+    'channels',
+    'Appventas',
+    'room',
+    
+   
 ]
 
 MIDDLEWARE = [
@@ -49,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'Entrega1.urls'
@@ -71,6 +76,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Entrega1.wsgi.application'
+ASGI_APPLICATION = 'Entrega1.asgi.application'#para el chat de django
+
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
+
 
 
 # Database
@@ -106,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-ar'#para que se vea en español los modelos de django
 
 TIME_ZONE = 'UTC'
 
@@ -128,3 +143,18 @@ LOGIN_URL = 'Appventas/Login.html'
 #Para imagenes
 MEDIA_URL='/media/'
 MEDIA_ROOT= os.path.join(BASE_DIR,'media')
+#LOGIN_REDIRECT_URL='/'#la raiz del sitio
+#LOGOUT_REDIRECT_URL='/'
+
+
+
+#gmail_send/settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' #el host que vamos a usar que correo vamos a usar
+EMAIL_HOST_USER = 'biciclteria.app@gmail.com' #nuestro correo de la app
+EMAIL_HOST_PASSWORD = 'tima pqql fgyl lkrx' #past the key or password app here
+EMAIL_PORT = 587 #siempre este puerto
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'default from email'
+
+

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from Appventas.views import (
-    BusquedaAcc, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, ResultAcc, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
+    BusquedaAcc, CrearEmpleado, EditarEmpleado, EditarPerfil, EliminarEmpleado, Formularioaccesorios, Formulariobicis, Formulariocategoria, Formularioindumentarias, Formulariorepuestos, LeerAcc, LeerCategoria, LeerEmpleado, ResultAcc, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
     editarrepuestos, eliminarIndumentaria, eliminaraccesorios, eliminarbici, eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
     Busquedabicis, registrarse, LeerIndum, LeerBicis, LeerRepu, ResultBici, BusquedaIndu, BusquedaRepues, ResultIndu, ResultRepues,
     Nosotros, IrEnviarMensaje, IrRegistrarse
@@ -15,6 +15,23 @@ from django.conf.urls.static import static
                                   
 
 
+from django.contrib import admin
+from django.urls import path
+
+# from Appventas.models import Avatar
+from Appventas.views import (#Tupla
+    BusquedaAcc, CambiarPassword, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, 
+    Formularioindumentarias, Formulariorepuestos,LeerAcc, LeerCategoria, Mensajeria, ResultAcc, agregar_avatar, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
+    editarrepuestos, eliminar_producto, eliminarIndumentaria, eliminaraccesorios, eliminarbici, 
+    eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
+    Busquedabicis, limpiar_carrito, registrarse, LeerIndum, LeerBicis, LeerRepu, ResultBici, BusquedaIndu, 
+    BusquedaRepues, ResultIndu, ResultRepues,
+    Nosotros, IrEnviarMensaje, IrRegistrarse, tienda
+    
+
+)
+from django.contrib.auth.views import LogoutView
+
 urlpatterns = [
     
      #Simple accesow
@@ -23,6 +40,7 @@ urlpatterns = [
     path('Nosotros/', Nosotros,name="Nosotros"),
     path('EnviarMensaje/',IrEnviarMensaje,name="EnviarMensaje"),
     #CARGAR DATOS
+    path('FormularioEmpleado/', CrearEmpleado, name="FormularioEmpleado"),
     path('FormularioBici/', Formulariobicis, name="bici_formulario"),
     path('repu_formulario/', Formulariorepuestos, name="repu_formulario"),
     path('indu_formulario/', Formularioindumentarias, name="indu_formulario"),
@@ -33,7 +51,8 @@ urlpatterns = [
     path('LeerBicicletas/', LeerBicis, name="LeerBicis"),
     path('LeerRepuestos/',LeerRepu, name="LeerRepues") ,
     path('LeerAccesorios/',LeerAcc, name="LeerAcc") ,
-    path('LeerCategorias/',LeerCategoria, name="LeerCategorias") , 
+    path('LeerCategorias/',LeerCategoria, name="LeerCategorias"),
+    path('LeerEmpleados/',LeerEmpleado, name="LeerEmpleados"),  
     #BUSCAR
     #en el template. con "direccion"(sin /) entre las comillas, y con "{% url 'name'%}" va el name.         
     path('BusquedaBici/', Busquedabicis, name="Buscar1"),#Ir pagina de busqueda bicis
@@ -50,6 +69,7 @@ urlpatterns = [
     path('eliminarrepu/<int:id>', eliminarrepuestos, name="Eliminarrepu"),
     path('eliminaracc/<int:id>', eliminaraccesorios, name="Eliminaracc"),
     path('eliminarcat/<int:id>', eliminarcategoria, name="Eliminarcat"),
+    path('eliminarEmpleado/<int:id>', EliminarEmpleado, name="EliminarEmpleado"),
 
     #EDITAR
     path('editarbicis/<int:id>', editarbicis, name="Editarbicis"),
@@ -57,6 +77,7 @@ urlpatterns = [
     path('editarindu/<int:id>', editarindumentaria, name="Editarindu"),
     path('editaracc/<int:id>', editaraccesorios, name="Editaracc"),
     path('editarcat/<int:id>', editarcategoria, name="Editarcat"),
+    path('editarEmpleado/<int:id>', EditarEmpleado, name="EditarEmpleado"),
     
     #LOGIN
     path('login', iniciar_sesion, name='Login'),
@@ -84,6 +105,10 @@ urlpatterns = [
     path('restarindu/<int:producto_id>', views.restar_indumentaria, name="Restarindu"),
     path('limpiar/', views.limpiar_carrito, name="Limpiar"),
     
+    #Emviar Correo
+    #path('IrEnviarMensaje',IrEnviarMensaje,name="Contacto"),
+    path('EnviarMensaje',Mensajeria,name="MensajeCorreo"),
+
     #Imagenes/Avatars
     
 ]

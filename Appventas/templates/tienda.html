@@ -5,9 +5,9 @@
 {% block bloquecambia %}
 
 
-        <!-- Header--> 
+<!-- Header--> 
   
-<div class="navbar-collapse text-center" id="navbarToggleExternalContent">
+<div class="text-center" id="navbarToggleExternalContent">
   <div class="bg-dark p-2">
     <h5 class="text-white h2">Seleccionar producto</h5>
     <button type="button" class="btn btn-outline-primary">
@@ -27,13 +27,7 @@
     </button>
   </div>
 </div>
-<nav class="navbar navbar-collapse bg-light">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  </div>
-</nav>
+>
 <div class="container">
     <div style="float:right">
     
@@ -59,7 +53,7 @@ Loguearse para poder comprar
 
                              
                              <h5 class="card-title">{{producto.nombre}}</h5>
-                             <h6 class="card-title">${{producto.precio}}</h6>
+                             <h6 class="card-title">$ {{producto.precio}}</h6>
                                              
                              
                         
@@ -160,24 +154,11 @@ Loguearse para poder comprar
 <br>
 <br>
 <br>
-<nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link">Previous</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Next</a>
-    </li>
-  </ul>
-</nav>
 
-<br>
-<br>
-<br>
-<br>
+<div>
+  {% include 'paginator.html' %}
+</div>
+
 {% endblock bloquecambia %}
 
 

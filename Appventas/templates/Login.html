@@ -4,27 +4,32 @@
 
 {% block bloquecambia %}
 
-<br>
-
-<div class="text-center" class="btn btn-outline-dark mt-auto">
+   
+<div class="text-left" class="btn btn-outline-dark mt-auto">
     <br>
-    <h3>LOGIN</h3>
-    <h4>{{mensaje}}</h4>
+    <div class="text-center">
+        <h3>Iniciar Sesion</h3>
+        <h4>{{mensaje}}</h4>
+    </div><br>
     <br>
-    <br>
-    <form action="" method="POST">
-     {% csrf_token %}
+    <form  action="" method="POST">
+        {% csrf_token %}
 
-
-     {{form.as_p}}
-
-     <button type="submit" class="btn btn-outline-dark mt-auto" style="margin-right: 24px">Iniciar Sesion</button><a class="btn btn-outline-dark mt-auto" href="{% url 'Registrarse' %}" style="margin-left: 24px">Registrarse</a>
-     
+        <table  style="margin: 0 auto;">
+            {{form.as_table }}
+        </table>
+        <br>
+        <br>
+        <div class="text-center">
+            <button type="submit"  class="btn btn-outline-dark mt-auto " style="margin-right: 24px">Iniciar Sesion</button><a class="btn btn-outline-dark mt-auto text-center" href="{% url 'Registrarse' %}" style="margin-left: 24px">Registrarse</a>
+        </div> 
     </form>
+   
+    
     
     <br>
     <br>
-<div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="/Appventas/">Volver</a></div>
+<div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="{% url 'INICIO'%}">Volver</a></div>
 
 <br><br>
 {% endblock bloquecambia %}

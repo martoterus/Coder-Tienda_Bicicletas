@@ -1,0 +1,31 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+    <h2 >Formulario - Editar empleado: </h2>
+
+    
+        
+       
+        <form action="{% url 'EditarEmpleado' id %}" method = "POST">{% csrf_token %}
+
+            <table>
+             {{EmpleadosForm.as_table}}
+            </table>
+
+             <input class="btn btn-outline-dark mt-auto" type="submit" value="Enviar"  href="">
+
+        </form>
+    
+        
+
+    <div class="text-center"><a  class="btn btn-outline-dark mt-auto" href="{% url 'LeerEmpleados' %}">Volver</a></div>
+      
+    
+    
+
+
+
+{% endblock bloquecambia %}
