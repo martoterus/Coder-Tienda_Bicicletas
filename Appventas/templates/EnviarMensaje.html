@@ -25,9 +25,9 @@
     
     <form  action="" method="POST">{% csrf_token %}
 
-        <table>
+        |
 
-          <p>Ingrese su nombre: {{formularioMensaje.Nombre}}</p> 
+           <p>Ingrese su nombre: {{formularioMensaje.Nombre}}</p> 
            <p>Ingrese su apellido:  {{formularioMensaje.Apellido}}</p>
            <p>Ingrese su email: {{formularioMensaje.Correo}}</p>
            <p>Ingrese el asunto: {{formularioMensaje.Asunto}}</p>
@@ -42,7 +42,7 @@
         <br>
         
     
-        <input class="btn btn-outline-info mt-auto" type="submit" value="Enviar"  href="">
+        <input class="btn btn-outline-dark mt-auto" type="submit" value="Enviar"  href="">
         <br><br><br>
     </form>
 
