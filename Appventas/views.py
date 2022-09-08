@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.http import Http404
 from django.shortcuts import render
 from .carrito import carrito
-from Appventas.models import accesorios, bicicletas, categorias, empleado, indumentarias, repuestos, EnviarMensaje
+from Appventas.models import About, accesorios, bicicletas, categorias, empleado, indumentarias, repuestos, EnviarMensaje
 from Appventas.forms import AvatarFormulario, AccesoriosFormularios, BicicletasFormularios, FormularioMensaje, IndumentariasFormularios, RepuestosFormularios, categoriasFormulario, empleadosFormulario, enviarMensaje, FormularioMensaje, CrearUsuario
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , UserChangeForm
 from django.contrib.auth import login, logout, authenticate
@@ -38,12 +38,12 @@ def ViewPadre(request):
     return render (request,"Padre.html")
 
 def Nosotros(request):#Template de Nostros
-  
+   about=About.objects.all()
    try:
     avatar=Avatar.objects.filter(user=request.user.id)                    
     filtro=len(avatar)-1
     
-    return render(request, "QuienesSomos.html",{"url":avatar[filtro].imagen.url})
+    return render(request, "QuienesSomos.html",{"url":avatar[filtro].imagen.url,"about0":about[0].imagen.url,"about1":about[1].imagen.url})
    except:
     return render(request, "QuienesSomos.html")
 

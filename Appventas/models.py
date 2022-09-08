@@ -135,6 +135,9 @@ class EnviarMensaje(models.Model):
 
 #-----------------------------------------------
 
+class About(models.Model):
 
+    #Subcarpeta avatares de media
+    imagen=models.ImageField(upload_to='img', null=True,blank=True)
 
 
