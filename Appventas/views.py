@@ -40,7 +40,7 @@ def ViewPadre(request):
 def Nosotros(request):#Template de Nostros
   
    try:
-    avatar=Avatar.objects.filter(user=request.user.id)                    #en el registro avatar, en la propiedad imagen, en el campo tipo imagen adentro tiene un url
+    avatar=Avatar.objects.filter(user=request.user.id)                    
     filtro=len(avatar)-1
     
     return render(request, "QuienesSomos.html",{"url":avatar[filtro].imagen.url})
@@ -764,7 +764,7 @@ def CrearEmpleado(request):
         EmpleadoForm=empleadosFormulario()
 
         userform = UserCreationForm()
-        avatar=Avatar.objects.get(user=request.user.id)  
+        avatar=Avatar.objects.filter(user=request.user.id)  
         filtro=len(avatar)-1                  #en el registro avatar, en la propiedad imagen, en el campo tipo imagen adentro tiene un url
    
         return render(request,"CreateEmpleado.html", {"CrearEmpleado":EmpleadoForm, "userform":userform,"url":avatar[filtro].imagen.url})
