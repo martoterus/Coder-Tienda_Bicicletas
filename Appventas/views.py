@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.http import Http404
 from django.shortcuts import render
 from .carrito import carrito
-from Appventas.models import accesorios, bicicletas, categorias, empleado, indumentarias, repuestos, EnviarMensaje
+from Appventas.models import About, accesorios, bicicletas, categorias, empleado, indumentarias, repuestos, EnviarMensaje
 from Appventas.forms import AvatarFormulario, AccesoriosFormularios, BicicletasFormularios, FormularioMensaje, IndumentariasFormularios, RepuestosFormularios, categoriasFormulario, empleadosFormulario, enviarMensaje, FormularioMensaje, CrearUsuario
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , UserChangeForm
 
@@ -20,18 +20,13 @@ from django.contrib.auth.decorators import login_required#decorador para vistas 
 
 #-----------------------------------------------
 from queue import Empty
-from unicodedata import name
 from django.conf import settings
 from django.core.mail import EmailMessage
 from django.core.mail import EmailMessage# Toma un temaplate html  
 from django.template.loader import render_to_string # transformado en un string
 from django.contrib import messages
-
-
 from django.shortcuts import redirect
-
 from django.contrib.auth.models import User
-
 from django.shortcuts import render, redirect
 from Appventas.carrito import carrito
 from Appventas.models import  Avatar, EnviarMensaje, categorias
@@ -45,21 +40,25 @@ def ViewPadre(request):
     return render (request,"Padre.html")
 
 def Nosotros(request):#Template de Nostros
-
-   
-
-    return render(request, "QuienesSomos.html",{})
-
+   about=About.objects.all()
+   try:
+    avatar=Avatar.objects.filter(user=request.user.id)                    
+    filtro=len(avatar)-1
+    
+    return render(request, "QuienesSomos.html",{"url":avatar[filtro].imagen.url,"about0":about[0].imagen.url,"about1":about[1].imagen.url})
+   except:
+    return render(request, "QuienesSomos.html")
 
 def inicio(request):#Template de Inivcio
     carr = carrito(request)
     categoria = categorias.objects.all()
     try:
-        avatar=Avatar.objects.filter(user=request.user.id,imagen=request.user.imagen)
-        filtro=len(avatar)-1
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1                 #en el registro avatar, en la propiedad imagen, en el campo tipo imagen adentro tiene un url
         return render(request, "Formularios.html", {"categorias": categoria,"url":avatar[filtro].imagen.url})
     except:
-        return render(request, "Formularios.html", {"categorias": categoria})
+        return render(request, "Formularios.html",{ "categorias": categoria})
+   
 
 def tienda(request):
     bicicleta=bicicletas.objects.all()
@@ -778,8 +777,10 @@ def CrearEmpleado(request):
         EmpleadoForm=empleadosFormulario()
 
         userform = UserCreationForm()
-
-        return render(request,"CreateEmpleado.html", {"CrearEmpleado":EmpleadoForm, "userform":userform})
+        avatar=Avatar.objects.filter(user=request.user.id)  
+        filtro=len(avatar)-1                  #en el registro avatar, en la propiedad imagen, en el campo tipo imagen adentro tiene un url
+   
+        return render(request,"CreateEmpleado.html", {"CrearEmpleado":EmpleadoForm, "userform":userform,"url":avatar[filtro].imagen.url})
 
 
 #Registrarse
@@ -858,18 +859,15 @@ def agregar_avatar(request):
 
     if request.method == 'POST':
        
-        miFormulario = AvatarFormulario(request.POST, files=request.FILES)
+        miFormulario = AvatarFormulario(request.POST, request.FILES)
 
         if miFormulario.is_valid():
            
-
             data = miFormulario.cleaned_data
-
             avatar =Avatar(user=request.user, imagen=data['imagen'])
-            
             avatar.save()
 
-            return render(request, "SavePerfil.html", {"mensaje": "Avatar cargado."})
+            return render(request, "SavePerfil.html")
         else:
            
             miFormulario = AvatarFormulario()
@@ -877,10 +875,8 @@ def agregar_avatar(request):
 
 
     else:
-
         avatarform = AvatarFormulario()
         
-
     return render(request, "LoginAgregarAvatar.html", {"miFormulario": avatarform})
 
 
@@ -936,8 +932,6 @@ def Mensajeria(request):
             return render (request,"Save.html",{"mensaje":"Nos contactaremos a la brevedad.."})
 
         else:
-            print("3")
-
             form=FormularioMensaje()
             messages.error(request,'Correo No valido')
     else:

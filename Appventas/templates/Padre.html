@@ -54,30 +54,30 @@
                                         
                     {% if user.is_authenticated %}
 
+                        
                         {% if url %}
-                            <img src="{{url}}" height="35px" alt="avatar">
-                        {% else %}
-                            <img src="Appventas/media/img/logo.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
+                            <img src="{{url}}" height="35px" alt="avatar">    
                         {% endif %}
+                                                     
+                        
+                        <div class="btn-group">
+                        <button class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false" >@{{user.username}}</button>
 
-                    <div class="btn-group">
-                    <button class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false" >@{{user.username}}</button>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="{% url 'Perfil' %}">Perfil</a></li>
+                              <li><a class="dropdown-item" href="{% url 'MensajeCorreo' %}">Contacto</a></li>
+                              <li><a class="dropdown-item" href="{% url 'rooms' %}">Chat</a></li>
+                              <li><hr class="dropdown-divider"></li>
+                              <li><a class="dropdown-item" href="{% url 'Logout' %}">Salir</a></li>
 
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="{% url 'Perfil' %}">Perfil</a></li>
-                          <li><a class="dropdown-item" href="{% url 'MensajeCorreo' %}">Contacto</a></li>
-                          <li><a class="dropdown-item" href="{% url 'rooms' %}">Chat</a></li>
-                          <li><hr class="dropdown-divider"></li>
-                          <li><a class="dropdown-item" href="{% url 'Logout' %}">Salir</a></li>
-
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
 
 
 
-                {% else %}
+                    {% else %}
                     <a class="btn btn-primary" href="{% url 'Login' %}">Ingresar</a>
-                {% endif %}
+                    {% endif %}
                     
                     
                     

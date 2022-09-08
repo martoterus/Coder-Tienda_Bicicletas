@@ -21,9 +21,9 @@ from django.urls import path
 # from Appventas.models import Avatar
 from Appventas.views import (#Tupla
     BusquedaAcc, CambiarPassword, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, 
-    Formularioindumentarias, Formulariorepuestos,LeerAcc, LeerCategoria, Mensajeria, ResultAcc, agregar_avatar, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
+    Formularioindumentarias, Formulariorepuestos,LeerAcc, LeerCategoria, Mensajeria, ResultAcc, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
     editarrepuestos, eliminar_producto, eliminarIndumentaria, eliminaraccesorios, eliminarbici, 
-    eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
+    eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, agregar_avatar,
     Busquedabicis, limpiar_carrito, registrarse, LeerIndum, LeerBicis, LeerRepu, ResultBici, BusquedaIndu, 
     BusquedaRepues, ResultIndu, ResultRepues,
     Nosotros, IrEnviarMensaje, IrRegistrarse, tienda

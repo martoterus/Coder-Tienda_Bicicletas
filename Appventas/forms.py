@@ -2,12 +2,10 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
-
-
 from .models import categorias, Avatar
 from django.contrib.auth.forms import UserChangeForm,UserCreationForm
 from django.contrib.auth.models import User
-#from Appventas.models import Avatar
+
 
 from .models import categorias
 
@@ -123,5 +121,6 @@ class AvatarFormulario(forms.ModelForm):
 
     class Meta:
         model=Avatar
-        fields=('imagen',)    
+        fields=('imagen',)  
+
 

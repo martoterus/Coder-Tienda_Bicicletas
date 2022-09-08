@@ -132,3 +132,12 @@ class EnviarMensaje(models.Model):
     # usuario=models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
 
 
+
+#-----------------------------------------------
+
+class About(models.Model):
+
+    #Subcarpeta avatares de media
+    imagen=models.ImageField(upload_to='img', null=True,blank=True)
+
+
