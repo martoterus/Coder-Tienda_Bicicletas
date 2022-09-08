@@ -1,38 +1,60 @@
 <!--CoderHouse-Python
-    Desafio entregable n°7: Entrega Intermedia del Proyecto Final.
-    Participantes:
-        Martin Bisceglia
-        Martin Goñi
-    El desafío consiste en:
-    >>Objetivos Generales:
-    Desarrollar una WEB Django con patrón MVT subida a Github.
-    >>Se debe entregar:
-    Link de GitHub con el proyecto totalmente subido a la plataforma.
-    Proyecto Web Django con patrón MVT que incluya:
-    1.  Herencia de HTML.
-    2.  Por lo menos 3 clases en models.
-    3.  Un formulario para insertar datos a todas las clases de tu models.
-    4.  Un formulario para buscar algo en la BD
-    5.  Readme que indique el orden en el que se prueban las cosas y/o donde están las
-    funcionalidades.
+    Proyecto Final Coder House
 
     Decidimos hacer una aplicación web de "Artículos para una bicicletería". 
-    La app cuenta con 3 categorías: bicicletas, repuestos, e indumentaria. En cada una se puede cargar nuevos items, ver la lista de ítems, y buscar por items según un determinado criterio de búsqueda. La aplicación en si es bastante intuitiva. 
+    
+    Podras crearte un usuario permitiendote:
+                 usar la tienda para poder poder comprar. 
+                 chatear con los demas usuarios.
+                 cargar una foto de avatar.
+                 modificar datos de tu usuario.
+                 contactarse con la pagina por medio de "contacto" y se enviará junto al mensaje el usuario que lo envia.
+    Si no es usuario:
+                 ver los articulos de la tienda.
+                 contactarse con la pagina via correo. 
+                 ver las zolapas de "home", "about" y "formularios" 
+    
+    Tambien el administrador podra crear empleados que podran hacer:
+                 Cargar nuevos articulos, modificar los actuales. 
+                 Chatear en el chat de usuarios.
 
-    Para comenzar la Aplicación desde la terminal de VSC:
-    1°Cargamos el entorno con pipenv shell.
-    2°Nos posicionamos en la carpeta "Entrega1",y corremos el comando: py manage.py runserver.
-    3°Presionamos el link http://127.0.0.1:8000/ con : ctrl + botón izquierdo del mouse. 
-    4°Al abrirse la aplicación se mostrará la pagina de inicio. Recorra la pagina como guste. Por cada botón se iran abriendo los templates con sus views y urls correspondientes.
-    5°Para finalizar la aplicación, desde la terminal de vsc, presione: ctrl + c .
 
-    Subir el proyecto a GitHub:
-    1°Creamos un nuevo respositorio publico.
-    2°Copiamos el link y lo asociamos al proyecto con: git remote add NombreUnico LinkdeGitHub
-    3°Subimos el proyecto con: git push -u NombreUnico master 
+    Algunos de los problemas que surgieron:
+    
+    Problema n°1:
+    En Contacto, en el envío de mensaje no nos validaban los campos y por esto apareció el error de que se enviaba el mensaje vacío. 
+    Esto ocurría por la falta de conocimiento en html y css, ya que la carga de datos se realizaba por medio del nombre(name="")
+    del campo del html a la view. 
+    Para corregir esto decidimos cargar un formulario y retornar el renderizado con el html y el formulario como contexto en el método get.
+    Y cuando enviamos los datos y entramos con el método post recuperamos los datos del formulario a una variable, y si son válidos, se 
+    guarda cada campo especifico en distintas variables preseleccionadas (variable=form.cleande_data["campo"])
+    Para enviar el mensaje por  correo es necesario transformar el render a string, se utiliza la función predeterminada,
+    importada de django.template.loader, con las variables que queremos enviar. Y luego, con un objeto importado de django 
+    le cargamos los datos necesarios, y enviamos el correo con la función "send", y se envia el mensaje al correo que colocamos en la configuración de la app.
 
-    En este proyecto utilizamos solo una rama, y se trabajo en la rama master. Se realizaron varios commit:
-    Escriba en terminal: git log --oneline
-    Para salir presione la tecla: q
+    Para usar class Meta: Utilizamos un formulario basado en modelos class ModeloX (models.ModelForm):
 
-    -->
+    Problema n°2:
+    En avatar de usuario: Al cambiar el avatar con el mismo usuario, saltaba un error y no mostraba ninguna imagen ya que se 
+    dirigía a la excepción. 
+    ¿Qué sucedía? El filtro nos trae la imagen asociada a el usuario, al haber más de una imagen se pisaban entre sí y ocurría un error.
+    Para solucionar esto pensamos lo siguiente: cuando usamos el manager object con el método filtro creamos un QuerySet, es decir una lista.
+    Entonces decidimos contar la cantidad de elementos de la lista, restarle 1 y ese número colocarlo como ubicación en la lista del contexto:
+    avatar=Avatar.objects.filter(user=request.user.id)                    
+    filtro=len(avatar)-1
+
+    return render ..... {"url":avatar[filtro].imagen.url}...
+
+    Problema 3: 
+
+    En la pestaña about no nos permita cargar la foto de nosotros. Intentamos colocando el código img con la direccione de la carpeta donde 
+    están todas las fotos y la foto en sí que queríamos subir, pero terminaba fallando y aparecía la imagen rota.
+    Para esto decidimos utilizar el medio inicial que usamos para el avatar. 
+    Creamos un modelo llamado "about", donde creamos un campo de imagen, lo cargamos en la base de datos, y también modificamos el admin
+    para poder cargar las fotos manualmente con el administrador. Finalmente, en views.py en la función que renderiza el "about" 
+    tomamos todos los objectos del modelo About y enviamos como contexto en el renderizado la ubicación de la imagen con su url.
+
+    
+    
+
+        -->
