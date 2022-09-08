@@ -1,0 +1,40 @@
+{% extends 'Padre.html' %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+<br>
+<h3 style= "margin-left: 50px">Perfil</h3>
+<h4 style= "margin-left: 50px">Bien venido {{user.username}}</h4>
+    
+  
+<div style= "margin-left: 50px" >
+    <br>
+    
+    
+
+    
+    <form  method="POST">{% csrf_token %}
+     
+        <table>    
+            {{PerfilFormulario.as_table}}
+
+        </table>
+        <br>
+        <a class="btn btn-outline-dark mt-auto" href="{% url 'CambiarContraseña' %}">Cambiar contraseña.</a>
+        <br>
+        <br>
+        <a class="btn btn-outline-dark mt-auto" href="{% url 'CambiarAvatar' %}">Agregar avatar.</a>
+        <br>
+        <hr>
+        <button class="btn btn-outline-dark mt-auto" type="submit" >Guardar </button>
+     
+    </form>
+    
+    <br>
+    <br>
+<div class="text-center" ><a class="btn btn-outline-dark mt-auto" href="{% url 'INICIO' %}">Volver</a></div>
+
+<br><br>
+{% endblock bloquecambia %}

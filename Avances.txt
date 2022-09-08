@@ -1,0 +1,4 @@
+Terminando carrito, falta poder limpiar carrito
+Falta que los productos agregdos tengan todos el mismo tamaño 
+paginacion tienda
+poder buscar en la tienda por categoria de producto

@@ -1,0 +1,29 @@
+{% extends "Padre.html" %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+    <h2 >Formulario - Editar repuestos</h2>
+
+    
+        
+       
+        <form action="{% url 'Editarrepu' id %}" method = "POST" enctype="multipart/form-data">{% csrf_token %}
+            <table>
+                {{RepuFormulario.as_table}}
+            </table>
+            <input class="btn btn-outline-dark mt-auto" type="submit" value="Enviar"  href="">
+        </form>
+
+    
+    
+
+    <div class="text-center"><a  class="btn btn-outline-dark mt-auto" href="{% url 'INICIO' %}">Volver</a></div>
+      
+    
+    
+
+
+
+{% endblock bloquecambia %}

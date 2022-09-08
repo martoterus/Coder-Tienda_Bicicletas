@@ -1,0 +1,27 @@
+{% extends "Padre.html" %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+    <h2 >Formulario - Agregar bicicletas</h2>
+    <br><br>
+    <form  class="text-center" action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+        
+       
+        <table>
+             {{ BiciFormulario.as_table}}
+        </table>
+        <br>
+        <br>
+        
+        <input class="btn btn-outline-dark mt-auto" type="submit" value="Enviar"  href="">
+        <br><br><br>
+        <div class="text-center"><a  class="btn btn-outline-dark mt-auto" href="{% url 'INICIO' %}">Volver</a></div>
+        <br>
+    </form>
+    
+
+
+
+{% endblock bloquecambia %}

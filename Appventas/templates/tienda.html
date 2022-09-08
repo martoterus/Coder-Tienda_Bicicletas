@@ -1,0 +1,165 @@
+{% extends 'Padre.html' %}
+
+{% load static %}
+
+{% block bloquecambia %}
+
+
+<!-- Header--> 
+  
+<div class="text-center" id="navbarToggleExternalContent">
+  <div class="bg-dark p-2">
+    <h5 class="text-white h2">Seleccionar producto</h5>
+    <button type="button" class="btn btn-outline-primary">
+      <a class="text-white" href="{% url 'Tiendabici' %}">Bicicletas</a>
+    </button>
+    <button type="button" class="btn btn-outline-secondary">
+      <a class="text-white" href="{% url 'Tiendarepu' %}">Repuestos</a>
+    </button>
+    <button type="button" class="btn btn-outline-success">
+      <a class="text-white" href="{% url 'Tiendaacc' %}">Accesorios</a>
+    </button>
+    <button type="button" class="btn btn-outline-danger">
+      <a class="text-white" href="{% url 'Tiendaindu' %}">Indumentaria</a>
+    </button>
+    <button type="button" class="btn btn-outline-primary">
+    <div><a class="text-white"  href="{% url 'Tienda' %}">Todos los productos</a></div>
+    </button>
+  </div>
+</div>
+>
+<div class="container">
+    <div style="float:right">
+    
+{% if request.user.is_authenticated %}
+ {% include "carro/widget.html"%}
+{% else %}
+Loguearse para poder comprar
+{%endif%}
+{% block categorias %}
+</div>       
+    </div>
+</div>
+ <div class="shadow-none p-3 mb-5 bg-light rounded">
+    <div class="row">
+     {% for producto in bicicletas %}
+        <div class="col-md-3">
+            <div class="card shadow-none p-3 mb-5 bg-light rounded">
+                {% if producto.imagen %}
+                <img class="card-img-top" src="{{producto.imagen.url}}"/>
+                {% endif %}
+                    <div class="card-body" style="text-align: center;">
+                        <div class="text-center">
+
+                             
+                             <h5 class="card-title">{{producto.nombre}}</h5>
+                             <h6 class="card-title">$ {{producto.precio}}</h6>
+                                             
+                             
+                        
+                        </div>
+                        <div class="card-footer text-center">
+
+                            <a class="btn btn-success" href= '{% url "Agregarbici" producto.id %}'>Agregar</a>
+                            <a class="btn btn-success" href= '{% url "Restarbici" producto.id %}'>Quitar</a>
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+     {% endfor %}
+     {% for producto in repuestos %}
+        <div class="col-md-3">
+            <div class="card">
+                {% if producto.imagen %}
+                <img class="card-img-top" src="{{producto.imagen.url}}" alt="..." />
+                {% endif %}
+                    <div class="card-body" style="text-align: center;">
+                        <div class="text-center">
+
+                             
+                             <h5 class="card-title">{{producto.nombre}}</h5>
+                             <h6 class="card-title">${{producto.precio}}</h6>
+                                             
+                             
+                        
+                        </div>
+                        <div class="card-footer text-center">
+
+                            <a class="btn btn-success" href= '{% url "Agregarrepu" producto.id %}'>Agregar</a>
+                            <a class="btn btn-success" href= '{% url "Restarrepu" producto.id %}'>Quitar</a>
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+     {% endfor %}
+     {% for producto in accesorios %}
+     <div class="col-md-3">
+          <div class="card" style="width: 100%; margin: 7px 7px; ">
+             {% if producto.imagen %}
+             <img class="card-img-top" src="{{producto.imagen.url}}" alt="..." />
+             {% endif %}
+                 <div class="card-body" style="text-align: center;">
+                      <div class="text-center">
+
+                          
+                          <h5 class="card-title">{{producto.nombre}}</h5>
+                          <h6 class="card-title">${{producto.precio}}</h6>
+                                          
+                          
+                     
+                      </div>
+                      <div class="card-footer text-center">
+
+                         <a class="btn btn-success" href= '{% url "Agregaracc" producto.id %}'>Agregar</a>
+                         <a class="btn btn-success" href= '{% url "Restaracc" producto.id %}'>Quitar</a>
+
+                      </div>
+                 </div>
+         </div>
+     </div>
+     {% endfor %}  
+     {% for producto in indumentarias %}
+     <div class="col-md-3">
+      <div class="card" style="width: 100%; margin: 7px 7px; ">
+          {% if producto.imagen %}
+          <img class="card-img-top" src="{{producto.imagen.url}}" alt="..." />
+          {% endif %}
+              <div class="card-body" style="text-align: center;">
+                <div class="text-center">
+
+                       
+                  <h5 class="card-title">{{producto.nombre}}</h5>
+                  <h6 class="card-title">${{producto.precio}}</h6>
+                                       
+                       
+                  
+                </div>
+                <div class="card-footer text-center">
+
+                  <a class="btn btn-success" href= '{% url "Agregarindu" producto.id %}'>Agregar</a>
+                  <a class="btn btn-success" href= '{% url "Restarindu" producto.id %}'>Quitar</a>
+
+                </div>
+              </div>
+          </div>
+     </div>
+     {% endfor %}  
+{% endblock categorias %}
+    </div>  
+  </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+
+<div>
+  {% include 'paginator.html' %}
+</div>
+
+{% endblock bloquecambia %}
+
+
+

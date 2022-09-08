@@ -1,0 +1,75 @@
+{% extends 'tienda.html' %}
+
+{% load static %}
+
+{% block categorias %}
+<div class="collapse" id="navbarToggleExternalContent">
+  <div class="bg-dark p-4">
+    <h5 class="text-white h4">Seleccionar producto</h5>
+    <button type="button" class="btn btn-outline-primary">
+      <a href="#">Bicicletas</a>
+    </button>
+    <button type="button" class="btn btn-outline-secondary">Repuestos</button>
+    <button type="button" class="btn btn-outline-success">Accesorios</button>
+    <button type="button" class="btn btn-outline-danger">Indumentaria</button>
+  </div>
+</div>
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+<div class="container">
+    <div style="float:right">
+    
+{% if request.user.is_authenticated %}
+ {% include "carro/widget.html"%}
+{% else %}
+Loguearse para poder comprar
+{%endif%}
+
+</div>       
+    </div>
+</div>
+
+ <div class="container">
+    <div class="row">
+     {% for producto in bicicletas %}
+        <div class="col-md-3">
+            <div class="card">
+                {% if producto.imagen %}
+                <img class="card-img-top" src="{{producto.imagen.url}}"/>
+                {% endif %}
+                    <div class="card-body" style="text-align: center;">
+                        <div class="text-center">
+
+                             
+                             <h5 class="card-title">{{producto.nombre}}</h5>
+                             <h6 class="card-title">${{producto.precio}}</h6>
+                                             
+                             
+                        
+                        </div>
+                        <div class="card-footer text-center">
+
+                            <a class="btn btn-success" href= '{% url "Agregarbici" producto.id %}'>Agregar</a>
+                            <a class="btn btn-success" href= '{% url "Restarbici" producto.id %}'>Quitar</a>
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+     {% endfor %}
+    </div>  
+  </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+
+
+{% endblock categorias %}
+
