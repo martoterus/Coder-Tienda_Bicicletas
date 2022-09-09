@@ -1,7 +1,6 @@
 from django.test import TestCase
 
-#No funciona para el chat actual
-# from django.contrib.auth import get_user_model#podemos crear usuarios para hacer nuestros tests
+#from django.contrib.auth import get_user_model#podemos crear usuarios para hacer nuestros tests
 
 # User=get_user_model()
 # class CanalTestCase(TestCase):

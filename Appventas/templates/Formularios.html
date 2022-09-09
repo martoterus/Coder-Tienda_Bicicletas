@@ -26,11 +26,96 @@
       </button>
     </div>
 </header>
-<br>
 
 <!-- Example single danger button -->
 
+<div class="text-center">
+  <div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Empleados
+    </button>
+    <ul class="dropdown-menu">
+   
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="{% url 'FormularioEmpleado' %}">Cargar</a></li>
+      <li><a class="dropdown-item" href="{% url 'LeerEmpleados' %}">Ver</a></li>
+    </ul>
+  </div>  
+<div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Categorias
+    </button>
+    <ul class="dropdown-menu">
+   
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="cat_formulario">Cargar</a></li>
+      <li><a class="dropdown-item" href="LeerCategorias">Ver</a></li>
+        
+    </ul>
+</div>
+<div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Bicicletas
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="FormularioBici">Cargar</a></li>
+      <li><a class="dropdown-item" href="LeerBicicletas">Ver</a></li>
+      <li><a class="dropdown-item" href="BusquedaBici">Buscar</a></li>
+    </ul>
+</div>
+<div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Repuestos
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Asientos</a></li>
+      <li><a class="dropdown-item" href="#">Cables & fundas</a></li>
+      <li><a class="dropdown-item" href="#">Cadenas</a></li>
+      <li><a class="dropdown-item" href="#">Cajas pedaleras</a></li>
+      <li><a class="dropdown-item" href="#">Camaras</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="repu_formulario">Cargar</a></li>
+      <li><a class="dropdown-item" href="LeerRepuestos">Ver</a></li>
+      <li><a class="dropdown-item" href="{% url 'Buscar2' %}">Buscar</a></li>
+    </ul>
+</div>
+<div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Accesorios
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Action</a></li>
+      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li><a class="dropdown-item" href="#">Something else here</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="acc_formulario">Cargar</a></li>
+      <li><a class="dropdown-item" href="LeerAccesorios">Ver</a></li>
+      <li><a class="dropdown-item" href="{% url 'BuscarAcc' %}">Buscar</a></li>
+    </ul>
+</div>
+<div class="btn-group">
+    <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+      Indumentaria
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">1</a></li>
+      <li><a class="dropdown-item" href="#">2</a></li>
+      <li><a class="dropdown-item" href="#">3</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="indu_formulario">Cargar</a></li>
+      <li><a class="dropdown-item" href="{% url 'Leerindume' %}">Ver</a></li>
+      <li><a class="dropdown-item" href="{% url 'Buscar3' %}">Buscar</a></li>
+    </ul>
+</div>
+<div class="btn-group" style="margin-left: 80px">
+    <a class="btn btn"  href="{% url 'Tienda' %}">Tienda</a></li>
+</div>
+</div>
+<br>
+<br>
+<br>
 
+<main>
 
   <div class="row row-cols-1 row-cols-md-2 g-4">
     <div class="col">

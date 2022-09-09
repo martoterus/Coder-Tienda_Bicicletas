@@ -2,10 +2,12 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
+
+
 from .models import categorias, Avatar
 from django.contrib.auth.forms import UserChangeForm,UserCreationForm
 from django.contrib.auth.models import User
-
+#from Appventas.models import Avatar
 
 from .models import categorias
 
@@ -108,7 +110,7 @@ class CrearUsuario(UserCreationForm):
         fields=['username','password1','password2']
 
 
-class EditarUsuario(forms.Form):
+class EditarUsuario(UserChangeForm):
    # lo que queresmos definir del usuario 
     first_name=forms.CharField(max_length=30,label="Modificar nombre")
     last_name=forms.CharField(max_length=30,label="Modificar apellido")
@@ -121,6 +123,5 @@ class AvatarFormulario(forms.ModelForm):
 
     class Meta:
         model=Avatar
-        fields=('imagen',)  
-
+        fields=('imagen',)    
 

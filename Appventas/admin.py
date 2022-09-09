@@ -14,8 +14,7 @@ admin.site.register(repuestos)
 admin.site.register(accesorios)
 admin.site.register(categorias)
 admin.site.register(empleado)
-admin.site.register(About)
-
+#admin.site.register(Avatar)
 
 
 # admin.site.register(Persona)
