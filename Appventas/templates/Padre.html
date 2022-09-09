@@ -92,140 +92,69 @@
               </div>
             </div>
             <br>
-            <div class="text-center">
-              <div class="btn-group">
-                <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-                  Empleados
-                </button>
-                <ul class="dropdown-menu">
-               
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="{% url 'FormularioEmpleado' %}">Cargar</a></li>
-                  <li><a class="dropdown-item" href="{% url 'LeerEmpleados' %}">Ver</a></li>
-                </ul>
-              </div>  
-            <div class="btn-group">
-                <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-                  Categorias
-                </button>
-                <ul class="dropdown-menu">
-               
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="cat_formulario">Cargar</a></li>
-                  <li><a class="dropdown-item" href="LeerCategorias">Ver</a></li>
-                    
-                </ul>
-            </div>
-            <div class="btn-group">
-                <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-                  Bicicletas
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="FormularioBici">Cargar</a></li>
-                  <li><a class="dropdown-item" href="LeerBicicletas">Ver</a></li>
-                  <li><a class="dropdown-item" href="BusquedaBici">Buscar</a></li>
-                </ul>
-            </div>
-            <div class="btn-group">
-                <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-                  Repuestos
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="repu_formulario">Cargar</a></li>
-                  <li><a class="dropdown-item" href="LeerRepuestos">Ver</a></li>
-                  <li><a class="dropdown-item" href="{% url 'Buscar2' %}">Buscar</a></li>
-                </ul>
-            </div>
-            <div class="btn-group">
-                <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-                  Accesorios
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="acc_formulario">Cargar</a></li>
-                  <li><a class="dropdown-item" href="LeerAccesorios">Ver</a></li>
-                  <li><a class="dropdown-item" href="{% url 'BuscarAcc' %}">Buscar</a></li>
-                </ul>
-            </div>
-            <div class="btn-group">
-                <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-                  Indumentaria
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="indu_formulario">Cargar</a></li>
-                  <li><a class="dropdown-item" href="{% url 'Leerindume' %}">Ver</a></li>
-                  <li><a class="dropdown-item" href="{% url 'Buscar3' %}">Buscar</a></li>
-                </ul>
-            </div>
-            <div class="btn-group" style="margin-left: 80px">
-                <a class="btn btn"  href="{% url 'Tienda' %}">Tienda</a></li>
-            </div>
-            </div>
-            <br>
-
             
-            <main>
 {% if request.user.empleado %}
-<div class="text-center">
+  <div class="text-center">
+      <div class="btn-group">
+        <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+          Empleados
+        </button>
+        <ul class="dropdown-menu">
+        
+          <li><a class="dropdown-item" href="{% url 'FormularioEmpleado' %}">Cargar</a></li>
+          <li><a class="dropdown-item" href="{% url 'LeerEmpleados' %}">Ver</a></li>
+        </ul>
+      </div>  
     <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Empleados
-      </button>
-      <ul class="dropdown-menu">
-     
-        <li><a class="dropdown-item" href="{% url 'FormularioEmpleado' %}">Cargar</a></li>
-        <li><a class="dropdown-item" href="{% url 'LeerEmpleados' %}">Ver</a></li>
-      </ul>
-    </div>  
-  <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Categorias
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="cat_formulario">Cargar</a></li>
-        <li><a class="dropdown-item" href="LeerCategorias">Ver</a></li>
-          
-      </ul>
-  </div>
-  <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Bicicletas
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="FormularioBici">Cargar</a></li>
-        <li><a class="dropdown-item" href="LeerBicicletas">Ver</a></li>
-        <li><a class="dropdown-item" href="BusquedaBici">Buscar</a></li>
-      </ul>
-  </div>
-  <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Repuestos
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="repu_formulario">Cargar</a></li>
-        <li><a class="dropdown-item" href="LeerRepuestos">Ver</a></li>
-        <li><a class="dropdown-item" href="{% url 'Buscar2' %}">Buscar</a></li>
-      </ul>
-  </div>
-  <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Accesorios
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="acc_formulario">Cargar</a></li>
-        <li><a class="dropdown-item" href="LeerAccesorios">Ver</a></li>
-        <li><a class="dropdown-item" href="{% url 'BuscarAcc' %}">Buscar</a></li>
-      </ul>
-  </div>
-  <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Indumentaria
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="indu_formulario">Cargar</a></li>
-        <li><a class="dropdown-item" href="{% url 'Leerindume' %}">Ver</a></li>
-        <li><a class="dropdown-item" href="{% url 'Buscar3' %}">Buscar</a></li>
-      </ul>
-  </div>
+        <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+          Categorias
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="cat_formulario">Cargar</a></li>
+          <li><a class="dropdown-item" href="LeerCategorias">Ver</a></li>
+
+        </ul>
+    </div>
+    <div class="btn-group">
+        <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+          Bicicletas
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="FormularioBici">Cargar</a></li>
+          <li><a class="dropdown-item" href="LeerBicicletas">Ver</a></li>
+          <li><a class="dropdown-item" href="BusquedaBici">Buscar</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+          Repuestos
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="repu_formulario">Cargar</a></li>
+          <li><a class="dropdown-item" href="LeerRepuestos">Ver</a></li>
+          <li><a class="dropdown-item" href="{% url 'Buscar2' %}">Buscar</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+          Accesorios
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="acc_formulario">Cargar</a></li>
+          <li><a class="dropdown-item" href="LeerAccesorios">Ver</a></li>
+          <li><a class="dropdown-item" href="{% url 'BuscarAcc' %}">Buscar</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
+          Indumentaria
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="indu_formulario">Cargar</a></li>
+          <li><a class="dropdown-item" href="{% url 'Leerindume' %}">Ver</a></li>
+          <li><a class="dropdown-item" href="{% url 'Buscar3' %}">Buscar</a></li>
+        </ul>
+    </div>
 {% endif %}
             
 
