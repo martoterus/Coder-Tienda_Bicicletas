@@ -48,7 +48,7 @@ def Nosotros(request):#Template de Nostros
     
     return render(request, "QuienesSomos.html",{"url":avatar[filtro].imagen.url,"about0":about[0].imagen.url,"about1":about[1].imagen.url})
    except:
-    return render(request, "QuienesSomos.html",{"url":avatar[filtro].imagen.url,"about0":about[0].imagen.url,"about1":about[1].imagen.url})
+    return render(request, "QuienesSomos.html",{"about0":about[0].imagen.url,"about1":about[1].imagen.url})
 
 def inicio(request):#Template de Inivcio
     carr = carrito(request)
@@ -261,22 +261,37 @@ def LeerCategoria(request):
     print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
 
     FormularioCategorias=categorias.objects.all()
-    contexto={"Categorias":FormularioCategorias}
-    return render (request, "VerFormulario_Categorias.html",contexto)
+    
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1 
+        return render (request, "VerFormulario_Categorias.html",{"Categorias":FormularioCategorias,"url":avatar[filtro].imagen.url})
+    except:
+        return render (request, "VerFormulario_Categorias.html",{"Categorias":FormularioCategorias})
 @login_required
 def LeerBicis (request):
     print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
 
     FormularioBicicletas=bicicletas.objects.all()
-    contexto={"Bicicletas":FormularioBicicletas}
-    return render (request, "VerFormulario_Bicicletas.html",contexto)
+    
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render (request, "VerFormulario_Bicicletas.html",{"Bicicletas":FormularioBicicletas,"url":avatar[filtro].imagen.url})
+    except:
+        return render (request, "VerFormulario_Bicicletas.html",{"Bicicletas":FormularioBicicletas})
 @login_required
 def LeerRepu (request):
     print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
 
     FormularioRepuestos=repuestos.objects.all()
-    contexto={"Repuestos":FormularioRepuestos}
-    return render (request, "VerFormulario_Repuestos.html",contexto)
+    
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render (request, "VerFormulario_Repuestos.html",{"Repuestos":FormularioRepuestos,"url":avatar[filtro].imagen.url})
+    except:
+        return render (request, "VerFormulario_Repuestos.html",{"Repuestos":FormularioRepuestos})
 
 @login_required
 def LeerIndum (request):
@@ -290,8 +305,13 @@ def LeerAcc (request):
     print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
 
     FormularioAccesorios=accesorios.objects.all()
-    contexto={"Accesorios":FormularioAccesorios}
-    return render (request, "VerFormulario_Accesorios.html",contexto)
+    
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render (request, "VerFormulario_Accesorios.html",{"Accesorios":FormularioAccesorios,"url":avatar[filtro].imagen.url})
+    except:
+        return render (request, "VerFormulario_Accesorios.html",{"Accesorios":FormularioAccesorios})
 
 @login_required
 def LeerEmpleado (request):
@@ -299,8 +319,10 @@ def LeerEmpleado (request):
     try:
         if request.user.empleado:
           empleadoForm=empleado.objects.all()
-          contexto={"Empleados":empleadoForm}
-          return render (request, "VerFormulario_Empleados.html",contexto)
+          
+          avatar=Avatar.objects.filter(user=request.user.id)   
+          filtro=len(avatar)-1
+          return render (request, "VerFormulario_Empleados.html",{"Empleados":empleadoForm,"url":avatar[filtro].imagen.url})
 
         else:
             return render (request, "Formularios.html")
@@ -834,10 +856,14 @@ def EditarPerfil(request):
                 usuario.last_name=data["last_name"]
                 usuario.email=data["email"]
                 usuario.save()
-
+                
                 return render(request, "Save.html", {"mensaje":"Datos actualizados con exito.."})
     else:
-        formularioPerfil=EditarUsuario (instance=request.user)
+        formularioPerfil=EditarUsuario(initial={
+            "first_name":usuario.first_name,
+            "last_name":usuario.last_name,
+            "email":usuario.email
+                })
     return render (request, "LoginPerfil.html", {"PerfilFormulario":formularioPerfil})
 
 #Cambiar contraseña
@@ -938,4 +964,8 @@ def Mensajeria(request):
     else:
         form=FormularioMensaje()
     return render (request,"EnviarMensaje.html",{"formularioMensaje":form})
+
+
+
+
 
