@@ -348,10 +348,8 @@ def LeerEmpleado (request):
     try:
         if request.user.empleado:
           empleadoForm=empleado.objects.all()
-          
-          avatar=Avatar.objects.filter(user=request.user.id)   
-          filtro=len(avatar)-1
-          return render (request, "VerFormulario_Empleados.html",{"Empleados":empleadoForm,"url":avatar[filtro].imagen.url})
+
+          return render (request, "VerFormulario_Empleados.html",{"Empleados":empleadoForm})
 
         else:
             return render (request, "Formularios.html")
@@ -614,17 +612,17 @@ def editarbicis(request, id):
             
             data=BiciFormulario.cleaned_data
         
-            bicicleta.nombre = data["Nombre"],
-            bicicleta.categoria = data["Categoria"],
-            bicicleta.tipo = data["Tipo"],
-            bicicleta.marca = data ["Marca"],
-            bicicleta.modelo = data ["Modelo"],
-            bicicleta.rodado = data ["Rodado"],
-            bicicleta.color = data ["Color"],
-            bicicleta.descripcion = data ["Descripcion"],
-            bicicleta.precio = data ["Precio"],
-            bicicleta.imagen = data ["Imagen"],
-            
+            bicicleta.nombre = data["Nombre"]
+            bicicleta.categoria = data["Categoria"]
+            bicicleta.tipo = data["Tipo"]
+            bicicleta.marca = data ["Marca"]
+            bicicleta.modelo = data ["Modelo"]
+            bicicleta.rodado = data ["Rodado"]
+            bicicleta.color = data ["Color"]
+            bicicleta.descripcion = data ["Descripcion"]
+            bicicleta.precio = data ["Precio"]
+            bicicleta.imagen = data ["Imagen"]
+        
             bicicleta.save()
             
         return render (request, "Save.html")
@@ -742,11 +740,11 @@ def editaraccesorios(request, id):
     
     else:
         accFormulario=AccesoriosFormularios(initial={
-            "nombre": acc.nombre,
-            "categoria": acc.categoria,
-            "marca": acc.marca,
-            "descripcion": acc.descripcion,
-            "precio": acc.precio,
+            "Nombre": acc.nombre,
+            "Categoria": acc.categoria,
+            "Marca": acc.marca,
+            "Descripcion": acc.descripcion,
+            "Precio": acc.precio,
         })
         return render(request,"EditarAccesorios.html", {"AccFormulario": accFormulario , "id": acc.id})
 
@@ -800,7 +798,7 @@ def CrearEmpleado(request):
         userform = UserCreationForm({                  #Se crea formulario
             "username": info["username"],
             "password1": info["password1"],
-            "password2": info["password2"],
+            "password2": info["password2"]
             })                      
                          
             #Validar datos de ambos
@@ -829,10 +827,8 @@ def CrearEmpleado(request):
         EmpleadoForm=empleadosFormulario()
 
         userform = UserCreationForm()
-        avatar=Avatar.objects.filter(user=request.user.id)  
-        filtro=len(avatar)-1                  #en el registro avatar, en la propiedad imagen, en el campo tipo imagen adentro tiene un url
-   
-        return render(request,"CreateEmpleado.html", {"CrearEmpleado":EmpleadoForm, "userform":userform,"url":avatar[filtro].imagen.url})
+        
+        return render(request,"CreateEmpleado.html", {"CrearEmpleado":EmpleadoForm, "userform":userform})
 
 
 #Registrarse
