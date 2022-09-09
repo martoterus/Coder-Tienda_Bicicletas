@@ -41,6 +41,7 @@ def ViewPadre(request):
 
 def Nosotros(request):#Template de Nostros
    about=About.objects.all()
+   
    try:
     avatar=Avatar.objects.filter(user=request.user.id)                    
     filtro=len(avatar)-1
