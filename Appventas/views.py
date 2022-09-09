@@ -77,25 +77,49 @@ def tienda(request):
      accesorio = paginatorAcc.page(pagina)
      paginatorRepu = Paginator(repuesto, 1)
      repuesto = paginatorRepu.page(pagina)
+     avatar=Avatar.objects.filter(user=request.user.id)   
+     filtro=len(avatar)-1
+
     except:
         raise Http404
-    return render(request, "tienda.html",{"bicicletas": bicicleta, "paginatorBici": paginatorBici,  "indumentarias": indumentaria, "accesorios": accesorio, "repuestos": repuesto})
+    return render(request, "tienda.html",{"bicicletas": bicicleta, "paginatorBici": paginatorBici,  "indumentarias": indumentaria, "accesorios": accesorio, "repuestos": repuesto,"url":avatar[filtro].imagen.url})
 
 def tiendabici(request):
     bicicleta=bicicletas.objects.all()
-    return render(request, "tienda.html",{ "bicicletas": bicicleta})
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render(request, "tienda.html",{ "bicicletas": bicicleta,"url":avatar[filtro].imagen.url})
+    except:
+        return render(request, "tienda.html",{ "bicicletas": bicicleta})
 
 def tiendarepuestos(request):
     repuesto=repuestos.objects.all()
-    return render(request, "tienda.html",{ "repuestos": repuesto})
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render(request, "tienda.html",{ "repuestos": repuesto,"url":avatar[filtro].imagen.url})
+    except:
+        return render(request, "tienda.html",{ "repuestos": repuesto})
+
 
 def tiendaaccesorios(request):
     accesorio=accesorios.objects.all()
-    return render(request, "tienda.html",{ "accesorios": accesorio}) 
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render(request, "tienda.html",{ "accesorios": accesorio,"url":avatar[filtro].imagen.url}) 
+    except:
+        return render(request, "tienda.html",{ "accesorios": accesorio})
 
 def tiendaindumentaria(request):
     indumentaria=indumentarias.objects.all()
-    return render(request, "tienda.html",{ "indumentarias": indumentaria}) 
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render(request, "tienda.html",{"indumentarias": indumentaria,"url":avatar[filtro].imagen.url})
+    except:
+        return render(request, "tienda.html",{"indumentarias": indumentaria})
        
     
 #Carrito de compras
@@ -295,14 +319,20 @@ def LeerRepu (request):
 
 @login_required
 def LeerIndum (request):
-    print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
+   
 
     FormularioIndumentaria=indumentarias.objects.all()
-    contexto={"Indumentaria":FormularioIndumentaria}
-    return render (request, "VerFormulario_Indumentaria.html",contexto)
+   
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render (request, "VerFormulario_Indumentaria.html",{"Indumentaria":FormularioIndumentaria,"url":avatar[filtro].imagen.url})
+    except:
+         return render (request, "VerFormulario_Indumentaria.html",{"Indumentaria":FormularioIndumentaria})
+
 @login_required
 def LeerAcc (request):
-    print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
+    
 
     FormularioAccesorios=accesorios.objects.all()
     
@@ -955,15 +985,25 @@ def Mensajeria(request):
             email.send()
             #cuando se recargue la pagina aparece el mensaje en el template
             messages.success(request,'Correo Enviado')
-
-            return render (request,"Save.html",{"mensaje":"Nos contactaremos a la brevedad.."})
+            try:
+                avatar=Avatar.objects.filter(user=request.user.id)   
+                filtro=len(avatar)-1 
+                return render (request,"Save.html",{"mensaje":"Nos contactaremos a la brevedad..","url":avatar[filtro].imagen.url})
+            except:
+                return render (request,"Save.html",{"mensaje":"Nos contactaremos a la brevedad.."})
 
         else:
             form=FormularioMensaje()
             messages.error(request,'Correo No valido')
     else:
         form=FormularioMensaje()
-    return render (request,"EnviarMensaje.html",{"formularioMensaje":form})
+        try:
+            avatar=Avatar.objects.filter(user=request.user.id)   
+            filtro=len(avatar)-1 
+            return render (request,"EnviarMensaje.html",{"formularioMensaje":form,"url":avatar[filtro].imagen.url})
+        except:
+            return render (request,"EnviarMensaje.html",{"formularioMensaje":form})
+
 
 
 
