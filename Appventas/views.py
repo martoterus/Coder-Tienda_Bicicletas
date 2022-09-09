@@ -77,12 +77,11 @@ def tienda(request):
      accesorio = paginatorAcc.page(pagina)
      paginatorRepu = Paginator(repuesto, 1)
      repuesto = paginatorRepu.page(pagina)
-     avatar=Avatar.objects.filter(user=request.user.id)   
-     filtro=len(avatar)-1
-
+     
     except:
         raise Http404
-    return render(request, "tienda.html",{"bicicletas": bicicleta, "paginatorBici": paginatorBici,  "indumentarias": indumentaria, "accesorios": accesorio, "repuestos": repuesto,"url":avatar[filtro].imagen.url})
+    
+    return render(request, "tienda.html",{"bicicletas": bicicleta, "paginatorBici": paginatorBici,  "indumentarias": indumentaria, "accesorios": accesorio, "repuestos": repuesto})
 
 def tiendabici(request):
     bicicleta=bicicletas.objects.all()
