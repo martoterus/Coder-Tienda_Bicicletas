@@ -7,9 +7,10 @@ from django.contrib.auth.models import User
 from django.http import Http404
 from django.shortcuts import render
 from .carrito import carrito
-from Appventas.models import accesorios, bicicletas, categorias, empleado, indumentarias, repuestos, EnviarMensaje
+from Appventas.models import About, accesorios, bicicletas, categorias, empleado, indumentarias, repuestos, EnviarMensaje
 from Appventas.forms import AvatarFormulario, AccesoriosFormularios, BicicletasFormularios, FormularioMensaje, IndumentariasFormularios, RepuestosFormularios, categoriasFormulario, empleadosFormulario, enviarMensaje, FormularioMensaje, CrearUsuario
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm , UserChangeForm
+
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin #solo funciona con las vistas basadas en clases
 from django.contrib.auth.decorators import login_required#decorador para vistas basadas en funciones.Aumenta la funcionalidad de una funcion.
@@ -19,17 +20,13 @@ from django.contrib.auth.decorators import login_required#decorador para vistas 
 
 #-----------------------------------------------
 from queue import Empty
-from unicodedata import name
 from django.conf import settings
+from django.core.mail import EmailMessage
 from django.core.mail import EmailMessage# Toma un temaplate html  
 from django.template.loader import render_to_string # transformado en un string
 from django.contrib import messages
-
-
 from django.shortcuts import redirect
-
 from django.contrib.auth.models import User
-
 from django.shortcuts import render, redirect
 from Appventas.carrito import carrito
 from Appventas.models import  Avatar, EnviarMensaje, categorias
@@ -43,19 +40,26 @@ def ViewPadre(request):
     return render (request,"Padre.html")
 
 def Nosotros(request):#Template de Nostros
-
-    return render(request, "QuienesSomos.html")
-
-#def Formularios(request):#Template de Formularios
- #   categoria = categorias.objects.all()
-  #  return render(request, "Formularios.html", {"categorias": categoria})
-
+   about=About.objects.all()
+   
+   try:
+    avatar=Avatar.objects.filter(user=request.user.id)                    
+    filtro=len(avatar)-1
+    
+    return render(request, "QuienesSomos.html",{"url":avatar[filtro].imagen.url,"about0":about[0].imagen.url,"about1":about[1].imagen.url})
+   except:
+    return render(request, "QuienesSomos.html",{"about0":about[0].imagen.url,"about1":about[1].imagen.url})
 
 def inicio(request):#Template de Inivcio
-    print(request.GET)
     carr = carrito(request)
     categoria = categorias.objects.all()
-    return render(request, "Formularios.html", {"categorias": categoria})
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1                 #en el registro avatar, en la propiedad imagen, en el campo tipo imagen adentro tiene un url
+        return render(request, "Formularios.html", {"categorias": categoria,"url":avatar[filtro].imagen.url})
+    except:
+        return render(request, "Formularios.html",{ "categorias": categoria})
+   
 
 def tienda(request):
     bicicleta=bicicletas.objects.all()
@@ -73,25 +77,49 @@ def tienda(request):
      accesorio = paginatorAcc.page(pagina)
      paginatorRepu = Paginator(repuesto, 1)
      repuesto = paginatorRepu.page(pagina)
+     avatar=Avatar.objects.filter(user=request.user.id)   
+     filtro=len(avatar)-1
+
     except:
         raise Http404
-    return render(request, "tienda.html",{"bicicletas": bicicleta, "paginatorBici": paginatorBici,  "indumentarias": indumentaria, "accesorios": accesorio, "repuestos": repuesto})
+    return render(request, "tienda.html",{"bicicletas": bicicleta, "paginatorBici": paginatorBici,  "indumentarias": indumentaria, "accesorios": accesorio, "repuestos": repuesto,"url":avatar[filtro].imagen.url})
 
 def tiendabici(request):
     bicicleta=bicicletas.objects.all()
-    return render(request, "tienda.html",{ "bicicletas": bicicleta})
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render(request, "tienda.html",{ "bicicletas": bicicleta,"url":avatar[filtro].imagen.url})
+    except:
+        return render(request, "tienda.html",{ "bicicletas": bicicleta})
 
 def tiendarepuestos(request):
     repuesto=repuestos.objects.all()
-    return render(request, "tienda.html",{ "repuestos": repuesto})
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render(request, "tienda.html",{ "repuestos": repuesto,"url":avatar[filtro].imagen.url})
+    except:
+        return render(request, "tienda.html",{ "repuestos": repuesto})
+
 
 def tiendaaccesorios(request):
     accesorio=accesorios.objects.all()
-    return render(request, "tienda.html",{ "accesorios": accesorio}) 
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render(request, "tienda.html",{ "accesorios": accesorio,"url":avatar[filtro].imagen.url}) 
+    except:
+        return render(request, "tienda.html",{ "accesorios": accesorio})
 
 def tiendaindumentaria(request):
     indumentaria=indumentarias.objects.all()
-    return render(request, "tienda.html",{ "indumentarias": indumentaria}) 
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render(request, "tienda.html",{"indumentarias": indumentaria,"url":avatar[filtro].imagen.url})
+    except:
+        return render(request, "tienda.html",{"indumentarias": indumentaria})
        
     
 #Carrito de compras
@@ -257,37 +285,63 @@ def LeerCategoria(request):
     print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
 
     FormularioCategorias=categorias.objects.all()
-    contexto={"Categorias":FormularioCategorias}
-    return render (request, "VerFormulario_Categorias.html",contexto)
+    
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1 
+        return render (request, "VerFormulario_Categorias.html",{"Categorias":FormularioCategorias,"url":avatar[filtro].imagen.url})
+    except:
+        return render (request, "VerFormulario_Categorias.html",{"Categorias":FormularioCategorias})
 @login_required
 def LeerBicis (request):
     print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
 
     FormularioBicicletas=bicicletas.objects.all()
-    contexto={"Bicicletas":FormularioBicicletas}
-    return render (request, "VerFormulario_Bicicletas.html",contexto)
+    
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render (request, "VerFormulario_Bicicletas.html",{"Bicicletas":FormularioBicicletas,"url":avatar[filtro].imagen.url})
+    except:
+        return render (request, "VerFormulario_Bicicletas.html",{"Bicicletas":FormularioBicicletas})
 @login_required
 def LeerRepu (request):
     print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
 
     FormularioRepuestos=repuestos.objects.all()
-    contexto={"Repuestos":FormularioRepuestos}
-    return render (request, "VerFormulario_Repuestos.html",contexto)
+    
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render (request, "VerFormulario_Repuestos.html",{"Repuestos":FormularioRepuestos,"url":avatar[filtro].imagen.url})
+    except:
+        return render (request, "VerFormulario_Repuestos.html",{"Repuestos":FormularioRepuestos})
 
 @login_required
 def LeerIndum (request):
-    print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
+   
 
     FormularioIndumentaria=indumentarias.objects.all()
-    contexto={"Indumentaria":FormularioIndumentaria}
-    return render (request, "VerFormulario_Indumentaria.html",contexto)
+   
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render (request, "VerFormulario_Indumentaria.html",{"Indumentaria":FormularioIndumentaria,"url":avatar[filtro].imagen.url})
+    except:
+         return render (request, "VerFormulario_Indumentaria.html",{"Indumentaria":FormularioIndumentaria})
+
 @login_required
 def LeerAcc (request):
-    print("method:", request.method) #Va  a imprimir por terminal el método que utilizamos. 
+    
 
     FormularioAccesorios=accesorios.objects.all()
-    contexto={"Accesorios":FormularioAccesorios}
-    return render (request, "VerFormulario_Accesorios.html",contexto)
+    
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)   
+        filtro=len(avatar)-1
+        return render (request, "VerFormulario_Accesorios.html",{"Accesorios":FormularioAccesorios,"url":avatar[filtro].imagen.url})
+    except:
+        return render (request, "VerFormulario_Accesorios.html",{"Accesorios":FormularioAccesorios})
 
 @login_required
 def LeerEmpleado (request):
@@ -295,8 +349,10 @@ def LeerEmpleado (request):
     try:
         if request.user.empleado:
           empleadoForm=empleado.objects.all()
-          contexto={"Empleados":empleadoForm}
-          return render (request, "VerFormulario_Empleados.html",contexto)
+          
+          avatar=Avatar.objects.filter(user=request.user.id)   
+          filtro=len(avatar)-1
+          return render (request, "VerFormulario_Empleados.html",{"Empleados":empleadoForm,"url":avatar[filtro].imagen.url})
 
         else:
             return render (request, "Formularios.html")
@@ -755,7 +811,6 @@ def CrearEmpleado(request):
             data.update(
                 userform.cleaned_data                              #se actualiza con update la variable data, que contiene datos de empleado mas datos de usuario 
             )
-
             #Crear instancias de empleado y usuario
 
             user = User(                                            #modelo User que viene por defecto en Django y le pasamos el username 
@@ -775,8 +830,10 @@ def CrearEmpleado(request):
         EmpleadoForm=empleadosFormulario()
 
         userform = UserCreationForm()
-
-        return render(request,"CreateEmpleado.html", {"CrearEmpleado":EmpleadoForm, "userform":userform})
+        avatar=Avatar.objects.filter(user=request.user.id)  
+        filtro=len(avatar)-1                  #en el registro avatar, en la propiedad imagen, en el campo tipo imagen adentro tiene un url
+   
+        return render(request,"CreateEmpleado.html", {"CrearEmpleado":EmpleadoForm, "userform":userform,"url":avatar[filtro].imagen.url})
 
 
 #Registrarse
@@ -829,10 +886,14 @@ def EditarPerfil(request):
                 usuario.last_name=data["last_name"]
                 usuario.email=data["email"]
                 usuario.save()
-
+                
                 return render(request, "Save.html", {"mensaje":"Datos actualizados con exito.."})
     else:
-        formularioPerfil=EditarUsuario (instance=request.user)
+        formularioPerfil=EditarUsuario(initial={
+            "first_name":usuario.first_name,
+            "last_name":usuario.last_name,
+            "email":usuario.email
+                })
     return render (request, "LoginPerfil.html", {"PerfilFormulario":formularioPerfil})
 
 #Cambiar contraseña
@@ -854,30 +915,25 @@ def CambiarPassword(request):
 def agregar_avatar(request):
 
     if request.method == 'POST':
-        print("metodo:",request.method)
+       
         miFormulario = AvatarFormulario(request.POST, request.FILES)
 
         if miFormulario.is_valid():
-            print("1")
-
+           
             data = miFormulario.cleaned_data
-
             avatar =Avatar(user=request.user, imagen=data['imagen'])
-            print("2")
             avatar.save()
 
-            return render(request, "SavePerfil.html", {"mensaje": "Avatar cargado."})
+            return render(request, "SavePerfil.html")
         else:
-            print("no valida")
+           
             miFormulario = AvatarFormulario()
             return render(request, "LoginAgregarAvatar.html", {"miFormulario": miFormulario,"mensaje":"Error"})
 
 
     else:
-
         avatarform = AvatarFormulario()
         
-
     return render(request, "LoginAgregarAvatar.html", {"miFormulario": avatarform})
 
 
@@ -889,11 +945,11 @@ def Mensajeria(request):
 
 
     if request.method == "POST":
-        print("1",request.method)
+        
         form=FormularioMensaje(request.POST)
 
         if form.is_valid():
-            print("2")
+            
 
 
             #De esta forma me pide validacion en el formulario
@@ -929,15 +985,27 @@ def Mensajeria(request):
             email.send()
             #cuando se recargue la pagina aparece el mensaje en el template
             messages.success(request,'Correo Enviado')
-
-            return render (request,"Save.html",{"mensaje":"Nos contactaremos a la brevedad.."})
+            try:
+                avatar=Avatar.objects.filter(user=request.user.id)   
+                filtro=len(avatar)-1 
+                return render (request,"Save.html",{"mensaje":"Nos contactaremos a la brevedad..","url":avatar[filtro].imagen.url})
+            except:
+                return render (request,"Save.html",{"mensaje":"Nos contactaremos a la brevedad.."})
 
         else:
-            print("3")
-
             form=FormularioMensaje()
             messages.error(request,'Correo No valido')
     else:
         form=FormularioMensaje()
-    return render (request,"EnviarMensaje.html",{"formularioMensaje":form})
+        try:
+            avatar=Avatar.objects.filter(user=request.user.id)   
+            filtro=len(avatar)-1 
+            return render (request,"EnviarMensaje.html",{"formularioMensaje":form,"url":avatar[filtro].imagen.url})
+        except:
+            return render (request,"EnviarMensaje.html",{"formularioMensaje":form})
+
+
+
+
+
 

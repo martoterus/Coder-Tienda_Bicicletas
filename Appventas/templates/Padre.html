@@ -33,6 +33,7 @@
 
         <!-- Header--> 
         <header class="p-3 mb-3 border-bottom">
+            <div style="background-color:rgb(175, 175, 175) ;" class="container">
               <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
                   <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
@@ -41,45 +42,40 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                   <li><a href="{% url 'INICIO' %}" class="nav-link px-2 link-secondary">HOME</a></li>
                   <li><a href="{% url 'Nosotros' %}" class="nav-link px-2 link-dark">ABOUT</a></li>
-                  
-                  
-               
-                  
                 </ul>
         
-                
-                 <a class="btn btn-primary" href="{% url 'Tienda' %}">TIENDA</a>
-                
-
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                  <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                </form>
+        
                 <div class="dropdown text-end">
-                    <img src="Appventas/media/img/logo.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
-
-                    
+                                        
                     {% if user.is_authenticated %}
 
-                    {% if url %}
-                     <img src="{{url}}" height="35px" alt="avatar">
-                    {% endif %}
+                        
+                        {% if url %}
+                            <img src="{{url}}" height="50px" alt="avatar">    
+                        {% endif %}
+                                                     
+                        
+                        <div class="btn-group">
+                        <button class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false" >@{{user.username}}</button>
 
-                    <div class="btn-group">
-                    
-                    <button class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false" >@{{user.username}}</button>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="{% url 'Perfil' %}">Perfil</a></li>
+                              <li><a class="dropdown-item" href="{% url 'MensajeCorreo' %}">Contacto</a></li>
+                              <li><a class="dropdown-item" href="{% url 'rooms' %}">Chat</a></li>
+                              <li><hr class="dropdown-divider"></li>
+                              <li><a class="dropdown-item" href="{% url 'Logout' %}">Salir</a></li>
 
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="{% url 'Perfil' %}">Perfil</a></li>
-                          <li><a class="dropdown-item" href="{% url 'MensajeCorreo' %}">Contacto</a></li>
-                          <li><a class="dropdown-item" href="{% url 'rooms' %}">Chat</a></li>
-                          <li><hr class="dropdown-divider"></li>
-                          <li><a class="dropdown-item" href="{% url 'Logout' %}">Salir</a></li>
-
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
 
 
 
-                {% else %}
+                    {% else %}
                     <a class="btn btn-primary" href="{% url 'Login' %}">Ingresar</a>
-                {% endif %}
+                    {% endif %}
                     
                     
                     
@@ -96,69 +92,7 @@
               </div>
             </div>
             <br>
-{% if request.user.empleado %}
-<div class="text-center">
-    <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Empleados
-      </button>
-      <ul class="dropdown-menu">
-     
-        <li><a class="dropdown-item" href="{% url 'FormularioEmpleado' %}">Cargar</a></li>
-        <li><a class="dropdown-item" href="{% url 'LeerEmpleados' %}">Ver</a></li>
-      </ul>
-    </div>  
-  <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Categorias
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="cat_formulario">Cargar</a></li>
-        <li><a class="dropdown-item" href="LeerCategorias">Ver</a></li>
-          
-      </ul>
-  </div>
-  <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Bicicletas
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="FormularioBici">Cargar</a></li>
-        <li><a class="dropdown-item" href="LeerBicicletas">Ver</a></li>
-        <li><a class="dropdown-item" href="BusquedaBici">Buscar</a></li>
-      </ul>
-  </div>
-  <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Repuestos
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="repu_formulario">Cargar</a></li>
-        <li><a class="dropdown-item" href="LeerRepuestos">Ver</a></li>
-        <li><a class="dropdown-item" href="{% url 'Buscar2' %}">Buscar</a></li>
-      </ul>
-  </div>
-  <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Accesorios
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="acc_formulario">Cargar</a></li>
-        <li><a class="dropdown-item" href="LeerAccesorios">Ver</a></li>
-        <li><a class="dropdown-item" href="{% url 'BuscarAcc' %}">Buscar</a></li>
-      </ul>
-  </div>
-  <div class="btn-group">
-      <button style= "margin-left: 100px" type="button" class="btn btn" data-bs-toggle="dropdown" aria-expanded="false">
-        Indumentaria
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="indu_formulario">Cargar</a></li>
-        <li><a class="dropdown-item" href="{% url 'Leerindume' %}">Ver</a></li>
-        <li><a class="dropdown-item" href="{% url 'Buscar3' %}">Buscar</a></li>
-      </ul>
-  </div>
-{% endif %}
+
             
 
 {% block bloquecambia %}            
@@ -208,15 +142,20 @@
 
 
         <!-- Footer-->
+        
         <footer class="py-5 bg-dark">
+          
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">  
                 <li class="nav-item"><a class="nav-link active text-white aria-current=" href="{% url 'MensajeCorreo' %}">Contactarse</a></li>
                 
                 <!--<li class="nav-item"><a class="nav-link" href="{% url 'Nosotros' %}">Nosotros</a></li>-->
             </ul>
             
+            
             <p class="text-white small mb-4 mb-lg-0 ms-lg-4">CoderHouse Curso Python 2022.</p><div class="container"><p class="m-0 text-center text-white">Martin Goñi & Martin Bisceglia &copy; Coder House 2022</p></div>
+        
         </footer>
+
         
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

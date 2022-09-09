@@ -11,8 +11,8 @@
         <h3>Cambiar avatar.</h3>
         <h4>{{mensaje}}</h4>
     </div><br>
-    <br>
-    <form  action="" method="POST">
+     <br> <!--con enctype dentro de request.files va a estar la imagen que se cargo -->
+    <form style= "margin-left: 50px" enctype="multipart/form-data" action="" method="POST">
         {% csrf_token %}
 
        

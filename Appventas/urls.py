@@ -21,9 +21,9 @@ from django.urls import path
 # from Appventas.models import Avatar
 from Appventas.views import (#Tupla
     BusquedaAcc, CambiarPassword, EditarPerfil, Formularioaccesorios, Formulariobicis, Formulariocategoria, 
-    Formularioindumentarias, Formulariorepuestos,LeerAcc, LeerCategoria, Mensajeria, ResultAcc, agregar_avatar, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
+    Formularioindumentarias, Formulariorepuestos,LeerAcc, LeerCategoria, Mensajeria, ResultAcc, editaraccesorios, editarbicis, editarcategoria, editarindumentaria,
     editarrepuestos, eliminar_producto, eliminarIndumentaria, eliminaraccesorios, eliminarbici, 
-    eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, 
+    eliminarcategoria, eliminarrepuestos, iniciar_sesion, inicio, agregar_avatar,
     Busquedabicis, limpiar_carrito, registrarse, LeerIndum, LeerBicis, LeerRepu, ResultBici, BusquedaIndu, 
     BusquedaRepues, ResultIndu, ResultRepues,
     Nosotros, IrEnviarMensaje, IrRegistrarse, tienda
@@ -85,6 +85,7 @@ urlpatterns = [
     path('registrarse', registrarse, name='Registrarse'),
     path('logout', LogoutView.as_view(template_name='logout.html'),name='Logout'),
     path('loginPerfil', EditarPerfil, name="Perfil"),
+    path('CambiarContraseña', CambiarPassword, name="CambiarContraseña"),
 
     #Tienda
     path('tienda', views.tienda, name="Tienda"),
@@ -110,6 +111,7 @@ urlpatterns = [
     path('EnviarMensaje',Mensajeria,name="MensajeCorreo"),
 
     #Imagenes/Avatars
+    path('CambiarAvatar',agregar_avatar,name="CambiarAvatar"),
     
 ]
 

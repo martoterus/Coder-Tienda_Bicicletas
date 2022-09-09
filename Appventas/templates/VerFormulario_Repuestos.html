@@ -8,7 +8,7 @@
     <h3>Lista de Repuestos</h3>
     <br>
         {% for Item in Repuestos %}
-        <li>Nombre: {{Item.nombre}}. Tipo: {{Item.tipo}}. Marca: {{Item.marca}}. Descripcion: {{Item.descripcion}}. Precio: ${{Item.precio}}.</li>
+        <li>Nombre: {{Item.codigo}}. Tipo: {{Item.tipo}}. Marca: {{Item.marca}}. Descripcion: {{Item.descripcion}}. Precio: ${{Item.precio}}.</li>
         <div>
             <form action="{% url 'Eliminarrepu' Item.id %}" method = "POST">{% csrf_token %}
                 
