@@ -2,12 +2,17 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from .models import Room, Message
+from Appventas.models import Avatar
 
 @login_required
 def rooms(request):
     rooms = Room.objects.all()
-
-    return render(request, 'rooms.html', {'rooms': rooms})
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)                    
+        filtro=len(avatar)-1
+        return render(request, 'rooms.html', {'rooms': rooms,"url":avatar[filtro].imagen.url})
+    except:
+        return render(request, 'rooms.html', {'rooms': rooms})
 
 @login_required
 def room(request, slug):
@@ -16,4 +21,9 @@ def room(request, slug):
     usuarios=User.objects.all()
    
 
-    return render(request, 'room.html', {'room': room, 'messages': messages, "usuarios":usuarios})
+    try:
+        avatar=Avatar.objects.filter(user=request.user.id)                    
+        filtro=len(avatar)-1
+        return render(request, 'room.html', {'room': room, 'messages': messages, "usuarios":usuarios,"url":avatar[filtro].imagen.url})
+    except:
+        return render(request, 'room.html', {'room': room, 'messages': messages, "usuarios":usuarios})
