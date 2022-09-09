@@ -143,12 +143,8 @@ LOGIN_URL = 'Appventas/Login.html'
 #Para imagenes
 MEDIA_URL='/media/'
 MEDIA_ROOT= os.path.join(BASE_DIR,'media')
-#LOGIN_REDIRECT_URL='/'#la raiz del sitio
-#LOGOUT_REDIRECT_URL='/'
 
-
-
-#gmail_send/settings.py
+#Contacto
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com' #el host que vamos a usar que correo vamos a usar
 EMAIL_HOST_USER = 'biciclteria.app@gmail.com' #nuestro correo de la app
