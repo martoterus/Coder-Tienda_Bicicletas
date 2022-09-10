@@ -41,14 +41,15 @@ def ViewPadre(request):
 
 def Nosotros(request):#Template de Nostros
    about=About.objects.all()
+   print(about)
    
    try:
     avatar=Avatar.objects.filter(user=request.user.id)                    
     filtro=len(avatar)-1
     
-    return render(request, "QuienesSomos.html",{"url":avatar[filtro].imagen.url,"about0":about[0].imagen.url,"about1":about[1].imagen.url})
+    return render(request, "QuienesSomos.html",{"url":avatar[filtro].imagen.url,"about0":about[0].imagen.url,"about1":about[1].imagen.url,"about2":about[2].imagen.url,"about3":about[3].imagen.url,"about4":about[4].imagen.url})
    except:
-    return render(request, "QuienesSomos.html",{"about0":about[0].imagen.url,"about1":about[1].imagen.url})
+    return render(request, "QuienesSomos.html",{"about0":about[0].imagen.url,"about1":about[1].imagen.url,"about2":about[2].imagen.url,"about3":about[3].imagen.url,"about4":about[4].imagen.url})
 
 def inicio(request):#Template de Inivcio
     carr = carrito(request)
